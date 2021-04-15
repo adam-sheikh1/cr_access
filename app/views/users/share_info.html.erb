@@ -1,0 +1,32 @@
+<div class='container'>
+  <div class='mb-4 mt-4'>
+    <h1>Share Info</h1>
+  </div>
+  <div class="white-card mb-5">
+    <div class='row'>
+      <div class='col-12'>
+        <%= form_with url: send_info_user_path, scope: :cr_access, local: true do |f| %>
+          <div class="row">
+            <div class="col-6">
+              <div class='form-group'>
+                <%= f.label :email %>
+                <%= f.email_field :email, class: 'form-control', required: true %>
+              </div>
+            </div>
+
+            <div class='col-6'>
+              <%= f.label :ids, 'Data' %>
+              <%= f.select :ids, cr_access_options, { include_hidden: false }, { class: 'form-control select2', multiple: true } %>
+            </div>
+          </div>
+          <div class="row ml-2">
+            <div class="form-group">
+              <%= f.submit "Invite", class: "btn btn-primary mr-3" %>
+              <%= link_to "Back", vaccinations_user_path, class: "btn btn-primary mr-3" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

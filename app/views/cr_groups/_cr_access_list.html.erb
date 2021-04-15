@@ -1,0 +1,26 @@
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Image</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% cr_access_info.each do |cr_access| %>
+        <tr>
+          <td><%= image_tag cr_access.profile_picture, width: 100 if cr_access.profile_picture.attached? %></td>
+          <td><%= cr_access.full_name %></td>
+          <td><%= cr_access.email %></td>
+          <td><%= cr_access.phone_number %></td>
+          <td>
+            <%= link_to 'Send Invite', send_invite_cr_group_path(cr_access_id: cr_access), class: 'btn btn-primary-small d-inline-flex', method: :post %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

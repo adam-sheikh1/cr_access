@@ -1,0 +1,60 @@
+en:
+  activerecord:
+    errors:
+      models:
+        cr_access_data:
+          attributes:
+            profile_picture:
+              content_type: 'must be an image (png, jpg or jpeg)'
+              max_size_error: 'must be less than 3 MB'
+              min_size_error: 'must be greater than 1 Mb'
+
+  views:
+    devise:
+      logout: Logout
+      login: Log in
+      signup: Sign up
+      session:
+        left_panel_text1: Welcome!
+        left_panel_text2: Join us and get COVIDReadi!
+        left_panel_text3: Join the movement.
+        left_panel_text4: Do your part.
+        not_a_member: Not a member yet?
+        sign_up: SIGN UP
+        login_text: Log in to COVIDReadi
+        login: Log in
+        sign_up_link: Sign up
+        forgot_password: Forgot your password?
+        confirmation_instructions: Didn't receive confirmation instructions?
+        unlock_instructions: Didn't receive unlock instructions?
+        email: Email
+        password: Password
+        reset_password: Reset Password
+        resend_confirmation: Resend Confirmation
+        remember_me: Remember me
+      registration:
+        email: Email
+        first_name: First name
+        last_name: Last name
+        password: Password
+        middle_name: Middle name
+        password_confirmation: Password confirmation
+        current_password: Current password
+        already_a_memebner: Already a member?
+        log_in: LOG IN
+        sign_up_text: Sign up to COVIDReadi
+        minimum_characters: characters minimum
+        sign_up: Sign up
+        privacy_term: By signing up, I agree to COVIDReadi’s
+        privacy_policy: Privacy Policy
+        terms_of_service: Terms of Service
+        waiting_for_confirmation: Currently waiting confirmation for
+        leave_blank: leave blank if you don't want to change it
+        confirm_your_changes: we need your current password to confirm your changes
+        cancel_my_account: Cancel my account
+        confirm_cancel: Are you sure?
+        back: Back
+        update: Update
+        unhappy: Unhappy?
+        and: and
+        opt_out_email: Opt-out of confirmation email

@@ -1,0 +1,24 @@
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Group Name</th>
+        <th scope="col">Date Initiated or Joined</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% groups.each do |group| %>
+        <tr>
+          <td><%= group.name %> (CRA#<%= group.fv_code.code %>)</td>
+          <td><%= time_ago_in_words(group.created_at).humanize %> ago</td>
+          <td>
+            <%= link_to 'View', cr_group_path(group), class: 'btn btn-primary-small d-inline-flex' %>
+            <%= link_to 'Invite', invite_cr_group_path(group), class: 'btn btn-primary-small d-inline-flex' if group.owner?(current_user) %>
+            <%= link_to 'Edit', edit_cr_group_path(group), class: 'btn btn-primary-small d-inline-flex' if group.owner?(current_user) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

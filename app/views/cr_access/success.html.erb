@@ -1,0 +1,22 @@
+<div class="container my-5">
+  <div class="row justify-content-md-center">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <div class='mb-4 mt-4'>
+        <h1>Congratulations!</h1>
+      </div>
+      <div class="white-card">
+        <p>You are now part of CR Access</p>
+        <% if @password %>
+          <p>Your account has been created with the following credentials:</p>
+          <p>
+            <strong>Email:</strong> <%= @user.email %><br>
+            <strong>Password:</strong> <%= @password %>
+          </p>
+          <p>Make sure to reset your password later.</p>
+        <% else %>
+          <p>You already have an account with the email <%= @user.email %>, use that to login.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

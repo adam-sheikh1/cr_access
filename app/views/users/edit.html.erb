@@ -1,0 +1,38 @@
+<div class='container'>
+  <div class='mb-4 mt-4'>
+    <h1>Edit Profile</h1>
+  </div>
+  <div class="white-card mb-5">
+    <div class='row mb-5'>
+      <div class='col-12'>
+        <%= simple_form_for current_user do |f| %>
+          <div class="row">
+            <div class="col-6">
+              <%= f.input :current_password %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <%= f.input :password %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <%= f.input :password_confirmation %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <%= f.input :profile_picture %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <%= f.submit "Update Profile", class: "btn btn-primary mr-3" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

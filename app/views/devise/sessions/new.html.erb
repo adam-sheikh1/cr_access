@@ -1,0 +1,39 @@
+<div class="login-wrapper">
+  <div>
+    <div class="user-screens">
+      <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-wrapper">
+            <div class="login-form">
+              <div class="login-btns">
+                <div class="signup-text"><%= t('views.devise.session.login_text') %></div>
+              </div>
+            </div>
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+              <div class="form-group">
+                <%= f.label :email, t('views.devise.session.email') %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :password, t('views.devise.session.password') %>
+                <%= f.password_field :password, autocomplete: "current-password", class: 'form-control' %>
+              </div>
+
+              <% if devise_mapping.rememberable? %>
+                <div class="form-group checkbox-item">
+                  <%= f.check_box :remember_me %>
+                  <%= f.label :remember_me, t('views.devise.session.remember_me') %>
+                </div>
+              <% end %>
+
+              <div class="action-btn">
+                <%= f.submit t('views.devise.session.login'), class: 'btn btn-primary w-100' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

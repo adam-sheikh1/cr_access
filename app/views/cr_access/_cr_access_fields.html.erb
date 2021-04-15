@@ -1,0 +1,17 @@
+<div class='<%= hide && 'd-none' %>'>
+  <% if child %>
+    <ul>
+      <li>
+        Child <%= f.object.full_name %>'s vaccination info will be added
+      </li>
+    </ul>
+  <% end %>
+
+  <%= f.hidden_field :encoded_attributes %>
+
+  <% if child %>
+    <%= f.input :profile_picture, input_html: { class: 'profile_picture' }, label: "#{f.object.full_name}'s Profile Picture'" %>
+  <% else %>
+    <%= f.input :profile_picture, input_html: { class: 'profile_picture' } %>
+  <% end %>
+</div>

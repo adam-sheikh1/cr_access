@@ -1,0 +1,44 @@
+<%= image_tag f.object.profile_picture, class: 'profile-image mt-4' if f.object.profile_picture.attached? %>
+<hr>
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <%= f.input :first_name, disabled: true %>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <%= f.input :last_name, disabled: true %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <%= f.input :gender, disabled: true %>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <%= f.input :address, disabled: true %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <%= f.input :city, disabled: true %>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <%= f.input :state, disabled: true %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <%= f.input :zip_code, disabled: true %>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <%= f.input :phone_number, disabled: true %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="date-birth">
+      <%= f.input :date_of_birth, disabled: true %>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    <%= f.input :vaccination_status, disabled: true, input_html: { value: f.object.vaccination_status.titleize } %>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class='col-xs-12 col-sm-4 col-md-4 col-lg-4'>
+  <div class="inner-content" data-controller='qr-code'>
+    <%= image_tag cr_access_data.profile_picture, class: 'profile-image img-thumbnail mb-2' if cr_access_data.profile_picture.attached? %>
+    <h4><%= cr_access_data.full_name %></h4>
+    <% if cr_access_data.fully_vaccinated? %>
+      <h5>CrAccess #<%= cr_access_data.fv_code.code %></h5>
+      <%= qr_code_image cr_access_data.qr_code, klass: 'img-thumbnail' %>
+    <% else %>
+      <h6>CrAccess #XXXXXXXXXX</h6>
+      <%= image_tag 'non-vaccinated.png', class: 'non-vaccinated-img img-thumbnail' %>
+    <% end %>
+    <h6 class='mt-2'><%= cr_access_data.vaccination_status.to_s.titleize %></h6>
+    <% if cr_access_data.fully_vaccinated? %>
+      <div>Against COVID-19</div>
+      <div>Until 01/20/22</div>
+    <% elsif cr_access_data.not_vaccinated? %>
+      <div>Against COVID-19</div>
+    <% else %>
+      <div>Against COVID-19</div>
+      <div>Second Dose Required</div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+<% if @cr_access_info.present? %>
+  $('.cr-access-info').html('<%= j render 'cr_access_list', cr_access_info: @cr_access_info %>');
+<% else %>
+  $('.cr-access-info').html('Could not find any record matching the search criteria.');
+<% end %>

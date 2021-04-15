@@ -1,0 +1,27 @@
+<div class='container'>
+  <div class='mb-4 mt-4'>
+    <h1>Add to Group</h1>
+  </div>
+  <div class="white-card mb-5">
+    <div class='row'>
+      <div class='col-12'>
+        <%= form_with url: send_invite_cr_group_path(@group), local: true do |f| %>
+          <div class="row">
+            <div class="col-6">
+              <div class='form-group'>
+                <%= f.label :fv_code, 'Cr Access#' %>
+                <%= f.text_field :fv_code, class: 'form-control', required: true %>
+              </div>
+            </div>
+          </div>
+          <div class="row ml-2">
+            <div class="form-group">
+              <%= f.submit "Invite", class: "btn btn-primary mr-3" %>
+              <%= link_to "Back", @group, class: "btn btn-primary mr-3" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div class='container mt-5 mb-5'>
+  <div class="white-card">
+    <div class='row'>
+      <div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
+        <h1>Group <%= @group.name %> Details:</h1>
+      </div>
+      <div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
+        <div class="d-flex justify-content-end align-items-center h-100">
+          <%= link_to 'Invite', invite_cr_group_path(@group), class: 'btn btn-primary-small mr-2' if @group.owner?(current_user) %>
+          <%= link_to 'Leave', leave_cr_group_path(@group), class: 'btn btn-primary-small mr-2', method: :delete, data: { confirm: 'Are you sure?' } unless @group.owner?(current_user) %>
+          <%= link_to 'Back', vaccinations_user_path, class: 'btn btn-primary-small' %>
+        </div>
+      </div>
+      <div class='col-md-12'>
+        <p class='ml-2'><strong>FvCode:</strong>  <%= @group.fv_code.code %></p>
+        <p class='ml-2'><strong>Type:</strong>  <%= @group.group_type.humanize %></p>
+      </div>
+    </div>
+
+    <div class="mb-5 mt-5">
+      <hr>
+    </div>
+
+    <h5>This group contains vaccination records of:</h5>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @cr_access_data.each do |cr_access| %>
+            <tr>
+              <td><%= cr_access.full_name %></td>
+              <td><%= cr_access.vaccination_status.titleize %></td>
+              <td>
+                <%= link_to 'View', cr_access_path(cr_access), class: 'btn btn-primary-small d-inline-flex' %>
+                <%= link_to 'Remove', remove_cr_group_path(@group, data_id: cr_access), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if @group.owner?(current_user) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class='row mb-4 mt-4'>
+      <div class='col-md-12 mb-3'>
+        <h3>Qr Code</h3>
+      </div>
+      <div class='col-md-12' data-controller='qr-code'>
+        <%= qr_code_image @qr_code, klass: 'img-thumbnail' %>
+      </div>
+    </div>
+  </div>
+</div>
