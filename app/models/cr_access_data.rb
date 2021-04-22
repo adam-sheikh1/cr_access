@@ -39,7 +39,7 @@ class CrAccessData < ApplicationRecord
   end
 
   def self.permitted_params
-    permitted_params_list << [children_attributes: [:id, :encoded_attributes, :profile_picture]]
+    permitted_params_list << [children_attributes: %i[id encoded_attributes profile_picture]]
   end
 
   def gender=(sex)
@@ -94,9 +94,7 @@ class CrAccessData < ApplicationRecord
     setter_errors.empty?
   end
 
-  def covidreadi_id=(_token)
-
-  end
+  def covidreadi_id=(_token); end
 
   def guardian
     return user if parent_id.blank?
@@ -104,16 +102,15 @@ class CrAccessData < ApplicationRecord
     parent.user
   end
 
-  def self.invitation_token(user_id)
-    encoded_token(payload: { user_id: user_id, cr_access_id: ids })
-  end
-
   def self.by_user(user)
     where(id: user.cr_access_data).or(where(id: user.accessible_cr_data))
   end
 
   def self.share_data(user)
-    CrAccessMailer.share_data(user.id, ids).deliver_later
+    transaction do
+      data = user.accessible_cr_data << where.not(id: user.accessible_cr_data.ids)
+      CrDataUser.where(id: data.select('cr_data_users.id').map(&:id)).send_invitation(user.id)
+    end
   end
 
   def linked_with?(user)
@@ -134,6 +131,6 @@ class CrAccessData < ApplicationRecord
     return if parent_id.present?
     return unless saved_change_to_primary? && primary?
 
-    user.reset_primary_data(self.id)
+    user.reset_primary_data(id)
   end
 end

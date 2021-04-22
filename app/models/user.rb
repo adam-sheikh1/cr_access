@@ -37,10 +37,10 @@ class User < ApplicationRecord
   end
 
   def accept_info(token)
-    data = CrAccessData.decoded_data(token)
-    return false unless self.id == data['user_id']
+    data = CrDataUser.decoded_data(token)
+    return false unless id == data['user_id']
 
-    accessible_cr_data << CrAccessData.where(id: data['cr_access_id'] - accessible_cr_data.ids)
+    CrDataUser.where(id: data['cr_data_user_ids']).update(status: CrDataUser::STATUSES[:accepted])
   end
 
   def unlink_cr_access(id)

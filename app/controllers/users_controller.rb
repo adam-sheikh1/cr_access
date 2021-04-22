@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_cr_access_data, only: %i[show]
+  before_action :set_share_data, only: %i[send_info]
 
   def show
     @qr_code = @cr_access.generate_qr_code if @cr_access
@@ -14,13 +15,6 @@ class UsersController < ApplicationController
   def share_info; end
 
   def send_info
-    @user = User.find_by_email(invitation_params[:email])
-    return redirect_to share_info_user_path, alert: "Couldn't find user by email provided." if @user.blank?
-    return redirect_to share_info_user_path, alert: 'Cannot share info to yourself.' if @user.id == current_user.id
-
-    @cr_acccess_data = current_user.cr_access_data.where(id: invitation_params[:ids])
-    return redirect_to share_info_user_path, alert: 'Please select info to send.' if @cr_acccess_data.blank?
-
     @cr_acccess_data.share_data(@user)
     redirect_to vaccinations_user_path, notice: 'Successfully send email to accept info.'
   end
@@ -68,5 +62,14 @@ class UsersController < ApplicationController
 
   def invitation_params
     params.require(:cr_access).permit(:email, ids: [])
+  end
+
+  def set_share_data
+    @user = User.find_by_email(invitation_params[:email])
+    return redirect_to share_info_user_path, alert: "Couldn't find user by email provided." if @user.blank?
+    return redirect_to share_info_user_path, alert: 'Cannot share info to yourself.' if @user.id == current_user.id
+
+    @cr_acccess_data = current_user.cr_access_data.where(id: invitation_params[:ids])
+    redirect_to share_info_user_path, alert: 'Please select info to send.' if @cr_acccess_data.blank?
   end
 end

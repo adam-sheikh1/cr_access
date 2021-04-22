@@ -63,7 +63,7 @@ class CrAccessController < ApplicationController
   end
 
   def accept_invite
-    if CrGroup.add_user(params[:token])
+    if CrAccessGroup.accept_invite(params[:token])
       redirect_to root_path, notice: 'Successfully Accepted Invite'
     else
       redirect_to root_path, alert: 'Url is expired or Invalid Url'

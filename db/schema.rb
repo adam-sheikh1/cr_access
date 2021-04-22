@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_13_090728) do
+ActiveRecord::Schema.define(version: 2021_04_22_093227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 2021_04_13_090728) do
     t.bigint "cr_group_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "status", default: "pending"
     t.index ["cr_access_data_id", "cr_group_id"], name: "index_cr_access_groups_on_cr_access_data_id_and_cr_group_id", unique: true
     t.index ["cr_access_data_id"], name: "index_cr_access_groups_on_cr_access_data_id"
     t.index ["cr_group_id", "cr_access_data_id"], name: "index_cr_access_groups_on_cr_group_id_and_cr_access_data_id", unique: true
@@ -81,7 +82,10 @@ ActiveRecord::Schema.define(version: 2021_04_13_090728) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "status", default: "pending"
+    t.index ["cr_access_data_id", "user_id"], name: "index_cr_data_users_on_cr_access_data_id_and_user_id", unique: true
     t.index ["cr_access_data_id"], name: "index_cr_data_users_on_cr_access_data_id"
+    t.index ["user_id", "cr_access_data_id"], name: "index_cr_data_users_on_user_id_and_cr_access_data_id", unique: true
     t.index ["user_id"], name: "index_cr_data_users_on_user_id"
   end
 
