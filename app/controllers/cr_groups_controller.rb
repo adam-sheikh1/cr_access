@@ -4,7 +4,7 @@ class CrGroupsController < ApplicationController
   before_action :validate_owner, only: %i[invite send_invite remove]
 
   def show
-    @cr_access_data = @group.cr_access_data
+    @cr_access_data = @group.cr_access_groups.includes(:cr_access_data)
     @qr_code = @group.generate_qr_code
   end
 

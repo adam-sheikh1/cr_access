@@ -12,6 +12,8 @@ class CrAccessData < ApplicationRecord
   has_many :children, class_name: 'CrAccessData', foreign_key: :parent_id, dependent: :destroy
   has_many :cr_access_groups, dependent: :destroy
   has_many :cr_groups, through: :cr_access_groups
+  has_many :accepted_access_groups, -> { where(status: 'accepted') }, class_name: 'CrAccessGroup'
+  has_many :accepted_cr_groups, through: :accepted_access_groups, class_name: 'CrGroup', source: :cr_group
 
   attr_accessor :setter_errors
 

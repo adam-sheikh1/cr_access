@@ -6,4 +6,10 @@ module CrGroupHelper
   def cr_access_options
     current_user.cr_access_data.map { |data| [data.full_name, data.id] }
   end
+
+  def cr_status(cr_data)
+    return 'Pending' if cr_data.pending?
+
+    cr_data.cr_access_data.vaccination_status.titleize
+  end
 end

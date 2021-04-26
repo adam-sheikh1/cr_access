@@ -16,7 +16,7 @@ class User < ApplicationRecord
   has_many :cr_access_data, dependent: :destroy, class_name: 'CrAccessData'
   has_many :accessible_cr_data, class_name: 'CrAccessData', through: :cr_data_users, source: :cr_access_data
   has_many :secondary_cr_data, -> { where(primary: false) }, class_name: 'CrAccessData'
-  has_many :primary_groups, through: :primary_cr_data, class_name: 'CrGroup', source: :cr_groups
+  has_many :primary_groups, through: :primary_cr_data, class_name: 'CrGroup', source: :accepted_cr_groups
   has_many :secondary_groups, through: :secondary_cr_data, class_name: 'CrGroup', source: :cr_groups
 
   validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }

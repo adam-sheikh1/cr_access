@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class='col-md-12'>
-        <p class='ml-2'><strong>FvCode:</strong>  <%= @group.fv_code.code %></p>
+        <p class='ml-2'><strong>Cr Access#</strong>  <%= @group.fv_code.code %></p>
         <p class='ml-2'><strong>Type:</strong>  <%= @group.group_type.humanize %></p>
       </div>
     </div>
@@ -32,13 +32,13 @@
           </tr>
         </thead>
         <tbody>
-          <% @cr_access_data.each do |cr_access| %>
+          <% @cr_access_data.each do |cr_group| %>
             <tr>
-              <td><%= cr_access.full_name %></td>
-              <td><%= cr_access.vaccination_status.titleize %></td>
+              <td><%= cr_group.cr_access_data.full_name %></td>
+              <td><%= cr_status(cr_group) %></td>
               <td>
-                <%= link_to 'View', cr_access_path(cr_access), class: 'btn btn-primary-small d-inline-flex' %>
-                <%= link_to 'Remove', remove_cr_group_path(@group, data_id: cr_access), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if @group.owner?(current_user) %>
+                <%= link_to 'View', cr_access_path(cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex' if cr_group.accepted? %>
+                <%= link_to 'Remove', remove_cr_group_path(@group, data_id: cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if @group.owner?(current_user) %>
               </td>
             </tr>
           <% end %>

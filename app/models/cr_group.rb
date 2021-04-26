@@ -10,6 +10,8 @@ class CrGroup < ApplicationRecord
 
   has_many :cr_access_groups, dependent: :destroy
   has_many :cr_access_data, through: :cr_access_groups
+  has_many :accepted_access_groups, -> { where(status: 'accepted') }, class_name: 'CrAccessGroup'
+  has_many :accepted_cr_data, through: :accepted_access_groups, class_name: 'CrAccessData', source: :cr_access_data
 
   validates_presence_of :group_type, :name
   validates_uniqueness_of :name, scope: %i[group_type user_id], case_sensitive: false
@@ -29,7 +31,7 @@ class CrGroup < ApplicationRecord
   after_create :add_primary_to_self
 
   def accessible_to?(user)
-    user.id == user_id || (user.cr_access_datum_ids & cr_access_datum_ids).any?
+    user.id == user_id || (user.cr_access_datum_ids & accepted_cr_datum_ids).any?
   end
 
   def invite(fv_code)
