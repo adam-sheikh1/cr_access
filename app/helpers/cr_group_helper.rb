@@ -8,8 +8,8 @@ module CrGroupHelper
   end
 
   def cr_status(cr_data)
-    return 'Pending' if cr_data.pending?
+    return cr_data.cr_access_data.vaccination_status.titleize if cr_data.accepted?
 
-    cr_data.cr_access_data.vaccination_status.titleize
+    'Pending'
   end
 end

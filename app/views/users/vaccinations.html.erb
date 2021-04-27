@@ -34,13 +34,14 @@
           </tr>
         </thead>
         <tbody>
-          <% @cr_access_info.each do |cr_access| %>
+          <% @cr_access_info.each do |info| %>
             <tr>
-              <td><%= cr_access.full_name %></td>
-              <td><%= cr_access.vaccination_status.titleize %></td>
+              <td><%= info.cr_access_data.full_name %></td>
+              <td><%= cr_status(info) %></td>
               <td>
-                <%= link_to 'View', cr_access_path(cr_access), class: 'btn btn-primary-small d-inline-flex' %>
-                <%= link_to 'Remove', unlink_cr_access_path(cr_access), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if cr_access.linked_with?(current_user) %>
+                <%= link_to 'View', cr_access_path(info.cr_access_data), class: 'btn btn-primary-small d-inline-flex' if info.accepted? %>
+                <%= link_to 'Accept', accept_info_user_url(token: info.invitation_token(current_user.id)), class: 'btn btn-primary-small d-inline-flex', data: { confirm: 'Are you sure?' } unless info.accepted? %>
+                <%= link_to 'Remove', unlink_cr_access_path(info.cr_access_data), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if info.invited? %>
               </td>
             </tr>
           <% end %>

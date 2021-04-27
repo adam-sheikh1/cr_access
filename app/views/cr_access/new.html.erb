@@ -4,9 +4,9 @@
       <%= render 'user_fields', f: f if @user.new_record? %>
 
       <%= f.fields_for :cr_access_data, @cr_access_data do |c| %>
-        <%= render 'cr_access_fields', f: c, child: false, hide: c.object.persisted? %>
+        <%= render 'cr_access_fields', f: c, child: false unless c.object.persisted? %>
         <%= c.fields_for :children do |child| %>
-          <%= render 'cr_access_fields', f: child, child: true, hide: false if child.object.new_record? %>
+          <%= render 'cr_access_fields', f: child, child: true if child.object.new_record? %>
         <% end %>
       <% end %>
 

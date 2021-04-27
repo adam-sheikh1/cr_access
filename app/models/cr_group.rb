@@ -35,13 +35,10 @@ class CrGroup < ApplicationRecord
   end
 
   def invite(fv_code)
-    transaction do
-      invitee = FvCode.cr_access.find_by(code: fv_code)&.fv_codable
-      return false if invitee.blank? || cr_access_datum_ids.include?(invitee.id)
+    invitee = FvCode.cr_access.find_by(code: fv_code)&.fv_codable
+    return false if invitee.blank? || cr_access_datum_ids.include?(invitee.id)
 
-      invitee = cr_access_data << invitee
-      CrAccessGroup.where(id: invitee.select('cr_access_groups.id').map(&:id)).first.send_invitation
-    end
+    CrAccessGroup.create(cr_group: self, cr_access_data: invitee).send_invitation
   end
 
   def owner?(user)
@@ -55,6 +52,6 @@ class CrGroup < ApplicationRecord
   private
 
   def add_primary_to_self
-    cr_access_data << user.primary_cr_data if user.primary_cr_data.present?
+    accepted_cr_data << user.primary_cr_data if user.primary_cr_data.present?
   end
 end

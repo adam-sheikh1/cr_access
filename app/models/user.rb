@@ -9,15 +9,19 @@ class User < ApplicationRecord
 
   has_one_attached :profile_picture
 
-  has_one :primary_cr_data, -> { where(primary: true) }, class_name: 'CrAccessData'
+  has_one :primary_data, -> { where(primary: true) }, class_name: 'CrDataUser'
+  has_one :primary_cr_data, through: :primary_data, class_name: 'CrAccessData', source: :cr_access_data
 
   has_many :cr_groups, dependent: :destroy
   has_many :cr_data_users, dependent: :destroy
-  has_many :cr_access_data, dependent: :destroy, class_name: 'CrAccessData'
-  has_many :accessible_cr_data, class_name: 'CrAccessData', through: :cr_data_users, source: :cr_access_data
-  has_many :secondary_cr_data, -> { where(primary: false) }, class_name: 'CrAccessData'
+  has_many :all_cr_users, through: :cr_data_users, source: :cr_access_data
+  has_many :accepted_data_users, -> { where(data_type: CrDataUser::DATA_TYPES[:prepmod]).or(where(status: CrDataUser::STATUSES[:accepted])) }, class_name: 'CrDataUser'
+  has_many :accepted_data, through: :accepted_data_users, source: :cr_access_data
+  has_many :prepmod_data_users, -> { prepmod }, class_name: 'CrDataUser'
+  has_many :invited_data_users, -> { invited }, class_name: 'CrDataUser'
+  has_many :cr_access_data, dependent: :destroy, through: :prepmod_data_users
+  has_many :accessible_cr_data, class_name: 'CrAccessData', through: :invited_data_users, source: :cr_access_data
   has_many :primary_groups, through: :primary_cr_data, class_name: 'CrGroup', source: :accepted_cr_groups
-  has_many :secondary_groups, through: :secondary_cr_data, class_name: 'CrGroup', source: :cr_groups
 
   validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }
 
@@ -27,12 +31,12 @@ class User < ApplicationRecord
     cr_access_data.any?(&:fully_vaccinated?)
   end
 
-  def reset_primary_data(cr_access_id)
-    data = cr_access_data.find_by(id: cr_access_id)
-    return false if data.blank?
+  def reset_primary_data(cr_data_id)
+    data = cr_data_users.find_by(id: cr_data_id)
+    return false if data.blank? || data.invited?
 
-    cr_access_data.each do |cr_access|
-      cr_access.update(primary: false) unless cr_access.id == cr_access_id
+    cr_data_users.each do |data_user|
+      data_user.update(primary: false) unless data_user.id == cr_data_id
     end
   end
 

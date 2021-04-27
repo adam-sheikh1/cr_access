@@ -8,15 +8,18 @@ class UsersController < ApplicationController
   end
 
   def vaccinations
-    @cr_access_info = CrAccessData.by_user(current_user)
+    @cr_access_info = CrDataUser.by_user(current_user).includes(:cr_access_data)
     @groups = CrGroup.by_user(current_user).includes(:fv_code)
   end
 
   def share_info; end
 
   def send_info
-    @cr_acccess_data.share_data(@user)
-    redirect_to vaccinations_user_path, notice: 'Successfully send email to accept info.'
+    if @cr_acccess_data.share_data(@user)
+      redirect_to vaccinations_user_path, notice: 'Successfully send email to accept info.'
+    else
+      redirect_to share_info_user_path, alert: 'Data already shared with user.'
+    end
   end
 
   def accept_info

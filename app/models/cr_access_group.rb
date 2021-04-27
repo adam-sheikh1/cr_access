@@ -16,7 +16,7 @@ class CrAccessGroup < ApplicationRecord
   validates_uniqueness_of :cr_group_id, scope: :cr_access_data_id
 
   def invitation_token
-    encoded_token(payload: { cr_group_id: id, cr_access_id: cr_access_data_id })
+    encoded_token(payload: { cr_access_group_id: id })
   end
 
   def send_invitation
@@ -24,6 +24,6 @@ class CrAccessGroup < ApplicationRecord
   end
 
   def self.accept_invite(token)
-    find_by(id: decoded_data(token)&.fetch('cr_group_id'))&.accepted!
+    find_by(id: decoded_data(token)&.fetch('cr_access_group_id'))&.accepted!
   end
 end

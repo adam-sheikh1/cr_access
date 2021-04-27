@@ -2,29 +2,30 @@ class CrAccessData < ApplicationRecord
   include QrCodeable
   include Encodable
 
-  belongs_to :user, optional: true
+  attr_accessor :primary, :setter_errors
+
   belongs_to :parent, class_name: 'CrAccessData', foreign_key: :parent_id, optional: true
 
   has_one_attached :profile_picture
 
+  has_one :primary_data, -> { where(primary: true) }, class_name: 'CrDataUser'
+  has_one :user, through: :primary_data
   has_one :fv_code, as: :fv_codable, dependent: :destroy
 
+  has_many :cr_data_users, dependent: :destroy
   has_many :children, class_name: 'CrAccessData', foreign_key: :parent_id, dependent: :destroy
   has_many :cr_access_groups, dependent: :destroy
   has_many :cr_groups, through: :cr_access_groups
   has_many :accepted_access_groups, -> { where(status: 'accepted') }, class_name: 'CrAccessGroup'
   has_many :accepted_cr_groups, through: :accepted_access_groups, class_name: 'CrGroup', source: :cr_group
 
-  attr_accessor :setter_errors
-
   validate :validate_no_setter_errors
-  validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }
+  validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }, presence: true
 
   accepts_nested_attributes_for :children
 
   after_commit :mark_registered, on: :create
   after_save :set_fv_code
-  after_save :make_primary
 
   VACCINATION_STATUSES = {
     not_vaccinated: 'not_vaccinated',
@@ -65,7 +66,7 @@ class CrAccessData < ApplicationRecord
   end
 
   def encoded_attributes
-    JWT.encode(attributes.except('id', 'created_at', 'updated_at'), ENV['SECRET_KEY_BASE'], 'HS256')
+    encoded_token(payload: attributes.except('id', 'created_at', 'updated_at').merge({ primary: primary }))
   end
 
   def encoded_attributes=(attributes)
@@ -73,7 +74,7 @@ class CrAccessData < ApplicationRecord
     @setter_errors[:attributes] ||= []
 
     begin
-      assign_attributes(JWT.decode(attributes, ENV['SECRET_KEY_BASE'], true, { algorithm: 'HS256' }).first)
+      assign_attributes(self.class.decoded_data(attributes).except('exp'))
     rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
       @setter_errors[:attributes] << 'data is invalid/tempered'
     end
@@ -109,14 +110,20 @@ class CrAccessData < ApplicationRecord
   end
 
   def self.share_data(user)
-    transaction do
-      data = user.accessible_cr_data << where.not(id: user.accessible_cr_data.ids)
-      CrDataUser.where(id: data.select('cr_data_users.id').map(&:id)).send_invitation(user.id)
+    time = DateTime.now
+    data = where.not(id: user.all_cr_user_ids).map do |cr_data|
+      {
+        user_id: user.id,
+        cr_access_data_id: cr_data.id,
+        created_at: time,
+        updated_at: time,
+        data_type: CrDataUser::DATA_TYPES[:invited]
+      }
     end
-  end
 
-  def linked_with?(user)
-    user.id != user_id
+    return false if data.blank?
+
+    CrDataUser.where(id: CrDataUser.upsert_all(data, unique_by: %i[cr_access_data_id user_id]).rows.flatten).send_invitation(user.id)
   end
 
   private
@@ -127,12 +134,5 @@ class CrAccessData < ApplicationRecord
     return if fv_code.present?
 
     create_fv_code
-  end
-
-  def make_primary
-    return if parent_id.present?
-    return unless saved_change_to_primary? && primary?
-
-    user.reset_primary_data(id)
   end
 end
