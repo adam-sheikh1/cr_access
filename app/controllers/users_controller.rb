@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   def share_info; end
 
   def send_info
-    if @cr_acccess_data.share_data(@user)
+    if @cr_access_data.share_data(@user)
       redirect_to vaccinations_user_path, notice: 'Successfully send email to accept info.'
     else
       redirect_to share_info_user_path, alert: 'Data already shared with user.'
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
     return redirect_to share_info_user_path, alert: "Couldn't find user by email provided." if @user.blank?
     return redirect_to share_info_user_path, alert: 'Cannot share info to yourself.' if @user.id == current_user.id
 
-    @cr_acccess_data = current_user.cr_access_data.where(id: invitation_params[:ids])
-    redirect_to share_info_user_path, alert: 'Please select info to send.' if @cr_acccess_data.blank?
+    @cr_access_data = current_user.cr_access_data.where(id: invitation_params[:ids])
+    redirect_to share_info_user_path, alert: 'Please select info to send.' if @cr_access_data.blank?
   end
 end
