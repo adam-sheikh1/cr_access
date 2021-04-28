@@ -1,0 +1,32 @@
+<div class='container'>
+  <div class='mb-4 mt-4'>
+    <h1>Accept Group Invitation</h1>
+    <p>
+      Accepting invitation for Group: <strong><%= @cr_access_group.cr_group.name.titleize %></strong> by:
+      <strong><%= @cr_access_group.cr_group.user.full_name %></strong>
+    </p>
+  </div>
+  <div class="white-card mb-5" data-controller='invitation'>
+    <div class='row'>
+      <div class='col-12'>
+        <%= form_with model: @cr_access_group, url: process_invite_cr_access_group_path(@cr_access_group), local: true do |f| %>
+          <%= f.hidden_field :status, value: CrAccessGroup::STATUSES[:accepted] %>
+
+          <div class="row">
+            <div class="col-6">
+              <div class='form-group'>
+                <%= f.label :access_level, 'Please select who can see your information in this group' %>
+                <%= f.select :access_level, access_level_options, { include_blank: false }, class: 'form-control', data: { action: 'invitation#type_change' } %>
+              </div>
+            </div>
+          </div>
+          <div class="row ml-2">
+            <div class="form-group">
+              <%= f.submit "Accept", class: "btn btn-primary mr-3" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

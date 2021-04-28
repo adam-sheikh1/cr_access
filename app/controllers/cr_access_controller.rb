@@ -1,5 +1,5 @@
 class CrAccessController < ApplicationController
-  skip_before_action :authenticate_user!, except: %i[show accept_invite]
+  skip_before_action :authenticate_user!, except: %i[show]
 
   before_action :set_cr_access_data, only: %i[show unlink]
   before_action :set_user, only: %i[update success]
@@ -64,14 +64,6 @@ class CrAccessController < ApplicationController
   def show
     @qr_code = @cr_access_data.generate_qr_code
     @groups = @cr_access_data.cr_groups
-  end
-
-  def accept_invite
-    if CrAccessGroup.accept_invite(params[:token])
-      redirect_to root_path, notice: 'Successfully Accepted Invite'
-    else
-      redirect_to root_path, alert: 'Url is expired or Invalid Url'
-    end
   end
 
   def unlink

@@ -34,11 +34,18 @@ class CrGroup < ApplicationRecord
     user.id == user_id || (user.cr_access_datum_ids & accepted_cr_datum_ids).any?
   end
 
-  def invite(fv_code)
-    invitee = FvCode.cr_access.find_by(code: fv_code)&.fv_codable
+  def invite(params)
+    invitee = find_invitee(params[:type], params[:data])
     return false if invitee.blank? || cr_access_datum_ids.include?(invitee.id)
 
     CrAccessGroup.create(cr_group: self, cr_access_data: invitee).send_invitation
+  end
+
+  def find_invitee(type, data)
+    return FvCode.cr_access.find_by(code: data)&.fv_codable if type == 'fv_code'
+    return CrAccessData.find_by(phone_number: data) if type == 'phone'
+
+    CrAccessData.find_by(email: data)
   end
 
   def owner?(user)
@@ -47,6 +54,12 @@ class CrGroup < ApplicationRecord
 
   def self.by_user(user)
     where(id: user.cr_groups).or(where(id: user.primary_groups))
+  end
+
+  def cr_access_groups_by_user(user)
+    return cr_access_groups if owner?(user)
+
+    cr_access_groups.anyone.or(cr_access_groups.where(id: cr_access_groups.by_user(user)))
   end
 
   private

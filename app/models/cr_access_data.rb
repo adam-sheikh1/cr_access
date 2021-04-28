@@ -13,6 +13,7 @@ class CrAccessData < ApplicationRecord
   has_one :fv_code, as: :fv_codable, dependent: :destroy
 
   has_many :cr_data_users, dependent: :destroy
+  has_many :users, through: :cr_data_users
   has_many :children, class_name: 'CrAccessData', foreign_key: :parent_id, dependent: :destroy
   has_many :cr_access_groups, dependent: :destroy
   has_many :cr_groups, through: :cr_access_groups

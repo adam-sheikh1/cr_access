@@ -39,6 +39,12 @@ Rails.application.routes.draw do
       get :success
       delete :unlink
     end
+  end
+
+  resources :cr_access_groups, only: %i[] do
+    member do
+      patch :process_invite
+    end
 
     collection do
       get :accept_invite

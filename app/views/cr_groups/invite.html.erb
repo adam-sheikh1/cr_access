@@ -2,15 +2,23 @@
   <div class='mb-4 mt-4'>
     <h1>Add to Group</h1>
   </div>
-  <div class="white-card mb-5">
+  <div class="white-card mb-5" data-controller='invitation'>
     <div class='row'>
       <div class='col-12'>
-        <%= form_with url: send_invite_cr_group_path(@group), local: true do |f| %>
+        <%= form_with url: send_invite_cr_group_path(@group), scope: 'invite', local: true do |f| %>
           <div class="row">
             <div class="col-6">
               <div class='form-group'>
-                <%= f.label :fv_code, 'Cr Access#' %>
-                <%= f.text_field :fv_code, class: 'form-control', required: true %>
+                <%= f.label :type, 'Invite Using' %>
+                <%= f.select :type, sharing_type_options, { include_blank: false }, class: 'form-control', data: { action: 'invitation#type_change' } %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class='form-group'>
+                <%= f.label :data, 'Enter Phone', data: { target: 'invitation.label' } %>
+                <%= f.text_field :data, class: 'form-control', required: true %>
               </div>
             </div>
           </div>

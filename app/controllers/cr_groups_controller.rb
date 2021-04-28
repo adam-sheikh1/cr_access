@@ -1,10 +1,13 @@
 class CrGroupsController < ApplicationController
+  include CrGroupHelper
+
   before_action :set_group, except: %i[new create]
   before_action :validate_group, except: %i[new create]
   before_action :validate_owner, only: %i[invite send_invite remove]
+  before_action :validate_type, only: %i[send_invite]
 
   def show
-    @cr_access_data = @group.cr_access_groups.includes(:cr_access_data)
+    @cr_access_data = @group.cr_access_groups_by_user(current_user).includes(:cr_access_data)
     @qr_code = @group.generate_qr_code
   end
 
@@ -20,7 +23,7 @@ class CrGroupsController < ApplicationController
   end
 
   def send_invite
-    if @group.invite(params[:fv_code])
+    if @group.invite(invite_params)
       redirect_to @group, notice: 'Successfully sent invitation to user'
     else
       redirect_to [:invite, @group], alert: "Couldn't find any cr access"
@@ -82,5 +85,15 @@ class CrGroupsController < ApplicationController
 
   def group_params
     params.require(:cr_group).permit(:name, :group_type).merge({ user_id: current_user.id })
+  end
+
+  def invite_params
+    params.require(:invite).permit(:type, :data)
+  end
+
+  def validate_type
+    return if invite_params[:type].in?(sharing_type_options.map(&:second))
+
+    redirect_to invite_cr_group_path(@group), alert: 'Invalid Type'
   end
 end

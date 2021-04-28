@@ -12,4 +12,12 @@ module CrGroupHelper
 
     'Pending'
   end
+
+  def sharing_type_options
+    [%w[Phone phone], %w[Email email], ['Cr Access#', 'fv_code']]
+  end
+
+  def access_level_options
+    CrAccessGroup.access_levels.deep_transform_keys(&:titleize)
+  end
 end
