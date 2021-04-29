@@ -8,7 +8,7 @@ class CrAccessGroupsController < ApplicationController
 
   def process_invite
     if @cr_access_group.update(process_params)
-      redirect_to vaccinations_user_path, notice: 'Successfully Accepted Invitation'
+      redirect_to vaccinations_user_path, notice: 'Successfully accepted Invitation'
     else
       redirect_to vaccinations_user_path, alert: 'Something went wrong, please try again later.'
     end
@@ -31,7 +31,7 @@ class CrAccessGroupsController < ApplicationController
 
   def decode_cr_access_group
     @cr_access_group = CrAccessGroup.find_by(id: CrAccessGroup.decoded_data(params[:token])&.fetch('cr_access_group_id'))
-    redirect_to root_path, alert: 'Url Expired or Invalid' if @cr_access_group.blank?
+    redirect_to root_path, alert: 'Url expired or invalid' if @cr_access_group.blank?
   end
 
   def process_params

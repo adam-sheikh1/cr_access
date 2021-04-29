@@ -8,9 +8,7 @@ module CrGroupHelper
   end
 
   def cr_status(cr_data)
-    return cr_data.cr_access_data.vaccination_status.titleize if cr_data.accepted?
-
-    'Pending'
+    cr_data.accepted? && cr_data.cr_access_data.vaccination_status.titleize || PENDING.titleize
   end
 
   def sharing_type_options

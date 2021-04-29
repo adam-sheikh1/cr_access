@@ -36,9 +36,8 @@ class CrAccessController < ApplicationController
     if @user.save
       redirect_to success_cr_access_path(@user, password: @password)
     else
-      if @user.errors[:"cr_access_data.children.attributes"].present?
-        return redirect_back fallback_location: root_path,
-                             alert: @user.errors.full_messages.to_sentence
+      if @user.errors[:"cr_access_data.children.attributes"].present? || @user.errors[:"cr_access_data.attributes"].present?
+        return redirect_back fallback_location: root_path, alert: @user.errors.full_messages.to_sentence
       end
 
       render :new

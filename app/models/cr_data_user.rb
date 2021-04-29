@@ -39,7 +39,7 @@ class CrDataUser < ApplicationRecord
   end
 
   def accepted?
-    prepmod? || status == 'accepted'
+    prepmod? || status == STATUSES[:accepted]
   end
 
   def primary=(value)

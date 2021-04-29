@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
   def send_info
     if @cr_access_data.share_data(@user)
-      redirect_to vaccinations_user_path, notice: 'Successfully send email to accept info.'
+      redirect_to vaccinations_user_path, notice: 'Successfully sent email to accept info.'
     else
       redirect_to share_info_user_path, alert: 'Data already shared with user.'
     end

@@ -10,7 +10,7 @@ class CrGroup < ApplicationRecord
 
   has_many :cr_access_groups, dependent: :destroy
   has_many :cr_access_data, through: :cr_access_groups
-  has_many :accepted_access_groups, -> { where(status: 'accepted') }, class_name: 'CrAccessGroup'
+  has_many :accepted_access_groups, -> { accepted }, class_name: 'CrAccessGroup'
   has_many :accepted_cr_data, through: :accepted_access_groups, class_name: 'CrAccessData', source: :cr_access_data
 
   validates_presence_of :group_type, :name
@@ -43,9 +43,9 @@ class CrGroup < ApplicationRecord
 
   def find_invitee(type, data)
     return FvCode.cr_access.find_by(code: data)&.fv_codable if type == 'fv_code'
-    return CrAccessData.find_by(phone_number: data) if type == 'phone'
+    return CrAccessData.fully_vaccinated.find_by(phone_number: data) if type == 'phone'
 
-    CrAccessData.find_by(email: data)
+    CrAccessData.fully_vaccinated.find_by(email: data)
   end
 
   def owner?(user)
