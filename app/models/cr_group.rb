@@ -43,9 +43,9 @@ class CrGroup < ApplicationRecord
 
   def find_invitee(type, data)
     return FvCode.cr_access.find_by(code: data)&.fv_codable if type == 'fv_code'
-    return CrAccessData.fully_vaccinated.find_by(phone_number: data) if type == 'phone'
+    return CrAccessData.find_by(phone_number: data) if type == 'phone'
 
-    CrAccessData.fully_vaccinated.find_by(email: data)
+    CrAccessData.find_by(email: data)
   end
 
   def owner?(user)
