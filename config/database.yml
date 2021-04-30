@@ -79,6 +79,12 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+staging:
+  <<: *default
+  database: cr_access_staging
+  username: cr_access
+  password: <%= ENV['CR_ACCESS_DATABASE_PASSWORD'] %>
+
 production:
   <<: *default
   database: cr_access_production

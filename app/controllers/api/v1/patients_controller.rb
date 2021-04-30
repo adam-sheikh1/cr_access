@@ -1,4 +1,4 @@
-class Api::V1::PatientsController < ApiController
+class Api::V1::PatientsController < Api::ApiController
   before_action :set_patient, only: %i[update_status]
 
   def update_status
