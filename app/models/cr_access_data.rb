@@ -25,7 +25,6 @@ class CrAccessData < ApplicationRecord
 
   accepts_nested_attributes_for :children
 
-  after_commit :mark_registered, on: :create
   after_save :set_fv_code
 
   VACCINATION_STATUSES = {
@@ -81,11 +80,6 @@ class CrAccessData < ApplicationRecord
     end
 
     assign_attributes(data)
-  end
-
-  def mark_registered
-    HTTParty.put("#{ENV['PREPMOD_URL']}/api/v1/patients/update_registered?token=#{prepmod_patient_id}",
-                 basic_auth: { username: ENV['PREPMOD_AUTH_USERNAME'], password: ENV['PREPMOD_AUTH_PASSWORD'] })
   end
 
   def validate_no_setter_errors

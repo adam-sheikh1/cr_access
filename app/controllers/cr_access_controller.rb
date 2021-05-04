@@ -5,20 +5,16 @@ class CrAccessController < ApplicationController
   before_action :set_user, only: %i[update success]
 
   def new
-    parsed_response = HTTParty.get(
-      "#{ENV['PREPMOD_URL']}/api/v1/patients/details?token=#{params.require(:token)}",
-      basic_auth: { username: ENV['PREPMOD_AUTH_USERNAME'], password: ENV['PREPMOD_AUTH_PASSWORD'] }
-    ).parsed_response
+    patient_data = ImportPatientData.new(params[:token])
+    return redirect_to root_path, alert: 'Url is invalid or expired' if patient_data.patient_params.blank?
 
-    @user = User.find_or_initialize_by(email: filter_prepmod_params(parsed_response)['email'])
-    @user.assign_attributes(filter_prepmod_params(parsed_response).slice('email', 'first_name', 'last_name',
-                                                                         'date_of_birth', 'phone_number'))
-    @cr_access_data = @user.cr_access_data.find_or_initialize_by(prepmod_patient_id: filter_prepmod_params(parsed_response)['prepmod_patient_id'])
-    @cr_access_data.assign_attributes(filter_prepmod_params(parsed_response))
-    @cr_access_data.initialize_children(children_params(parsed_response))
-    @children = @cr_access_data.children.select(&:new_record?)
+    @user = User.find_or_initialize_by(email: patient_data.patient_params['email'])
+    @user.assign_attributes(patient_data.patient_params.slice('email', 'first_name', 'last_name',
+                                                              'date_of_birth', 'phone_number'))
+    @cr_access_data = @user.cr_access_data.find_or_initialize_by(prepmod_patient_id: patient_data.patient_params['prepmod_patient_id'])
+    @cr_access_data.assign_attributes(patient_data.patient_params)
 
-    redirect_to success_cr_access_path(@user) if @children.blank? && @cr_access_data.persisted?
+    redirect_to success_cr_access_path(@user) if @cr_access_data.persisted?
   end
 
   def create
@@ -82,20 +78,6 @@ class CrAccessController < ApplicationController
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :date_of_birth, :phone_number,
                                  cr_access_data_attributes: CrAccessData.permitted_params)
-  end
-
-  def slice_param_list
-    %w[first_name last_name date_of_birth phone_number email address city state zip_code gender vaccination_status
-        prepmod_patient_id covidreadi_id primary]
-  end
-
-  def filter_prepmod_params(prepmod_params)
-    prepmod_params.dig('data', 'attributes', 'self', 'data', 'attributes').slice(*slice_param_list)
-  end
-
-  def children_params(prepmod_params)
-    prepmod_params.dig('data', 'attributes', 'children', 'data')&.map { |p|
-      p['attributes'].slice(*slice_param_list) }.presence || {}
   end
 
   def set_cr_access_data
