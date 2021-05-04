@@ -8,10 +8,9 @@ class CrAccessController < ApplicationController
     patient_data = ImportPatientData.new(params[:token])
     return redirect_to root_path, alert: 'Url is invalid or expired' if patient_data.patient_params.blank?
 
-    @user = User.find_or_initialize_by(email: patient_data.patient_params['email'])
-    @user.assign_attributes(patient_data.patient_params.slice('email', 'first_name', 'last_name',
-                                                              'date_of_birth', 'phone_number'))
-    @cr_access_data = @user.cr_access_data.find_or_initialize_by(prepmod_patient_id: patient_data.patient_params['prepmod_patient_id'])
+    @user = User.find_or_initialize_by(email: patient_data.patient_params[:email])
+    @user.assign_attributes(patient_data.user_params)
+    @cr_access_data = @user.cr_access_data.find_or_initialize_by(prepmod_patient_id: patient_data.patient_params[:prepmod_patient_id])
     @cr_access_data.assign_attributes(patient_data.patient_params)
 
     redirect_to success_cr_access_path(@user) if @cr_access_data.persisted?
