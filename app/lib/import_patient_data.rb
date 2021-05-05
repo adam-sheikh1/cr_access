@@ -27,7 +27,7 @@ class ImportPatientData
   attr_accessor :token, :response_hash
 
   def vaccination_status
-    return VACCINATION_STATUSES[:not_vaccinated] if response_hash[:data].blank?
+    return VACCINATION_STATUSES[:not_vaccinated] if vaccine_count.zero?
     return VACCINATION_STATUSES[:fully_vaccinated] if vaccine_count > 1
 
     VACCINATION_STATUSES[:partially_vaccinated]
