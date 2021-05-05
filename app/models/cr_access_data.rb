@@ -123,6 +123,10 @@ class CrAccessData < ApplicationRecord
     CrDataUser.where(id: CrDataUser.upsert_all(data, unique_by: %i[cr_access_data_id user_id]).rows.flatten).send_invitation(user.id)
   end
 
+  def update_status(status)
+    update(vaccination_status: status)
+  end
+
   private
 
   def set_fv_code

@@ -22,16 +22,16 @@ class ImportPatientData
     patient_params.slice(*user_params_list)
   end
 
-  private
-
-  attr_accessor :token, :response_hash
-
   def vaccination_status
     return VACCINATION_STATUSES[:not_vaccinated] if vaccine_count.zero?
     return VACCINATION_STATUSES[:fully_vaccinated] if vaccine_count > 1
 
     VACCINATION_STATUSES[:partially_vaccinated]
   end
+
+  private
+
+  attr_accessor :token, :response_hash
 
   def vaccine_count
     vaccines_administered.count
@@ -52,7 +52,7 @@ class ImportPatientData
   end
 
   def patient_attributes
-    response_hash[:included].reduce(&:merge)[:attributes]
+    @patient_attributes ||= response_hash[:included].reduce(&:merge)[:attributes]
   end
 
   def patient_params_list

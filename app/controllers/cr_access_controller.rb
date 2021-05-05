@@ -13,7 +13,10 @@ class CrAccessController < ApplicationController
     @cr_access_data = @user.cr_access_data.find_or_initialize_by(prepmod_patient_id: patient_data.patient_params[:prepmod_patient_id])
     @cr_access_data.assign_attributes(patient_data.patient_params)
 
-    redirect_to success_cr_access_path(@user) if @cr_access_data.persisted?
+    if @cr_access_data.persisted?
+      @cr_access_data.update_status(patient_data.vaccination_status)
+      redirect_to success_cr_access_path(@user)
+    end
   end
 
   def create
