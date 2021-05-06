@@ -27,47 +27,47 @@
             <%= image_tag 'manage-clinic.png', class: 'profile-image mt-4 mb-4' %>
           <% end %>
         </div>
-        <div class='row'>
-          <div class='col-12'>
+        <div class=''>
+          <div class=''>
             <%= simple_form_for current_user do |f| %>
               <div class="row">
-                <div class="col-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <div class="form-group">
                     <%= f.input :first_name, input_html: { class: 'form-control' } %>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <div class="form-group">
                     <%= f.input :middle_name, input_html: { class: 'form-control' } %>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <div class="form-group">
                     <%= f.input :last_name, input_html: { class: 'form-control' } %>
                   </div>
                 </div>
-              </div>
+              
 
-              <div class="row">
-                <div class="col-4">
+              
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <div class="form-group">
                     <%= f.input :current_password, input_html: { class: 'form-control' } %>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <div class="form-group">
                     <%= f.input :password, input_html: { class: 'form-control' } %>
                   </div>
                 </div>
-                <div class="col-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <div class="form-group">
                     <%= f.input :password_confirmation, input_html: { class: 'form-control' } %>
                   </div>
                 </div>
-              </div>
+              
 
-              <div class="row">
-                <div class="col-4">
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                   <%= f.input :profile_picture %>
                 </div>
               </div>

@@ -29,30 +29,33 @@
       </div>
     </div>
   </div>
-  <div class="table-responsive">
+
+  <div class="table-block">
     <div class="table-heading">
       <span>This group contains vaccination records of</span>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Status</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @cr_access_data.each do |cr_group| %>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
           <tr>
-            <td><%= cr_group.cr_access_data.full_name %></td>
-            <td><%= cr_status(cr_group) %></td>
-            <td>
-              <%= link_to 'View', cr_access_path(cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex' if cr_group.accepted? %>
-              <%= link_to 'Remove', remove_cr_group_path(@group, data_id: cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if @group.owner?(current_user) %>
-            </td>
+            <th scope="col">Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @cr_access_data.each do |cr_group| %>
+            <tr>
+              <td><%= cr_group.cr_access_data.full_name %></td>
+              <td><%= cr_status(cr_group) %></td>
+              <td>
+                <%= link_to 'View', cr_access_path(cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex' if cr_group.accepted? %>
+                <%= link_to 'Remove', remove_cr_group_path(@group, data_id: cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if @group.owner?(current_user) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

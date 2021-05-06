@@ -6,13 +6,13 @@
     <div class="white-card-body">
       <%= form_with url: send_info_user_path, scope: :cr_access, local: true do |f| %>
         <div class="row">
-          <div class="col-6">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <div class='form-group'>
               <%= f.label :type, 'Invite Using' %>
               <%= f.select :type, share_info_options, { include_blank: false }, class: 'form-control', data: { action: 'invitation#type_change' } %>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
             <div class='form-group'>
               <%= f.label :data, 'Enter Phone', data: { target: 'invitation.label' } %>
               <%= f.text_field :data, class: 'form-control', required: true %>

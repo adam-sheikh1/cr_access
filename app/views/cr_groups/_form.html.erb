@@ -1,11 +1,11 @@
 <%= simple_form_for group do |f| %>
   <div class="row">
-    <div class="col-6">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
       <div class="from-group">
         <%= f.input :name, input_html: { class: 'form-control' } %>
       </div>
     </div>
-    <div class="col-6">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
       <div class="form-group">
         <%= f.input :group_type, as: :select, include_blank: '-- Select --', collection: group_type_options, input_html: { class: 'form-control' } %>
       </div>

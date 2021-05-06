@@ -1,33 +1,35 @@
 <div class='content-wrapper mt-4 mb-4'>
-  <div class="table-responsive">
+  <div class="table-block">
     <div class="table-heading">
       <span>You are authorized to access vaccination records of</span>
       <%= link_to 'Share Info', share_info_user_path, class: 'btn default-btn' if current_user.primary_cr_data.present? %>
     </div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th></th>
-          <th scope="col">Name</th>
-          <th scope="col">Status</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @cr_access_info.each do |info| %>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
           <tr>
-            <td></td>
-            <td><%= info.cr_access_data.full_name %></td>
-            <td><%= cr_status(info) %></td>
-            <td>
-              <%= link_to 'View', cr_access_path(info.cr_access_data), class: 'btn btn-primary-small mr-2' if info.accepted? %>
-              <%= link_to 'Accept', accept_info_user_url(token: info.invitation_token(current_user.id)), class: 'btn btn-outline-small mr-2', data: { confirm: 'Are you sure?' } unless info.accepted? %>
-              <%= link_to 'Remove', unlink_cr_access_path(info.cr_access_data), class: 'btn btn-outline-small', method: :delete, data: { confirm: 'Are you sure?' } if info.invited? %>
-            </td>
+            <th></th>
+            <th scope="col">Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @cr_access_info.each do |info| %>
+            <tr>
+              <td></td>
+              <td><%= info.cr_access_data.full_name %></td>
+              <td><%= cr_status(info) %></td>
+              <td>
+                <%= link_to 'View', cr_access_path(info.cr_access_data), class: 'btn btn-primary-small mr-2' if info.accepted? %>
+                <%= link_to 'Accept', accept_info_user_url(token: info.invitation_token(current_user.id)), class: 'btn btn-outline-small mr-2', data: { confirm: 'Are you sure?' } unless info.accepted? %>
+                <%= link_to 'Remove', unlink_cr_access_path(info.cr_access_data), class: 'btn btn-outline-small', method: :delete, data: { confirm: 'Are you sure?' } if info.invited? %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 
 

@@ -242,7 +242,7 @@ h1,h2,h3 {
   margin-bottom: 1.25rem;
 
   .white-card-body {
-    padding: 2rem 2.8rem;
+    padding: 0;
 
     .profile-image {
       width: 5.4375rem;
@@ -466,11 +466,6 @@ label {
   }
 }
 
-.page-wrapper {
-  display: flex;
-  gap: 1rem;
-}
-
 /*=====  Sidebar  ======*/
 .sidebar {
   display: none;
@@ -553,6 +548,9 @@ label {
 
 /*=====  mobile menu  ======*/
 .mobile-menu {
+  &.navbar {
+    padding-bottom: 0;
+  }
   .navbar-collapse {
     background-color: $purple;
     margin-left: -1rem;
@@ -585,16 +583,16 @@ label {
   padding-right: 1rem;
 }
 
-.table-responsive {
+/*----------  Table Block  ----------*/
+.table-block {
   box-shadow: -3px 3px 12px 5px $grey-f4;
   margin-bottom: 1rem;
   background: $white;
   border-radius: 0.8rem;
-
   .table {
     color: $grey;
     margin-bottom: 0;
-
+    white-space: nowrap;
     th {
       border-color: $purple-light;
       border-top: 0;
@@ -620,11 +618,15 @@ label {
     color: $white;
     font-weight: 500;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
+    border-radius: 1rem 1rem 0 0;
+    .btn {
+      margin-top: 0.3rem;
+    }
   }
 }
-
 /*----------  Profile Block  ----------*/
 .profile-block {
   .white-card {
@@ -752,12 +754,6 @@ label {
 
 }
 
-.edit-profile, .share-info {
-  .text-inline {
-    margin-bottom: 4rem;
-  }
-}
-
 /*----------  Edit Profile  ----------*/
 .edit-profile {
   .action-btn {
@@ -834,7 +830,24 @@ select:-webkit-autofill:focus {
 
 }
 
+@media(min-width: 640px) {
+  .table-responsive {
+    .table-heading {
+      justify-content: space-between;
+      flex-direction: row;
+
+      .btn {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
 @media(min-width: 992px) {
+      .page-wrapper {
+        display: flex;
+        gap: 1rem;
+      }
   .text-center-xs {
     text-align: left;
   }
@@ -858,6 +871,7 @@ select:-webkit-autofill:focus {
       display: block;
     }
     .white-card-body {
+      padding: 2rem 2.8rem;
       .profile-image {
         width: 8.4375rem;
         height: 8.4375rem;
@@ -868,7 +882,15 @@ select:-webkit-autofill:focus {
   .text-inline {
     flex-direction: row;
     gap: 2.5rem;
-  };
+  }
+
+  .edit-profile,
+  .share-info {
+    .text-inline {
+      margin-bottom: 4rem;
+    }
+  }
+
   .navbar {
     padding: 1rem 2rem;
     .navbar-brand {

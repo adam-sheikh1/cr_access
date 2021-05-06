@@ -7,13 +7,13 @@
 
       <%= form_with url: send_invite_cr_group_path(@group), scope: 'invite', local: true do |f| %>
         <div class="row">
-          <div class="col-6">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <div class='form-group'>
               <%= f.label :type, 'Invite Using' %>
               <%= f.select :type, sharing_type_options, { include_blank: false }, class: 'form-control', data: { action: 'invitation#type_change' } %>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <div class='form-group'>
               <%= f.label :data, 'Enter Phone', data: { target: 'invitation.label' } %>
               <%= f.text_field :data, class: 'form-control', required: true %>
