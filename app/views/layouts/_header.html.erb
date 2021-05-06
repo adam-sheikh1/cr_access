@@ -1,17 +1,19 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg d-xs-none">
   <%= link_to root_path, class: 'navbar-brand' do %>
     <%= image_tag 'CRAccess-logo.png', class: '' %>
   <% end %>
-  <%# <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button> %>
-  <div class="sidebar-menu-toggle" data-controller='sidebar'>
+    <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  <div class="sidebar-menu-toggle d-none-xs" data-controller='sidebar'>
     <a href="#" class='menu-btn' data-action='sidebar#toggle_sidebar'><%= image_tag 'menu.svg', class: '' %></a>
   </div>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
           <% if current_user&.profile_picture&.attached? %>
             <%= image_tag current_user.profile_picture, class: 'profile-image drop-shadow' %>
           <% else %>
@@ -27,22 +29,67 @@
       </li>
     </ul>
   </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg d-lg-none mobile-menu">
+  <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <%= link_to root_path, class: 'navbar-brand' do %>
+    <%= image_tag 'CRAccess-logo.png', class: '' %>
+  <% end %>
+  <div class="sidebar-menu-toggle d-none" data-controller='sidebar'>
+    <a href="#" class='menu-btn' data-action='sidebar#toggle_sidebar'><%= image_tag 'menu.svg', class: '' %></a>
+  </div>
   <ul class="d-md-block d-lg-none d-xl-none user-xs">
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <li class="nav-item">
+        <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <% if current_user&.profile_picture&.attached? %>
             <%= image_tag current_user.profile_picture, class: 'profile-image drop-shadow' %>
           <% else %>
             <%= image_tag 'manage-clinic.png', class: 'profile-image drop-shadow' %>
           <% end %>
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
       </li>
   </ul>
-</nav>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <%= link_to root_path do %>
+        <li class='<%= active_class(root_path) %>'>
+          <%= image_tag 'home.svg', class: '' %>
+          <span>Dashboard</span>
+        </li>
+      <% end %>
 
+      <%= link_to new_cr_group_path do %>
+        <li class='<%= active_class(new_cr_group_path) %>'>
+          <%= image_tag 'users.svg', class: '' %>
+          <span>Create New Group</span>
+        </li>
+      <% end %>
+
+      <%= link_to vaccinations_user_path do %>
+        <li class='<%= active_class(vaccinations_user_path) %>'>
+          <%= image_tag 'history.svg', class: '' %>
+          <span>History</span>
+        </li>
+      <% end %>
+
+      <%= link_to edit_user_path do %>
+        <li class='<%= active_class(edit_user_path) %>'>
+          <%= image_tag 'user.svg', class: '' %>
+          <span>Profile</span>
+        </li>
+      <% end %>
+
+      <%= link_to destroy_user_session_path, method: :delete do %>
+        <li>
+          <%= image_tag 'logout-white.svg', class: '' %>
+          <span> Logout</span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</nav>
