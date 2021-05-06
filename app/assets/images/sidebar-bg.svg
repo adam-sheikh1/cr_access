@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="298px" height="942px" viewBox="0 0 298 942" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Slice</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#4D12C2" offset="0%"></stop>
+            <stop stop-color="#270961" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#4D12C2" offset="0%"></stop>
+            <stop stop-color="#270961" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Rectangle-784" fill="url(#linearGradient-1)" fill-rule="nonzero">
+            <rect id="Rectangle" x="0" y="0" width="298" height="942"></rect>
+        </g>
+        <g id="Mask-Group-1" transform="translate(0.000000, 516.000000)" fill="url(#linearGradient-2)" fill-rule="nonzero">
+            <path d="M0,0 C0,0 89.921,180.307 306.348,247.165 C344.510004,258.895828 383.830872,266.456631 423.622,269.715 C725.381,295.071 848.9,123.156 1207.033,101.426 C1565.166,79.696 1920,0 1920,0 L1920,369 L0,369 L0,0 Z" id="Path"></path>
+            <path d="M0,57 C0,57 79.618,295.705 296.046,362.563 C331.801,373.608 381.075,323.14 423.623,326.715 C725.381,352.071 848.9,180.156 1207.033,158.426 C1565.166,136.696 1920,57 1920,57 L1920,426 L0,426 L0,57 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>

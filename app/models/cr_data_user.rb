@@ -34,8 +34,8 @@ class CrDataUser < ApplicationRecord
     encoded_token(payload: { user_id: user_id, cr_data_user_ids: [id] })
   end
 
-  def self.send_invitation(user_id)
-    CrAccessMailer.share_data(user_id, ids).deliver_later
+  def send_invitation(user_id)
+    CrAccessMailer.share_data(user_id, id).deliver_later
   end
 
   def accepted?

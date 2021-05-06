@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   has_many :cr_groups, dependent: :destroy
   has_many :cr_data_users, dependent: :destroy
-  has_many :all_cr_users, through: :cr_data_users, source: :cr_access_data
+  has_many :all_cr_data, through: :cr_data_users, source: :cr_access_data
   has_many :accepted_data_users, -> { where(data_type: CrDataUser::DATA_TYPES[:prepmod]).or(where(status: CrDataUser::STATUSES[:accepted])) }, class_name: 'CrDataUser'
   has_many :accepted_data, through: :accepted_data_users, source: :cr_access_data
   has_many :prepmod_data_users, -> { prepmod }, class_name: 'CrDataUser'
@@ -53,5 +53,11 @@ class User < ApplicationRecord
 
   def full_name
     [first_name, middle_name, last_name].reject(&:blank?).join(' ')
+  end
+
+  def self.find_by_invitation_params(params)
+    return find_by_email(params[:data]) if params[:type] == EMAIL
+
+    find_by_phone_number(params[:data])
   end
 end

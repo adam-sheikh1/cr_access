@@ -1,38 +1,43 @@
-<div class="login-wrapper">
-  <div>
-    <div class="user-screens">
-      <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-          <div class="form-wrapper">
-            <div class="login-form">
-              <div class="login-btns">
-                <div class="signup-text"><%= t('views.devise.session.login_text') %></div>
-              </div>
-            </div>
-            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-              <div class="form-group">
-                <%= f.label :email, t('views.devise.session.email') %>
-                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
-              </div>
-
-              <div class="form-group">
-                <%= f.label :password, t('views.devise.session.password') %>
-                <%= f.password_field :password, autocomplete: "current-password", class: 'form-control' %>
-              </div>
-
-              <% if devise_mapping.rememberable? %>
-                <div class="form-group checkbox-item">
-                  <%= f.check_box :remember_me %>
-                  <%= f.label :remember_me, t('views.devise.session.remember_me') %>
-                </div>
-              <% end %>
-
-              <div class="action-btn">
-                <%= f.submit t('views.devise.session.login'), class: 'btn btn-primary w-100' %>
-              </div>
-            <% end %>
-          </div>
+<div class="login-form-block">
+  <div class="row">
+    <div class="colxs-12 col-sm-12 col-md-6 col-lg-5 col-xl-5">
+      <div class="login-form">
+        <div class="logo">
+          <%= image_tag 'login-logo.png', class: '' %>
         </div>
+        <div class="heading-text">
+          <h2>Login</h2>
+          <small>See your growth and get consulting report</small>
+        </div>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="form-group">
+            <%= f.label :email, t('views.devise.session.email') %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :password, t('views.devise.session.password') %>
+            <%= f.password_field :password, autocomplete: "current-password", class: 'form-control' %>
+          </div>
+
+          <% if devise_mapping.rememberable? %>
+            <div class="d-flex justify-content-between remember-me">
+              <div class="custom-control custom-checkbox mb-2 mr-sm-2">
+                <%= f.check_box :remember_me, class: 'custom-control-input' %>
+                <%= f.label :remember_me, t('views.devise.session.remember_me'), class: 'custom-control-label' %>
+              </div>
+              <%= link_to 'Forgot Password', new_password_path('user'), class: 'forget-pass' %>
+            </div>
+          <% end %>
+
+          <div class="action-btn">
+            <%= f.submit t('views.devise.session.login'), class: 'btn primary-btn btn-block' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="colxs-12 col-sm-12 col-md-6 col-lg-7 col-xl-7">
+      <div class="login-img">
       </div>
     </div>
   </div>

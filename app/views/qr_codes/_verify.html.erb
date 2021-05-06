@@ -1,27 +1,19 @@
-<div class='row'>
-  <div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
-    <h1>Welcome, <%= cr_access_data.full_name %>!</h1>
-  </div>
-  <div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
-    <div class="d-flex justify-content-end align-items-center h-100">
-      <%#= link_to 'Profile', user_path(cr_access_data.user), class: 'btn btn-primary-small' %>
-    </div>
-  </div>
-  <div class="col-12">
+<div class='text-inline'>
+  <div class="">
     <% if cr_access_data.profile_picture&.attached? %>
-      <%= image_tag cr_access_data.profile_picture, class: 'profile-image img-thumbnail' %>
+      <%= image_tag cr_access_data.profile_picture, class: 'profile-image' %>
     <% else %>
-      <%= image_tag 'manage-clinic.png', class: 'profile-image img-thumbnail' %>
+      <%= image_tag 'manage-clinic.png', class: 'profile-image' %>
     <% end %>
   </div>
 
+  <div class="">
+    <h2>Welcome, <%= cr_access_data.full_name %>!</h2>
+    <%#= link_to 'Profile', user_path(cr_access_data.user), class: 'btn btn-primary-small' %>
+  </div>
 </div>
 
-<div class="mb-5 mt-5">
-  <hr>
-</div>
+<hr>
 
-<div class="row">
-  <%= render 'vaccination_info', cr_access_data: cr_access_data %>
-</div>
+<%= render 'vaccination_info', cr_access_data: cr_access_data %>
 

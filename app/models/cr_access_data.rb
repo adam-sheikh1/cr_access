@@ -4,17 +4,16 @@ class CrAccessData < ApplicationRecord
 
   attr_accessor :primary, :setter_errors
 
-  belongs_to :parent, class_name: 'CrAccessData', foreign_key: :parent_id, optional: true
-
   has_one_attached :profile_picture
 
   has_one :primary_data, -> { where(primary: true) }, class_name: 'CrDataUser'
+  has_one :prepmod_data, -> { prepmod }, class_name: 'CrDataUser'
   has_one :user, through: :primary_data
+  has_one :prepmod_user, through: :prepmod_data, source: :user
   has_one :fv_code, as: :fv_codable, dependent: :destroy
 
   has_many :cr_data_users, dependent: :destroy
   has_many :users, through: :cr_data_users
-  has_many :children, class_name: 'CrAccessData', foreign_key: :parent_id, dependent: :destroy
   has_many :cr_access_groups, dependent: :destroy
   has_many :cr_groups, through: :cr_access_groups
   has_many :accepted_access_groups, -> { accepted }, class_name: 'CrAccessGroup'
@@ -22,8 +21,6 @@ class CrAccessData < ApplicationRecord
 
   validate :validate_no_setter_errors
   validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }, presence: true
-
-  accepts_nested_attributes_for :children
 
   after_save :set_fv_code
 
@@ -42,7 +39,7 @@ class CrAccessData < ApplicationRecord
   end
 
   def self.permitted_params
-    permitted_params_list << [children_attributes: %i[id encoded_attributes profile_picture]]
+    permitted_params_list
   end
 
   def gender=(sex)
@@ -53,12 +50,6 @@ class CrAccessData < ApplicationRecord
     self[:gender] = 'other' and return if downcased_gender == 'o'
 
     self[:gender] = sex
-  end
-
-  def initialize_children(params)
-    params.each do |child_params|
-      children.find_or_initialize_by(prepmod_patient_id: child_params['prepmod_patient_id']).assign_attributes(child_params)
-    end
   end
 
   def full_name
@@ -96,31 +87,14 @@ class CrAccessData < ApplicationRecord
 
   def covidreadi_id=(_token); end
 
-  def guardian
-    return user if parent_id.blank?
-
-    parent.user
-  end
-
   def self.by_user(user)
     where(id: user.cr_access_data).or(where(id: user.accessible_cr_data))
   end
 
-  def self.share_data(user)
-    time = DateTime.now
-    data = where.not(id: user.all_cr_user_ids).map do |cr_data|
-      {
-        user_id: user.id,
-        cr_access_data_id: cr_data.id,
-        created_at: time,
-        updated_at: time,
-        data_type: CrDataUser::DATA_TYPES[:invited]
-      }
-    end
+  def share_data(user)
+    return false if user.all_cr_datum_ids.include?(id)
 
-    return false if data.blank?
-
-    CrDataUser.where(id: CrDataUser.upsert_all(data, unique_by: %i[cr_access_data_id user_id]).rows.flatten).send_invitation(user.id)
+    CrDataUser.find_or_create_by(user: user, cr_access_data: self, data_type: CrDataUser::DATA_TYPES[:invited]).send_invitation(user.id)
   end
 
   def update_status(status)

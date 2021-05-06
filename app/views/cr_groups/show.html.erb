@@ -1,58 +1,58 @@
-<div class='container mt-5 mb-5'>
+<div class='content-wrapper'>
   <div class="white-card">
-    <div class='row'>
-      <div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
-        <h1>Group <%= @group.name %> Details:</h1>
-      </div>
-      <div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'>
-        <div class="d-flex justify-content-end align-items-center h-100">
-          <%= link_to 'Invite', invite_cr_group_path(@group), class: 'btn btn-primary-small mr-2' if @group.owner?(current_user) %>
-          <%= link_to 'Leave', leave_cr_group_path(@group), class: 'btn btn-primary-small mr-2', method: :delete, data: { confirm: 'Are you sure?' } unless @group.owner?(current_user) %>
-          <%= link_to 'Back', vaccinations_user_path, class: 'btn btn-primary-small' %>
+    <div class='white-card-body'>
+      <div class="text-inline justify-content-between">
+        <h2>Group <%= @group.name %> Details:</h2>
+
+        <div class=''>
+          <div class="d-flex justify-content-end align-items-center h-100">
+            <%= link_to 'Invite', invite_cr_group_path(@group), class: 'btn btn-primary-small mr-2' if @group.owner?(current_user) %>
+            <%= link_to 'Leave', leave_cr_group_path(@group), class: 'btn btn-primary-small mr-2', method: :delete, data: { confirm: 'Are you sure?' } unless @group.owner?(current_user) %>
+            <%= link_to 'Back', vaccinations_user_path, class: 'btn btn-primary-small' %>
+          </div>
         </div>
       </div>
-      <div class='col-md-12'>
+      <div class=''>
         <p class='ml-2'><strong>Cr Access#</strong>  <%= @group.fv_code.code %></p>
         <p class='ml-2'><strong>Type:</strong>  <%= @group.group_type.humanize %></p>
       </div>
     </div>
 
-    <div class="mb-5 mt-5">
-      <hr>
-    </div>
+    <hr>
 
-    <h5>This group contains vaccination records of:</h5>
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Status</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @cr_access_data.each do |cr_group| %>
-            <tr>
-              <td><%= cr_group.cr_access_data.full_name %></td>
-              <td><%= cr_status(cr_group) %></td>
-              <td>
-                <%= link_to 'View', cr_access_path(cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex' if cr_group.accepted? %>
-                <%= link_to 'Remove', remove_cr_group_path(@group, data_id: cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if @group.owner?(current_user) %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-
-    <div class='row mb-4 mt-4'>
-      <div class='col-md-12 mb-3'>
-        <h3>Qr Code</h3>
+    <div class='white-card-body'>
+      <div class=''>
+        <h3 class='mb-3'>Qr Code</h3>
       </div>
-      <div class='col-md-12' data-controller='qr-code'>
+      <div class='' data-controller='qr-code'>
         <%= qr_code_image @qr_code, klass: 'img-thumbnail' %>
       </div>
     </div>
+  </div>
+  <div class="table-responsive">
+    <div class="table-heading">
+      <span>This group contains vaccination records of</span>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @cr_access_data.each do |cr_group| %>
+          <tr>
+            <td><%= cr_group.cr_access_data.full_name %></td>
+            <td><%= cr_status(cr_group) %></td>
+            <td>
+              <%= link_to 'View', cr_access_path(cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex' if cr_group.accepted? %>
+              <%= link_to 'Remove', remove_cr_group_path(@group, data_id: cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if @group.owner?(current_user) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>

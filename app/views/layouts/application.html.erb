@@ -12,9 +12,12 @@
 
   <body>
     <div class="main-content">
+      <%= render 'layouts/header' %>
       <%= render 'layouts/flash_messages' %>
-      <%= render 'layouts/navbar' %>
-      <%= yield %>
+      <div class='page-wrapper'>
+        <%= render 'layouts/sidebar' %>
+        <%= yield %>
+      </div>
     </div>
   </body>
 </html>

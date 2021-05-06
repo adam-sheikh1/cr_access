@@ -5,4 +5,8 @@ module ApplicationHelper
       'notice' => 'success'
     }.fetch(type, 'info')
   end
+
+  def active_class(url)
+    'active' if url == request.path
+  end
 end

@@ -1,22 +1,16 @@
 <div class="pre-reg-form">
   <div class="reg-wrapper">
+    <h2>Sign up to CRAccess</h2>
     <%= simple_form_for @user, url: cr_access_url(@user) do |f| %>
       <%= render 'user_fields', f: f if @user.new_record? %>
 
       <%= f.fields_for :cr_access_data, @cr_access_data do |c| %>
-        <%= render 'cr_access_fields', f: c, child: false unless c.object.persisted? %>
-        <%= c.fields_for :children do |child| %>
-          <%= render 'cr_access_fields', f: child, child: true if child.object.new_record? %>
-        <% end %>
+        <%= render partial: 'cr_access_fields', locals: { f: c, child: false } unless c.object.persisted? %>
       <% end %>
 
-      <div class="justify-content-center d-flex">
-        <%= f.submit 'Submit', class: 'btn btn-primary my-5' %>
+      <div class="mt-4">
+        <%= f.submit 'Submit', class: 'btn primary-btn btn-submit' %>
       </div>
     <% end %>
   </div>
 </div>
-
-<script type="text/javascript">
-  initAutocomplete('.autocomplete');
-</script>

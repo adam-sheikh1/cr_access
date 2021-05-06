@@ -1,15 +1,17 @@
-<div class='container mt-5 mb-5'>
+<div class='container'>
   <div class="white-card">
-    <% if @qr_code.blank? %>
-      <div class="row">
-        <div class="col-12">
-          <h2>Qr Code is Invalid/Expired</h2>
+    <div class="white-card-body">
+      <% if @qr_code.blank? %>
+        <div class="row">
+          <div class="col-12">
+            <h2>Qr Code is Invalid/Expired</h2>
+          </div>
         </div>
-      </div>
-    <% elsif @qr_code.cr_access? %>
-      <%= render partial: 'verify', locals: { cr_access_data: @codeable } %>
-    <% else %>
-      <%= render partial: 'verify', collection: @codeable.cr_access_data, as: :cr_access_data %>
-    <% end %>
+      <% elsif @qr_code.cr_access? %>
+        <%= render partial: 'verify', locals: { cr_access_data: @codeable } %>
+      <% else %>
+        <%= render partial: 'verify', collection: @codeable.cr_access_data, as: :cr_access_data %>
+      <% end %>
+    </div>
   </div>
 </div>

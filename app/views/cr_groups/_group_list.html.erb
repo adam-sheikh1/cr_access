@@ -1,7 +1,12 @@
 <div class="table-responsive">
-  <table class="table">
+  <div class="table-heading">
+    <span>You are registered with these vaccination groups</span>
+    <%= link_to 'Create Group', new_cr_group_path, class: 'btn default-btn' %>
+  </div>
+  <table class="table table-hover">
     <thead>
       <tr>
+        <th></th>
         <th scope="col">Group Name</th>
         <th scope="col">Date Initiated or Joined</th>
         <th scope="col">Actions</th>
@@ -10,12 +15,13 @@
     <tbody>
       <% groups.each do |group| %>
         <tr>
+          <td></td>
           <td><%= group.name %> (CRA#<%= group.fv_code.code %>)</td>
           <td><%= time_ago_in_words(group.created_at).humanize %> ago</td>
           <td>
-            <%= link_to 'View', cr_group_path(group), class: 'btn btn-primary-small d-inline-flex' %>
-            <%= link_to 'Invite', invite_cr_group_path(group), class: 'btn btn-primary-small d-inline-flex' if group.owner?(current_user) %>
-            <%= link_to 'Edit', edit_cr_group_path(group), class: 'btn btn-primary-small d-inline-flex' if group.owner?(current_user) %>
+            <%= link_to 'View', cr_group_path(group), class: 'btn btn-primary-small mr-2' %>
+            <%= link_to 'Invite', invite_cr_group_path(group), class: 'btn btn-outline-small mr-2' if group.owner?(current_user) %>
+            <%= link_to 'Edit', edit_cr_group_path(group), class: 'btn btn-outline-small' if group.owner?(current_user) %>
           </td>
         </tr>
       <% end %>

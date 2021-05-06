@@ -3,20 +3,20 @@ class CrAccessController < ApplicationController
 
   before_action :set_cr_access_data, only: %i[show unlink]
   before_action :set_user, only: %i[update success]
+  before_action :set_patient_data, only: %i[new]
+  before_action :fetch_cr_data, only: %i[new]
+
+  layout 'cr_access', except: [:show]
+  layout 'application', only: [:show]
 
   def new
-    patient_data = ImportPatientData.new(params[:token])
-    return redirect_to root_path, alert: 'Url is invalid or expired' if patient_data.patient_params.blank?
-
-    @user = User.find_or_initialize_by(email: patient_data.patient_params[:email])
-    @user.assign_attributes(patient_data.user_params)
-    @cr_access_data = @user.cr_access_data.find_or_initialize_by(prepmod_patient_id: patient_data.patient_params[:prepmod_patient_id])
-    @cr_access_data.assign_attributes(patient_data.patient_params)
-
     if @cr_access_data.persisted?
-      @cr_access_data.update_status(patient_data.vaccination_status)
-      redirect_to success_cr_access_path(@user)
+      @cr_access_data.update_status(@patient_data.vaccination_status)
+      return redirect_to success_cr_access_path(@user)
     end
+
+    @user.assign_attributes(@patient_data.user_params)
+    @cr_access_data.assign_attributes(@patient_data.patient_params)
   end
 
   def create
@@ -85,5 +85,18 @@ class CrAccessController < ApplicationController
   def set_cr_access_data
     @cr_access_data = current_user.accepted_data.find_by(id: params[:id])
     redirect_to root_path, alert: 'Invalid Access' if @cr_access_data.blank?
+  end
+
+  def set_patient_data
+    @patient_data = ImportPatientData.new(params[:token])
+  end
+
+  def fetch_cr_data
+    @cr_access_data = CrAccessData.find_or_initialize_by(prepmod_patient_id: @patient_data.patient_params[:prepmod_patient_id])
+    if @cr_access_data.persisted? && !@cr_access_data.prepmod_user&.persisted?
+      return redirect_to root_path, alert: 'Invalid Access'
+    end
+
+    @user = @cr_access_data.prepmod_user || @cr_access_data.build_prepmod_data.build_user
   end
 end

@@ -1,0 +1,76 @@
+<nav class="sidebar">
+  <ul class='sidebar-menu'>
+    <%= link_to '#' do %>
+      <li class='close-xs'>
+        <%= image_tag 'close.svg', class: '' %>
+      </li>
+    <% end %>
+
+    <%= link_to root_path do %>
+      <li class='<%= active_class(root_path) %>'>
+        <%= image_tag 'home.svg', class: '' %>
+        <span>Dashboard</span>
+      </li>
+    <% end %>
+
+    <%= link_to new_cr_group_path do %>
+      <li class='<%= active_class(new_cr_group_path) %>'>
+        <%= image_tag 'users.svg', class: '' %>
+        <span>Create New Group</span>
+      </li>
+    <% end %>
+
+    <%= link_to vaccinations_user_path do %>
+      <li class='<%= active_class(vaccinations_user_path) %>'>
+        <%= image_tag 'history.svg', class: '' %>
+        <span>History</span>
+      </li>
+    <% end %>
+
+    <%= link_to edit_user_path do %>
+      <li class='<%= active_class(edit_user_path) %>'>
+        <%= image_tag 'user.svg', class: '' %>
+        <span>Profile</span>
+      </li>
+    <% end %>
+
+    <%= link_to destroy_user_session_path, method: :delete do %>
+      <li>
+        <%= image_tag 'logout-white.svg', class: '' %>
+        <span> Logout</span>
+      </li>
+    <% end %>
+  </ul>
+
+  <ul class="sidebar-menu-mini">
+    <%= link_to root_path do %>
+      <li class='<%= active_class(root_path) %>'>
+        <%= image_tag 'home.svg', class: '' %>
+      </li>
+    <% end %>
+
+    <%= link_to new_cr_group_path do %>
+      <li class='<%= active_class(new_cr_group_path) %>'>
+        <%= image_tag 'users.svg', class: '' %>
+      </li>
+    <% end %>
+
+    <%= link_to vaccinations_user_path do %>
+      <li class='<%= active_class(vaccinations_user_path) %>'>
+        <%= image_tag 'history.svg', class: '' %>
+      </li>
+    <% end %>
+
+    <%= link_to edit_user_path do %>
+      <li class='<%= active_class(edit_user_path) %>'>
+        <%= image_tag 'user.svg', class: '' %>
+      </li>
+    <% end %>
+
+    <%= link_to destroy_user_session_path, method: :delete do %>
+      <li class='<%= active_class(destroy_user_session_path) %>'>
+        <%= image_tag 'logout-white.svg', class: '' %>
+      </li>
+    <% end %>
+  </ul>
+</nav>

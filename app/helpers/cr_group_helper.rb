@@ -15,6 +15,10 @@ module CrGroupHelper
     [[PHONE.titleize, PHONE], [EMAIL.titleize, EMAIL], ['Cr Access#', FV_CODE]]
   end
 
+  def share_info_options
+    sharing_type_options[0..1]
+  end
+
   def access_level_options
     CrAccessGroup.access_levels.deep_transform_keys(&:titleize)
   end

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_cr_access_data, only: %i[show]
+  before_action :set_cr_access_data, only: %i[show edit]
   before_action :set_share_data, only: %i[send_info]
 
   def show
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     @user = current_user
     if @user.update_with_password(user_params)
       bypass_sign_in(@user)
-      redirect_to user_path(@user), notice: 'Password successfully updated'
+      redirect_to user_path, notice: 'Password successfully updated'
     else
       render 'edit'
     end
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:current_password, :password, :password_confirmation, :profile_picture)
+    params.require(:user).permit(:current_password, :password, :password_confirmation, :profile_picture, :first_name, :middle_name, :last_name)
   end
 
   def set_cr_access_data
@@ -64,15 +64,15 @@ class UsersController < ApplicationController
   end
 
   def invitation_params
-    params.require(:cr_access).permit(:email, ids: [])
+    params.require(:cr_access).permit(:data, :type)
   end
 
   def set_share_data
-    @user = User.find_by_email(invitation_params[:email])
-    return redirect_to share_info_user_path, alert: "Couldn't find user by email provided." if @user.blank?
+    @user = User.find_by_invitation_params(invitation_params)
+    return redirect_to share_info_user_path, alert: "Invalid #{invitation_params[:type].titleize}." if @user.blank?
     return redirect_to share_info_user_path, alert: 'Cannot share info to yourself.' if @user.id == current_user.id
 
-    @cr_access_data = current_user.cr_access_data.where(id: invitation_params[:ids])
-    redirect_to share_info_user_path, alert: 'Please select info to send.' if @cr_access_data.blank?
+    @cr_access_data = current_user.primary_cr_data
+    redirect_to share_info_user_path, alert: 'Invalid Access.' if @cr_access_data.blank?
   end
 end

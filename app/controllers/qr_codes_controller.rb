@@ -1,5 +1,9 @@
 class QrCodesController < ApplicationController
+  skip_before_action :authenticate_user!, only: %i[verify]
+
   before_action :set_qr_code, only: %i[refreshed_code]
+
+  layout 'cr_access'
 
   def verify
     @qr_code = QrCode.find_by_code(params[:code])
