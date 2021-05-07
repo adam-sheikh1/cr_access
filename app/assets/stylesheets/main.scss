@@ -286,6 +286,14 @@ h1,h2,h3 {
   display: none;
 }
 
+.mb-xs-2 {
+  margin-bottom: 1.5rem;
+}
+
+.mt-xs-2 {
+  margin-top: 1.5rem;; 
+}
+
 .lg-btn {
   width: 11.5rem;
   text-transform: capitalize;
@@ -335,6 +343,7 @@ label {
   padding-left: 0;
   padding-right: 0;
 }
+
 
 .navbar {
   box-shadow: 0 0 5px 1px #a18ccb;
@@ -883,6 +892,14 @@ select:-webkit-autofill:focus {
 
   .d-xs-none {
     display: flex;
+  }
+
+  .mb-xs-2 {
+    margin-bottom: 0;
+  }
+
+  .mt-xs-2 {
+    margin-top: 0;
   }
 
   .white-card {
