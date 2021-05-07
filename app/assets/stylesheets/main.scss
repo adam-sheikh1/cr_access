@@ -831,11 +831,10 @@ select:-webkit-autofill:focus {
 }
 
 @media(min-width: 640px) {
-  .table-responsive {
+  .table-block {
     .table-heading {
       justify-content: space-between;
       flex-direction: row;
-
       .btn {
         margin-top: 0;
       }
@@ -844,10 +843,11 @@ select:-webkit-autofill:focus {
 }
 
 @media(min-width: 992px) {
-      .page-wrapper {
-        display: flex;
-        gap: 1rem;
-      }
+  .page-wrapper {
+    display: flex;
+    gap: 1rem;
+  }
+
   .text-center-xs {
     text-align: left;
   }
