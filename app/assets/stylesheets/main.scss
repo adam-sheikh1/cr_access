@@ -331,6 +331,11 @@ label {
   color: #7B7B7B !important;
 }
 
+.no-gutter {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .navbar {
   box-shadow: 0 0 5px 1px #a18ccb;
   padding: 1rem 0 1rem 1rem;
@@ -669,9 +674,10 @@ label {
   width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
+  max-height: 100vh;
 
   .login-form {
-    padding: 5rem;
+    padding: 5rem 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -724,13 +730,32 @@ label {
   }
 
   .login-img {
-    // img {
-    //   width: 100%;
-    // }
-    background: asset-url('craccess_signin.png') no-repeat center;
+    // width: 100%;
+    img {
+      // width: 100%;
+    }
+    background: asset-url('oval.svg') no-repeat center;
     width: 100%;
     height: 100vh;
     background-size: cover;
+    background-color: $purple;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: $white;
+    h2 {
+      color: $white;
+    }
+    p {
+      font-weight: 200;
+    }
+  }
+
+  .logo-text {
+    max-width: 35rem;
+    text-align: center;
+    margin-top: 5rem;
   }
 }
 
@@ -932,4 +957,14 @@ select:-webkit-autofill:focus {
   .content-wrapper-full {
     width: calc(100% - 100px);
   }
+
 }
+
+@media (min-width: 1366px) {
+  .login-form-block {
+    .login-form {
+      padding: 5rem;
+    }
+  }
+}
+
