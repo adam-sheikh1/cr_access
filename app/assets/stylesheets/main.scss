@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: asset-url('Montserrat-UltraLight.woff2') format('woff2'),
-    asset-url('Montserrat-UltraLight.woff') format('woff');
+  asset-url('Montserrat-UltraLight.woff') format('woff');
   font-weight: 200;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: asset-url('Montserrat-Light.woff2') format('woff2'),
-    asset-url('Montserrat-Light.woff') format('woff');
+  asset-url('Montserrat-Light.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -19,7 +19,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: asset-url('Montserrat-Regular.woff2') format('woff2'),
-    asset-url('Montserrat-Regular.woff') format('woff');
+  asset-url('Montserrat-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -28,7 +28,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: url('Montserrat-Medium.woff2') format('woff2'),
-    url('Montserrat-Medium.woff') format('woff');
+  url('Montserrat-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -38,7 +38,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: asset-url('Montserrat-SemiBold.woff2') format('woff2'),
-    asset-url('Montserrat-SemiBold.woff') format('woff');
+  asset-url('Montserrat-SemiBold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -48,7 +48,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: asset-url('Montserrat-Bold.woff2') format('woff2'),
-    asset-url('Montserrat-Bold.woff') format('woff');
+  asset-url('Montserrat-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -64,7 +64,7 @@ $grey-light: #ced4da;
 $grey-f4: #f4f4f4;
 $grey: #6a6a6a;
 $black: #101010;
-$brown : #4B2C03;
+$brown: #4B2C03;
 
 /*=====  Generic style  ======*/
 
@@ -120,7 +120,7 @@ h3 {
   font-size: 1.5rem;
 }
 
-h1,h2,h3 {
+h1, h2, h3 {
   color: $brown;
 }
 
@@ -291,7 +291,7 @@ h1,h2,h3 {
 }
 
 .mt-xs-2 {
-  margin-top: 1.5rem;; 
+  margin-top: 1.5rem;;
 }
 
 .lg-btn {
@@ -352,6 +352,7 @@ label {
 
   .navbar-brand {
     margin-right: 0;
+
     img {
       width: 3.125rem;
     }
@@ -359,10 +360,11 @@ label {
 
   .nav-link {
     line-height: 2;
-      .profile-image {
-        width: 35px;
-        height: 35px;
-      }
+
+    .profile-image {
+      width: 35px;
+      height: 35px;
+    }
   }
 
   .form-control {
@@ -503,6 +505,7 @@ label {
     width: 100%;
     overflow-y: auto;
     padding-top: 1rem;
+
     li {
       color: #ffffff;
       padding: 1.2rem 2rem;
@@ -565,9 +568,11 @@ label {
   &.navbar {
     padding-bottom: 0;
   }
+
   .navbar-collapse {
     background-color: $purple;
     margin-left: -1rem;
+
     li {
       color: #ffffff;
       padding: 1.2rem 1rem;
@@ -603,10 +608,12 @@ label {
   margin-bottom: 1rem;
   background: $white;
   border-radius: 0.8rem;
+
   .table {
     color: $grey;
     margin-bottom: 0;
     white-space: nowrap;
+
     th {
       border-color: $purple-light;
       border-top: 0;
@@ -636,11 +643,13 @@ label {
     align-items: center;
     flex-direction: column;
     border-radius: 1rem 1rem 0 0;
+
     .btn {
       margin-top: 0.3rem;
     }
   }
 }
+
 /*----------  Profile Block  ----------*/
 .profile-block {
   .white-card {
@@ -743,6 +752,7 @@ label {
     img {
       // width: 100%;
     }
+
     background: asset-url('oval.svg') no-repeat center;
     width: 100%;
     height: 100vh;
@@ -753,9 +763,11 @@ label {
     align-items: center;
     flex-direction: column;
     color: $white;
+
     h2 {
       color: $white;
     }
+
     p {
       font-weight: 200;
     }
@@ -869,6 +881,7 @@ select:-webkit-autofill:focus {
     .table-heading {
       justify-content: space-between;
       flex-direction: row;
+
       .btn {
         margin-top: 0;
       }
@@ -912,8 +925,10 @@ select:-webkit-autofill:focus {
       border-top: 15px solid $purple;
       display: block;
     }
+
     .white-card-body {
       padding: 2rem 2.8rem;
+
       .profile-image {
         width: 8.4375rem;
         height: 8.4375rem;
@@ -935,9 +950,11 @@ select:-webkit-autofill:focus {
 
   .navbar {
     padding: 1rem 2rem;
+
     .navbar-brand {
       order: 0;
       flex: 0.28;
+
       img {
         width: 5.3125rem;
       }
