@@ -2,11 +2,11 @@
   <%= link_to root_path, class: 'navbar-brand' do %>
     <%= image_tag 'CRAccess-logo.png', class: '' %>
   <% end %>
-    <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+  <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
   <div class="sidebar-menu-toggle d-none-xs" data-controller='sidebar'>
     <a href="#" class='menu-btn' data-action='sidebar#toggle_sidebar'><%= image_tag 'menu.svg', class: '' %></a>
   </div>
@@ -45,14 +45,14 @@
   </div>
   <ul class="d-md-block d-lg-none d-xl-none user-xs">
     <li class="nav-item">
-        <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <% if current_user&.profile_picture&.attached? %>
-            <%= image_tag current_user.profile_picture, class: 'profile-image drop-shadow' %>
-          <% else %>
-            <%= image_tag 'manage-clinic.png', class: 'profile-image drop-shadow' %>
-          <% end %>
-        </a>
-      </li>
+      <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <% if current_user&.profile_picture&.attached? %>
+          <%= image_tag current_user.profile_picture, class: 'profile-image drop-shadow' %>
+        <% else %>
+          <%= image_tag 'manage-clinic.png', class: 'profile-image drop-shadow' %>
+        <% end %>
+      </a>
+    </li>
   </ul>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
