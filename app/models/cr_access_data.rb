@@ -18,11 +18,13 @@ class CrAccessData < ApplicationRecord
   has_many :cr_groups, through: :cr_access_groups
   has_many :accepted_access_groups, -> { accepted }, class_name: 'CrAccessGroup'
   has_many :accepted_cr_groups, through: :accepted_access_groups, class_name: 'CrGroup', source: :cr_group
+  has_many :vaccination_records, dependent: :destroy
 
   validate :validate_no_setter_errors
   validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }, presence: true
 
   after_save :set_fv_code
+  after_create :fetch_vaccination_history
 
   VACCINATION_STATUSES = {
     not_vaccinated: 'not_vaccinated',
@@ -97,8 +99,15 @@ class CrAccessData < ApplicationRecord
     CrDataUser.find_or_create_by(user: user, cr_access_data: self, data_type: CrDataUser::DATA_TYPES[:invited]).send_invitation(user.id)
   end
 
-  def update_status(status)
-    update(vaccination_status: status)
+  def fetch_vaccination_history(data = nil)
+    import_data = data.presence || ImportPatientData.new(prepmod_patient_id)
+    update(vaccination_status: import_data.vaccination_status)
+    import_data.vaccination_params.each do |params|
+      history = vaccination_records.find_or_initialize_by(external_id: params[:external_id])
+      next if history.persisted?
+
+      history.update(params)
+    end
   end
 
   private

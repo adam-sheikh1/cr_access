@@ -29,6 +29,16 @@ class ImportPatientData
     VACCINATION_STATUSES[:partially_vaccinated]
   end
 
+  def vaccination_params
+    response_hash[:data].map do |data|
+      data[:attributes].transform_keys do |key|
+        next key unless key == :id
+
+        :external_id
+      end
+    end
+  end
+
   private
 
   attr_accessor :token, :response_hash

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: 'sessions', passwords: 'passwords' }
+  devise_for :users, controllers: { sessions: 'sessions', passwords: 'passwords', confirmations: 'confirmations' }
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   resources :qr_codes do
@@ -50,6 +50,8 @@ Rails.application.routes.draw do
       get :accept_invite
     end
   end
+
+  resource :history, only: %i[show]
 
   root to: 'home#index'
 end

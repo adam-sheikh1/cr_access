@@ -22,6 +22,7 @@ class User < ApplicationRecord
   has_many :cr_access_data, dependent: :destroy, through: :prepmod_data_users
   has_many :accessible_cr_data, class_name: 'CrAccessData', through: :invited_data_users, source: :cr_access_data
   has_many :primary_groups, through: :primary_cr_data, class_name: 'CrGroup', source: :accepted_cr_groups
+  has_many :vaccination_records, through: :primary_cr_data, class_name: 'VaccinationRecord'
 
   validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }
 

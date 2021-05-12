@@ -89,27 +89,31 @@
 
         <hr>
 
-        <div class="mt-4">
-          <% if @cr_access_data.fully_vaccinated? %>
+        <% if @cr_access_data.fully_vaccinated? %>
+          <div class="mt-4">
             <h3 class="mb-3">Qr Code</h3>
             <div class='text-inline'>
               <div class='' data-controller='qr-code'>
                 <%= qr_code_image @qr_code, klass: 'img-thumbnail' %>
               </div>
-          <% end %>
 
-          <% if @cr_access_data.fv_code.present? %>
-            <div class=''>
-              <h3 class="mb-0">Cr Access#</h3>
-              <div class='' data-controller='qr-code'>
-                <small class="text-muted"><%= @cr_access_data.fv_code.code %></small>
-              </div>
+
+              <% if @fv_code.present? %>
+                <div class=''>
+                  <h3 class="mb-0">Cr Access#</h3>
+                  <div class=''>
+                    <small class="text-muted"><%= @fv_code.code %></small>
+                  </div>
+                </div>
+              <% end %>
             </div>
-          <% end %>
           </div>
-        </div>
+        <% end %>
       </div>
     </div>
+
+    <%= render 'histories/history_table', vaccinations: @vaccinations %>
+
     <% if @groups.present? %>
       <%= render 'cr_groups/group_list', groups: @groups %>
     <% end %>

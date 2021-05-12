@@ -11,7 +11,7 @@ class CrAccessController < ApplicationController
 
   def new
     if @cr_access_data.persisted?
-      @cr_access_data.update_status(@patient_data.vaccination_status)
+      @cr_access_data.fetch_vaccination_history(@patient_data)
       return redirect_to success_cr_access_path(@user)
     end
 
@@ -56,6 +56,8 @@ class CrAccessController < ApplicationController
   def show
     @qr_code = @cr_access_data.generate_qr_code
     @groups = @cr_access_data.cr_groups
+    @vaccinations = @cr_access_data.vaccination_records
+    @fv_code = @cr_access_data.fv_code
   end
 
   def unlink
