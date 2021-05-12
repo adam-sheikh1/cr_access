@@ -38,6 +38,7 @@
       <table class="table">
         <thead>
           <tr>
+            <th></th>
             <th scope="col">Name</th>
             <th scope="col">Status</th>
             <th scope="col">Actions</th>
@@ -46,6 +47,7 @@
         <tbody>
           <% @cr_access_data.each do |cr_group| %>
             <tr>
+              <td></td>
               <td><%= cr_group.cr_access_data.full_name %></td>
               <td><%= cr_status(cr_group) %></td>
               <td>
