@@ -23,8 +23,8 @@ class ImportPatientData
   end
 
   def vaccination_status
+    return VACCINATION_STATUSES[:fully_vaccinated] if janssen? || vaccine_count > 1
     return VACCINATION_STATUSES[:not_vaccinated] if vaccine_count.zero?
-    return VACCINATION_STATUSES[:fully_vaccinated] if vaccine_count > 1
 
     VACCINATION_STATUSES[:partially_vaccinated]
   end
@@ -39,6 +39,10 @@ class ImportPatientData
 
   def vaccines_administered
     filter_vaccines(PFIZER).presence || filter_vaccines(MODERNA)
+  end
+
+  def janssen?
+    filter_vaccines(JANSSEN).count == 1
   end
 
   def filter_vaccines(name)

@@ -22,17 +22,12 @@ class CrAccessController < ApplicationController
   def create
     @user = User.find_or_initialize_by(email: user_params[:email])
 
-    if @user.persisted?
-      @user.assign_attributes(user_params)
-    else
-      @password = SecureRandom.alphanumeric(8)
-      @user.assign_attributes(user_params.merge({ password: @password }))
-    end
-
+    @user.assign_attributes(user_params)
+    @new_record = @user.new_record?
     @cr_access_data = @user.cr_access_data
 
     if @user.save
-      redirect_to success_cr_access_path(@user, password: @password)
+      redirect_to success_cr_access_path(@user, new_record: @new_record)
     else
       if @user.errors[:"cr_access_data.children.attributes"].present? || @user.errors[:"cr_access_data.attributes"].present?
         return redirect_back fallback_location: root_path, alert: @user.errors.full_messages.to_sentence
@@ -55,7 +50,7 @@ class CrAccessController < ApplicationController
 
   def success
     @cr_access_data = @user.cr_access_data
-    @password = params[:password]
+    @new_record = params[:new_record]
   end
 
   def show
@@ -78,8 +73,8 @@ class CrAccessController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :date_of_birth, :phone_number,
-                                 cr_access_data_attributes: CrAccessData.permitted_params)
+    params.require(:user).permit(:first_name, :last_name, :email, :date_of_birth, :phone_number, :password,
+                                 :password_confirmation, cr_access_data_attributes: CrAccessData.permitted_params)
   end
 
   def set_cr_access_data
@@ -89,12 +84,13 @@ class CrAccessController < ApplicationController
 
   def set_patient_data
     @patient_data = ImportPatientData.new(params[:token])
+    redirect_to new_user_session_path, alert: 'Invalid Access' if @patient_data.patient_params.blank?
   end
 
   def fetch_cr_data
     @cr_access_data = CrAccessData.find_or_initialize_by(prepmod_patient_id: @patient_data.patient_params[:prepmod_patient_id])
     if @cr_access_data.persisted? && !@cr_access_data.prepmod_user&.persisted?
-      return redirect_to root_path, alert: 'Invalid Access'
+      return redirect_to new_user_session_path, alert: 'Invalid Access'
     end
 
     @user = @cr_access_data.prepmod_user || @cr_access_data.build_prepmod_data.build_user

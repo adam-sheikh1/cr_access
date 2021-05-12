@@ -20,7 +20,7 @@ class CrAccessData < ApplicationRecord
   has_many :accepted_cr_groups, through: :accepted_access_groups, class_name: 'CrGroup', source: :cr_group
 
   validate :validate_no_setter_errors
-  validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png image/heic], size_range: 1..3.megabytes }, presence: true
+  validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }, presence: true
 
   after_save :set_fv_code
 

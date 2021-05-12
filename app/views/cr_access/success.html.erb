@@ -7,14 +7,10 @@
       <div class="white-card">
         <div class="white-card-body">
           <p>You are now part of CRAccess</p>
-          <p>Please confirm your email by clicking the link sent to your email or you won't be able to login.</p>
-          <% if @password %>
-            <p>Your account has been created with the following credentials:</p>
-            <p>
-              <strong>Email:</strong> <%= @user.email %><br>
-              <strong>Password:</strong> <%= @password %>
+          <% if @new_record %>
+            <p>An email has been sent to you. Please verify your email address by clicking on the link provided in the
+              body of the email.
             </p>
-            <p>Make sure to reset your password later.</p>
           <% else %>
             <p>You already have an account with the email <%= @user.email %>, use that to login.</p>
           <% end %>
