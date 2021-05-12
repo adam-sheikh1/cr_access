@@ -30,6 +30,8 @@ class ImportPatientData
   end
 
   def vaccination_params
+    return [] if response_hash.blank?
+
     response_hash[:data].map do |data|
       data[:attributes].transform_keys do |key|
         next key unless key == :id
@@ -56,6 +58,8 @@ class ImportPatientData
   end
 
   def filter_vaccines(name)
+    return [] if response_hash.blank?
+
     response_hash[:data].select do |vaccine_administered|
       vaccine_administered[:attributes][:vaccine_name].to_s.downcase.include?(name)
     end
