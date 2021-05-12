@@ -15,12 +15,10 @@
   <div class="block-inline">
     <h3 class='mt-2 mb-0'><%= cr_access_data.vaccination_status.to_s.titleize %></h3>
     <% if cr_access_data.fully_vaccinated? %>
-      <small class="text-muted d-block">Against COVID-19</small>
-      <small class="text-muted">Until 01/20/22</small>
+      <small class="text-muted d-block">Fully vaccinated</small>
     <% elsif cr_access_data.not_vaccinated? %>
-      <small class="text-muted">Against COVID-19</small>
+      <small class="text-muted">Not vaccinated</small>
     <% else %>
-      <small class="text-muted d-block">Against COVID-19</small>
       <small class="text-muted">Second Dose Required</small>
     <% end %>
   </div>

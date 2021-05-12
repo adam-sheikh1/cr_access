@@ -38,8 +38,6 @@
                   <%= image_tag @cr_access.profile_picture, class: 'profile-image' if @cr_access.profile_picture.attached? %>
                 </div>
               </div>
-              <small class="d-flex text-muted">Against COVID19</small>
-              <small class="text-muted">Until 1/2020</small>
               <div class="mt-3">
                 <%= link_to 'Go to vaccination record', vaccinations_user_path, class: 'btn primary-btn' %>
               </div>

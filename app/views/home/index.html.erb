@@ -48,8 +48,7 @@
                 </div>
                 <h3><%= @cr_access.full_name %></h3>
                 <% if @cr_access.fully_vaccinated? %>
-                  <small class="text-muted">Against COVID19</small>
-                  <small class="text-muted">Until 1/2022</small>
+                  <small class="text-muted">Fully vaccinated</small>
                 <% else %>
                   <small class="text-muted"><%= @cr_access.vaccination_status&.titleize %></small>
                 <% end %>
