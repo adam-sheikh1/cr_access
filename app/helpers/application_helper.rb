@@ -9,4 +9,8 @@ module ApplicationHelper
   def active_class(url)
     'active' if url == request.path
   end
+
+  def formatted_date(date)
+    date.strftime('%m/%d/%y') rescue nil
+  end
 end

@@ -21,7 +21,7 @@
         <% vaccinations.each do |vaccine| %>
           <tr>
             <td></td>
-            <td><%= vaccine.vaccination_date || '-' %></td>
+            <td><%= formatted_date(vaccine.vaccination_date) || '-' %></td>
             <td><%= vaccine.vaccine_name %></td>
             <td></td>
             <td><%= vaccine.lot_number || '-' %></td>
