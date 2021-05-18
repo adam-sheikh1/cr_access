@@ -12,7 +12,7 @@ module CrGroupHelper
   end
 
   def sharing_type_options
-    [[PHONE.titleize, PHONE], [EMAIL.titleize, EMAIL], ['Cr Access#', FV_CODE]]
+    [[PHONE.titleize, PHONE], [EMAIL.titleize, EMAIL], ['CRAccess#', FV_CODE]]
   end
 
   def share_info_options

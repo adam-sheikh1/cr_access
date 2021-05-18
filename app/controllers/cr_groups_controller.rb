@@ -26,7 +26,7 @@ class CrGroupsController < ApplicationController
     if @group.invite(invite_params)
       redirect_to @group, notice: 'Successfully sent invitation to user'
     else
-      redirect_to [:invite, @group], alert: "Couldn't find any cr access"
+      redirect_to [:invite, @group], alert: "Couldn't find any CRAccess"
     end
   end
 

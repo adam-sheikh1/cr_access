@@ -5,11 +5,11 @@
   </div>
   <% if cr_access_data.fully_vaccinated? %>
     <div class="mb-3">
-      <small class="text-muted mb-2">CrAccess #<%= cr_access_data.fv_code.code %></small>
+      <small class="text-muted mb-2">CRAccess #<%= cr_access_data.fv_code.code %></small>
     </div>
     <%= qr_code_image cr_access_data.qr_code, klass: 'img-thumbnail' %>
   <% else %>
-    <small class="text-muted">CrAccess #XXXXXXXXXX</small>
+    <small class="text-muted">CRAccess #XXXXXXXXXX</small>
     <%= image_tag 'non-vaccinated.png', class: 'non-vaccinated-img' %>
   <% end %>
   <div class="block-inline">
