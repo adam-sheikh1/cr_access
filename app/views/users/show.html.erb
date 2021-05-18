@@ -1,65 +1,63 @@
-<div class=''>
-  <div class="profile-block">
-    <div class="white-card">
-      <div class="white-card-body">
-        <div class="text-inline">
-          <% if current_user.profile_picture&.attached? %>
-            <div class="profile-image">
-              <%= image_tag current_user.profile_picture, class: '' %>
-            </div>
-          <% else %>
-            <div class="profile-image">
-              <%= image_tag 'manage-clinic.png', class: '' %>
-            </div>
-          <% end %>
-          <div class="text-center-xs">
-            <h3 class="mb-0">Welcome <%= current_user.full_name %></h3>
-            <% if @cr_access&.fully_vaccinated? %>
-              <small class="text-muted">CRAccess#<%= @cr_access.fv_code.code %></small>
-            <% end %>
+<div class="profile-block">
+  <div class="white-card">
+    <div class="white-card-body">
+      <div class="text-inline">
+        <% if current_user.profile_picture&.attached? %>
+          <div class="profile-image">
+            <%= image_tag current_user.profile_picture, class: '' %>
           </div>
+        <% else %>
+          <div class="profile-image">
+            <%= image_tag 'manage-clinic.png', class: '' %>
+          </div>
+        <% end %>
+        <div class="text-center-xs">
+          <h3 class="mb-0">Welcome <%= current_user.full_name %></h3>
+          <% if @cr_access&.fully_vaccinated? %>
+            <small class="text-muted">CRAccess#<%= @cr_access.fv_code.code %></small>
+          <% end %>
         </div>
       </div>
+    </div>
 
-      <hr>
+    <hr>
 
-      <% if @cr_access.present? %>
-        <div class="white-card-body">
-          <div class="text-inline">
-            <div data-controller='qr-code'>
-              <% if @cr_access.fully_vaccinated? %>
-                <%= qr_code_image @qr_code, klass: 'img-thumbnail' %>
-              <% else %>
-                <%= image_tag 'non-vaccinated.png', class: 'non-vaccinated-img img-thumbnail' %>
-              <% end %>
-            </div>
-            <div class="inner-content">
-              <div class="block-text">
-                <div class="mb-3">
-                  <% if @cr_access.profile_picture.attached? %>
-                    <div class="profile-image">
-                      <%= image_tag @cr_access.profile_picture, class: '' %>
-                    </div>
-                  <% else %>
-                    <div class="profile-image m-xs-auto">
-                      <%= image_tag 'manage-clinic.png', class: '' %>
-                    </div>
-                  <% end %>
-                </div>
-                <h3><%= @cr_access.full_name %></h3>
-                <% if @cr_access.fully_vaccinated? %>
-                  <small class="text-muted">Fully vaccinated</small>
+    <% if @cr_access.present? %>
+      <div class="white-card-body">
+        <div class="text-inline">
+          <div data-controller='qr-code'>
+            <% if @cr_access.fully_vaccinated? %>
+              <%= qr_code_image @qr_code, klass: 'img-thumbnail' %>
+            <% else %>
+              <%= image_tag 'non-vaccinated.png', class: 'non-vaccinated-img img-thumbnail' %>
+            <% end %>
+          </div>
+          <div class="inner-content">
+            <div class="block-text">
+              <div class="mb-3">
+                <% if @cr_access.profile_picture.attached? %>
+                  <div class="profile-image">
+                    <%= image_tag @cr_access.profile_picture, class: '' %>
+                  </div>
                 <% else %>
-                  <small class="text-muted"><%= @cr_access.vaccination_status&.titleize %></small>
+                  <div class="profile-image m-xs-auto">
+                    <%= image_tag 'manage-clinic.png', class: '' %>
+                  </div>
                 <% end %>
-                <div class="mt-3">
-                  <%= link_to 'Go to vaccination record', vaccinations_user_path, class: 'btn primary-btn' %>
-                </div>
+              </div>
+              <h3><%= @cr_access.full_name %></h3>
+              <% if @cr_access.fully_vaccinated? %>
+                <small class="text-muted">Fully vaccinated</small>
+              <% else %>
+                <small class="text-muted"><%= @cr_access.vaccination_status&.titleize %></small>
+              <% end %>
+              <div class="mt-3">
+                <%= link_to 'Go to vaccination record', vaccinations_user_path, class: 'btn primary-btn' %>
               </div>
             </div>
           </div>
-      <% end %>
-      </div>
+        </div>
+    <% end %>
     </div>
   </div>
 </div>

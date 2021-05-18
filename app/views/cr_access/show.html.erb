@@ -1,121 +1,119 @@
-<div class=''>
-  <div class="share-info">
-    <div class="white-card">
-      <div class="white-card-body">
-        <h2>Info</h2>
-        <hr>
+<div class="share-info">
+  <div class="white-card">
+    <div class="white-card-body">
+      <h2>Info</h2>
+      <hr>
 
-        <div class="text-inline">
-          <div class="profile-image">
-            <% if @cr_access_data.profile_picture.attached? %>
-              <%= image_tag @cr_access_data.profile_picture, class: 'profile-image' %>
-            <% else %>
-              <%= image_tag 'manage-clinic.png', class: 'profile-image' %>
+      <div class="text-inline">
+        <div class="profile-image">
+          <% if @cr_access_data.profile_picture.attached? %>
+            <%= image_tag @cr_access_data.profile_picture, class: 'profile-image' %>
+          <% else %>
+            <%= image_tag 'manage-clinic.png', class: 'profile-image' %>
+          <% end %>
+        </div>
+        <h3 class='mt-2'><%= @cr_access_data.full_name %></h3>
+      </div>
+      <hr>
+      <div class="row mt-4">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card-text">
+            <%= label_tag :first_name %>
+            <%= label_tag :first_name, @cr_access_data.first_name, class: '' %>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card-text">
+            <%= label_tag :last_name %>
+            <%= label_tag :last_name, @cr_access_data.last_name, class: '' %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card-text">
+            <%= label_tag :gender %>
+            <%= label_tag :gender, @cr_access_data.gender, class: '' %>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card-text">
+            <%= label_tag :address %>
+            <%= label_tag :address, @cr_access_data.address, class: '' %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card-text">
+            <%= label_tag :city %>
+            <%= label_tag :city, @cr_access_data.city, class: '' %>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card-text">
+            <%= label_tag :state %>
+            <%= label_tag :state, @cr_access_data.state, class: '' %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card-text">
+            <%= label_tag :zip_code %>
+            <%= label_tag :zip_code, @cr_access_data.zip_code, class: '' %>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card-text">
+            <%= label_tag :phone_number %>
+            <%= label_tag :phone_number, @cr_access_data.phone_number, class: '' %>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="date-birth card-text">
+            <%= label_tag :date_of_birth %>
+            <%= label_tag :date_of_birth, @cr_access_data.date_of_birth, class: '' %>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card-text">
+            <%= label_tag :vaccination_status %>
+            <%= label_tag :vaccination_status, @cr_access_data.vaccination_status.titleize, class: '' %>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <% if @cr_access_data.fully_vaccinated? %>
+        <div class="mt-4">
+          <h3 class="mb-3">Qr Code</h3>
+          <div class='text-inline'>
+            <div class='' data-controller='qr-code'>
+              <%= qr_code_image @qr_code, klass: 'img-thumbnail' %>
+            </div>
+
+
+            <% if @fv_code.present? %>
+              <div class=''>
+                <h3 class="mb-0">Cr Access#</h3>
+                <div class=''>
+                  <small class="text-muted"><%= @fv_code.code %></small>
+                </div>
+              </div>
             <% end %>
           </div>
-          <h3 class='mt-2'><%= @cr_access_data.full_name %></h3>
         </div>
-        <hr>
-        <div class="row mt-4">
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card-text">
-              <%= label_tag :first_name %>
-              <%= label_tag :first_name, @cr_access_data.first_name, class: '' %>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card-text">
-              <%= label_tag :last_name %>
-              <%= label_tag :last_name, @cr_access_data.last_name, class: '' %>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card-text">
-              <%= label_tag :gender %>
-              <%= label_tag :gender, @cr_access_data.gender, class: '' %>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card-text">
-              <%= label_tag :address %>
-              <%= label_tag :address, @cr_access_data.address, class: '' %>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card-text">
-              <%= label_tag :city %>
-              <%= label_tag :city, @cr_access_data.city, class: '' %>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card-text">
-              <%= label_tag :state %>
-              <%= label_tag :state, @cr_access_data.state, class: '' %>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card-text">
-              <%= label_tag :zip_code %>
-              <%= label_tag :zip_code, @cr_access_data.zip_code, class: '' %>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card-text">
-              <%= label_tag :phone_number %>
-              <%= label_tag :phone_number, @cr_access_data.phone_number, class: '' %>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="date-birth card-text">
-              <%= label_tag :date_of_birth %>
-              <%= label_tag :date_of_birth, @cr_access_data.date_of_birth, class: '' %>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            <div class="card-text">
-              <%= label_tag :vaccination_status %>
-              <%= label_tag :vaccination_status, @cr_access_data.vaccination_status.titleize, class: '' %>
-            </div>
-          </div>
-        </div>
-
-        <hr>
-
-        <% if @cr_access_data.fully_vaccinated? %>
-          <div class="mt-4">
-            <h3 class="mb-3">Qr Code</h3>
-            <div class='text-inline'>
-              <div class='' data-controller='qr-code'>
-                <%= qr_code_image @qr_code, klass: 'img-thumbnail' %>
-              </div>
-
-
-              <% if @fv_code.present? %>
-                <div class=''>
-                  <h3 class="mb-0">Cr Access#</h3>
-                  <div class=''>
-                    <small class="text-muted"><%= @fv_code.code %></small>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      </div>
+      <% end %>
     </div>
-
-    <%= render 'histories/history_table', vaccinations: @vaccinations %>
-
-    <% if @groups.present? %>
-      <%= render 'cr_groups/group_list', groups: @groups %>
-    <% end %>
   </div>
+
+  <%= render 'histories/history_table', vaccinations: @vaccinations %>
+
+  <% if @groups.present? %>
+    <%= render 'cr_groups/group_list', groups: @groups %>
+  <% end %>
 </div>

@@ -1,78 +1,76 @@
-<div class=''>
-  <div class="edit-profile">
-    <div class="white-card mb-5">
-      <div class="white-card-body">
+<div class="edit-profile">
+  <div class="white-card mb-5">
+    <div class="white-card-body">
 
-        <div class="text-inline">
-          <% if current_user.profile_picture&.attached? %>
-            <div class="profile-image">
-              <%= image_tag current_user.profile_picture, class: '' %>
-            </div>
-          <% else %>
-            <div class="profile-image">
-              <%= image_tag 'manage-clinic.png', class: '' %>
-            </div>
-          <% end %>
-          <div>
-            <h3 class="">Welcome <%= current_user.full_name %></h3>
-            <% if @cr_access&.fully_vaccinated? %>
-              <div class="text-muted">CRAccess#<%= @cr_access.fv_code.code %></div>
-            <% end %>
+      <div class="text-inline">
+        <% if current_user.profile_picture&.attached? %>
+          <div class="profile-image">
+            <%= image_tag current_user.profile_picture, class: '' %>
           </div>
-        </div>
+        <% else %>
+          <div class="profile-image">
+            <%= image_tag 'manage-clinic.png', class: '' %>
+          </div>
+        <% end %>
         <div>
-          <% if current_user.profile_picture.attached? %>
-            <%= image_tag current_user.profile_picture, class: 'profile-image mt-4 mb-4' %>
-          <% else %>
-            <%= image_tag 'manage-clinic.png', class: 'profile-image mt-4 mb-4' %>
+          <h3 class="">Welcome <%= current_user.full_name %></h3>
+          <% if @cr_access&.fully_vaccinated? %>
+            <div class="text-muted">CRAccess#<%= @cr_access.fv_code.code %></div>
           <% end %>
         </div>
+      </div>
+      <div>
+        <% if current_user.profile_picture.attached? %>
+          <%= image_tag current_user.profile_picture, class: 'profile-image mt-4 mb-4' %>
+        <% else %>
+          <%= image_tag 'manage-clinic.png', class: 'profile-image mt-4 mb-4' %>
+        <% end %>
+      </div>
+      <div class=''>
         <div class=''>
-          <div class=''>
-            <%= simple_form_for current_user do |f| %>
-              <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                  <div class="form-group">
-                    <%= f.input :first_name, input_html: { class: 'form-control' } %>
-                  </div>
+          <%= simple_form_for current_user do |f| %>
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="form-group">
+                  <%= f.input :first_name, input_html: { class: 'form-control' } %>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                  <div class="form-group">
-                    <%= f.input :middle_name, input_html: { class: 'form-control' } %>
-                  </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="form-group">
+                  <%= f.input :middle_name, input_html: { class: 'form-control' } %>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                  <div class="form-group">
-                    <%= f.input :last_name, input_html: { class: 'form-control' } %>
-                  </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                  <div class="form-group">
-                    <%= f.input :current_password, input_html: { class: 'form-control' } %>
-                  </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                  <div class="form-group">
-                    <%= f.input :password, input_html: { class: 'form-control' } %>
-                  </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                  <div class="form-group">
-                    <%= f.input :password_confirmation, input_html: { class: 'form-control' } %>
-                  </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                  <%= f.input :profile_picture %>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="form-group">
+                  <%= f.input :last_name, input_html: { class: 'form-control' } %>
                 </div>
               </div>
 
-              <div class="action-btn">
-                <%= f.submit "Save", class: "btn primary-btn" %>
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="form-group">
+                  <%= f.input :current_password, input_html: { class: 'form-control' } %>
+                </div>
               </div>
-            <% end %>
-          </div>
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="form-group">
+                  <%= f.input :password, input_html: { class: 'form-control' } %>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="form-group">
+                  <%= f.input :password_confirmation, input_html: { class: 'form-control' } %>
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <%= f.input :profile_picture %>
+              </div>
+            </div>
+
+            <div class="action-btn">
+              <%= f.submit "Save", class: "btn primary-btn" %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
