@@ -12,9 +12,11 @@
               <%= image_tag 'manage-clinic.png', class: '' %>
             </div>
           <% end %>
-          <div>
-            <h3 class="mb-0">Welcome beyonce</h3>
-            <small class="text-muted">CRAccess#</small>
+          <div class="text-center-xs">
+            <h3 class="mb-0">Welcome <%= current_user.full_name %></h3>
+            <% if @cr_access&.fully_vaccinated? %>
+              <small class="text-muted">CRAccess#<%= @cr_access.fv_code.code %></small>
+            <% end %>
           </div>
         </div>
       </div>
@@ -32,14 +34,27 @@
               <% end %>
             </div>
             <div class="inner-content">
-              <div class="d-flex">
-                <h3><%= @cr_access.full_name %></h3>
-                <div class="ml-2">
-                  <%= image_tag @cr_access.profile_picture, class: 'profile-image' if @cr_access.profile_picture.attached? %>
+              <div class="block-text">
+                <div class="mb-3">
+                  <% if @cr_access.profile_picture.attached? %>
+                    <div class="profile-image">
+                      <%= image_tag @cr_access.profile_picture, class: '' %>
+                    </div>
+                  <% else %>
+                    <div class="profile-image m-xs-auto">
+                      <%= image_tag 'manage-clinic.png', class: '' %>
+                    </div>
+                  <% end %>
                 </div>
-              </div>
-              <div class="mt-3">
-                <%= link_to 'Go to vaccination record', vaccinations_user_path, class: 'btn primary-btn' %>
+                <h3><%= @cr_access.full_name %></h3>
+                <% if @cr_access.fully_vaccinated? %>
+                  <small class="text-muted">Fully vaccinated</small>
+                <% else %>
+                  <small class="text-muted"><%= @cr_access.vaccination_status&.titleize %></small>
+                <% end %>
+                <div class="mt-3">
+                  <%= link_to 'Go to vaccination record', vaccinations_user_path, class: 'btn primary-btn' %>
+                </div>
               </div>
             </div>
           </div>

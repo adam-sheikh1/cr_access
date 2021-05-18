@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     @user = current_user
     if @user.update_with_password(user_params)
       bypass_sign_in(@user)
-      redirect_to user_path, notice: 'Password successfully updated'
+      redirect_to root_path, notice: 'Password successfully updated'
     else
       render 'edit'
     end
