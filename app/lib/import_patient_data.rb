@@ -23,10 +23,11 @@ class ImportPatientData
   end
 
   def vaccination_status
-    vaccination_status = vaccination_status_for(MODERNA)
-    vaccination_status = vaccination_status_for(PFIZER) if vaccination_status_for(PFIZER).present?
-    vaccination_status = vaccination_status_for(JANSSEN) if vaccination_status_for(JANSSEN).present?
-    vaccination_status
+    return vaccination_status_for(JANSSEN) if janssen?
+    return vaccination_status_for(MODERNA) if moderna?
+    return vaccination_status_for(PFIZER) if pfizer?
+
+    VACCINATION_STATUSES[:not_vaccinated]
   end
 
   def vaccination_params
@@ -90,27 +91,29 @@ class ImportPatientData
 
   def vaccination_status_for(vaccine_name)
     vaccines = filter_vaccines(vaccine_name)
+    return VACCINATION_STATUSES[:fully_vaccinated] if valid_interval?(vaccines, vaccine_name)
 
-    if vaccines.count.zero?
-      return VACCINATION_STATUSES[:not_vaccinated] if vaccine_name == MODERNA
-      return
-    end
-
-    return VACCINATION_STATUSES[:fully_vaccinated] if is_valid_vaccination_interval?(vaccines, vaccine_name)
     VACCINATION_STATUSES[:partially_vaccinated]
   end
 
-  def is_valid_vaccination_interval?(vaccines, vaccine_name)
-    vaccination_dates = if vaccine_name == JANSSEN
-                          vaccines.map{|v| v.dig(:attributes, :vaccination_date)}.first
-                        else
-                          vaccines.map{|v| v.dig(:attributes, :vaccination_date)}.first(2)
-                        end
-
-    valid_interval = Integer(DateTime.now - (DateTime.parse(vaccination_dates.last))) >= 10
+  def valid_interval?(vaccines, vaccine_name)
+    vaccination_dates = vaccines.map { |v| v.dig(:attributes, :vaccination_date) }.first(vaccine_name == JANSSEN ? 1 : 2)
+    valid_interval = (DateTime.now - DateTime.parse(vaccination_dates.last)).to_i.abs >= 10
     return valid_interval if vaccine_name == JANSSEN
 
     vaccination_interval = vaccine_name == PFIZER ? 21 : 28
-    valid_interval && (Integer(DateTime.parse(vaccination_dates.last) - DateTime.parse(vaccination_dates.first)) >= vaccination_interval)
+    valid_interval && ((DateTime.parse(vaccination_dates.last) - DateTime.parse(vaccination_dates.first)).to_i.abs >= vaccination_interval)
+  end
+
+  def janssen?
+    filter_vaccines(JANSSEN).present?
+  end
+
+  def moderna?
+    filter_vaccines(MODERNA).present?
+  end
+
+  def pfizer?
+    filter_vaccines(PFIZER).present?
   end
 end
