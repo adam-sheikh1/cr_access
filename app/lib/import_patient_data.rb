@@ -23,10 +23,10 @@ class ImportPatientData
   end
 
   def vaccination_status
-    return VACCINATION_STATUSES[:fully_vaccinated] if janssen? || vaccine_count > 1
-    return VACCINATION_STATUSES[:not_vaccinated] if vaccine_count.zero?
-
-    VACCINATION_STATUSES[:partially_vaccinated]
+    vaccination_status = vaccination_status_for(MODERNA)
+    vaccination_status = vaccination_status_for(PFIZER) if vaccination_status_for(PFIZER).present?
+    vaccination_status = vaccination_status_for(JANSSEN) if vaccination_status_for(JANSSEN).present?
+    vaccination_status
   end
 
   def vaccination_params
@@ -51,10 +51,6 @@ class ImportPatientData
 
   def vaccines_administered
     filter_vaccines(PFIZER).presence || filter_vaccines(MODERNA)
-  end
-
-  def janssen?
-    filter_vaccines(JANSSEN).count == 1
   end
 
   def filter_vaccines(name)
@@ -90,5 +86,31 @@ class ImportPatientData
         'Authorization' => "Bearer #{token}"
       }
     ).parsed_response&.deep_symbolize_keys
+  end
+
+  def vaccination_status_for(vaccine_name)
+    vaccines = filter_vaccines(vaccine_name)
+
+    if vaccines.count.zero?
+      return VACCINATION_STATUSES[:not_vaccinated] if vaccine_name == MODERNA
+      return
+    end
+
+    return VACCINATION_STATUSES[:fully_vaccinated] if is_valid_vaccination_interval?(vaccines, vaccine_name)
+    VACCINATION_STATUSES[:partially_vaccinated]
+  end
+
+  def is_valid_vaccination_interval?(vaccines, vaccine_name)
+    vaccination_dates = if vaccine_name == JANSSEN
+                          vaccines.map{|v| v.dig(:attributes, :vaccination_date)}.first
+                        else
+                          vaccines.map{|v| v.dig(:attributes, :vaccination_date)}.first(2)
+                        end
+
+    valid_interval = Integer(DateTime.now - (DateTime.parse(vaccination_dates.last))) >= 10
+    return valid_interval if vaccine_name == JANSSEN
+
+    vaccination_interval = vaccine_name == PFIZER ? 21 : 28
+    valid_interval && (Integer(DateTime.parse(vaccination_dates.last) - DateTime.parse(vaccination_dates.first)) >= vaccination_interval)
   end
 end
