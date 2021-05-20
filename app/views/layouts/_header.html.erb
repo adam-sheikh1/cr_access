@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg d-xs-none">
   <%= link_to root_path, class: 'navbar-brand' do %>
-    <%= image_tag 'craccess_plus_logo.png', class: '' %>
+    <%= image_tag 'craccess_plus_logo.png', class: 'purple' %>
+    <%= image_tag 'craccess_grey_logo.png', class: 'bluiesh' %>
   <% end %>
   <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
     <span></span>
@@ -24,7 +25,8 @@
       </li>
       <li class="nav-item">
         <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link logout' do %>
-          <%= image_tag 'logout.svg', class: '' %>
+          <%= image_tag 'logout-white.svg', class: 'purple' %>
+          <%= image_tag 'logout-bluiesh.svg', class: 'bluiesh' %>
         <% end %>
       </li>
     </ul>
@@ -38,7 +40,8 @@
     <span></span>
   </button>
   <%= link_to root_path, class: 'navbar-brand' do %>
-    <%= image_tag 'craccess_plus_logo.png', class: '' %>
+    <%= image_tag 'craccess_plus_logo.png', class: 'purple' %>
+    <%= image_tag 'craccess_grey_logo.png', class: 'bluiesh' %>
   <% end %>
   <div class="sidebar-menu-toggle d-none" data-controller='sidebar'>
     <a href="#" class='menu-btn' data-action='sidebar#toggle_sidebar'><%= image_tag 'menu.svg', class: '' %></a>
