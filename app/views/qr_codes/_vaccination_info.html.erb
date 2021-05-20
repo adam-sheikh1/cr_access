@@ -3,23 +3,12 @@
     <%= image_tag cr_access_data.profile_picture, class: '' if cr_access_data.profile_picture.attached? %>
     <h2 class="mb-0 mt-2"><%= cr_access_data.full_name %></h2>
   </div>
-  <% if cr_access_data.fully_vaccinated? %>
-    <div class="mb-3">
-      <small class="text-muted mb-2">CRAccess #<%= cr_access_data.fv_code.code %></small>
-    </div>
-    <%= qr_code_image cr_access_data.qr_code, klass: 'img-thumbnail' %>
-  <% else %>
-    <small class="text-muted">CRAccess #XXXXXXXXXX</small>
-    <%= image_tag 'non-vaccinated.png', class: 'non-vaccinated-img' %>
-  <% end %>
+  <div class="mb-3">
+    <small class="text-muted mb-2">CRAccess# <%= cr_access_data.fv_code.code %></small>
+  </div>
+  <%= qr_code_image cr_access_data.qr_code, klass: "img-thumbnail #{'non-vaccinated' unless cr_access_data.fully_vaccinated?}" %>
   <div class="block-inline">
     <h3 class='mt-2 mb-0'><%= cr_access_data.vaccination_status.to_s.titleize %></h3>
-    <% if cr_access_data.fully_vaccinated? %>
-      <small class="text-muted d-block">Fully vaccinated</small>
-    <% elsif cr_access_data.not_vaccinated? %>
-      <small class="text-muted">Not vaccinated</small>
-    <% else %>
-      <small class="text-muted">Second Dose Required</small>
-    <% end %>
+    <small class="text-muted">cr_access_data.vaccination_status&.titleize</small>
   </div>
 </div>

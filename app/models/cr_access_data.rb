@@ -137,8 +137,6 @@ class CrAccessData < ApplicationRecord
   private
 
   def set_fv_code
-    return unless saved_change_to_vaccination_status?
-    return fv_code&.destroy unless fully_vaccinated?
     return if fv_code.present?
 
     create_fv_code
