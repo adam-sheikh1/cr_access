@@ -1,5 +1,8 @@
 class ImportPatientData
   VACCINATION_STATUSES = CrAccessData::VACCINATION_STATUSES
+  FULLY_VACCINATE_INTERVAL = 10
+  PFIZER_INTERVAL = 21
+  MODERNA_INTERVAL = 28
 
   def initialize(token)
     @token = token
@@ -91,17 +94,15 @@ class ImportPatientData
 
   def vaccination_status_for(vaccine_name)
     vaccines = filter_vaccines(vaccine_name)
-    return VACCINATION_STATUSES[:fully_vaccinated] if valid_interval?(vaccines, vaccine_name)
-
-    VACCINATION_STATUSES[:partially_vaccinated]
+    valid_interval?(vaccines, vaccine_name) && VACCINATION_STATUSES[:fully_vaccinated] || VACCINATION_STATUSES[:partially_vaccinated]
   end
 
   def valid_interval?(vaccines, vaccine_name)
     vaccination_dates = vaccines.map { |v| v.dig(:attributes, :vaccination_date) }.first(vaccine_name == JANSSEN ? 1 : 2)
-    valid_interval = (DateTime.now - DateTime.parse(vaccination_dates.last)).to_i.abs >= 10
+    valid_interval = (DateTime.now - DateTime.parse(vaccination_dates.last)).to_i.abs >= FULLY_VACCINATE_INTERVAL
     return valid_interval if vaccine_name == JANSSEN
 
-    vaccination_interval = vaccine_name == PFIZER ? 21 : 28
+    vaccination_interval = vaccine_name == PFIZER ? PFIZER_INTERVAL : MODERNA_INTERVAL
     valid_interval && ((DateTime.parse(vaccination_dates.last) - DateTime.parse(vaccination_dates.first)).to_i.abs >= vaccination_interval)
   end
 
