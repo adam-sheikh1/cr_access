@@ -15,7 +15,7 @@
       <div class="white-card-body">
         <div class="text-inline">
           <div data-controller='qr-code'>
-            <%= qr_code_image @qr_code, klass: "img-thumbnail #{'non-vaccinated' unless @cr_access.fully_vaccinated?}" %>
+            <%= qr_code_image @qr_code, klass: "img-thumbnail #{qr_code_class(@cr_access)}" %>
           </div>
           <div class="inner-content">
             <div class="block-text">

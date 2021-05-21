@@ -6,9 +6,8 @@
   <div class="mb-3">
     <small class="text-muted mb-2">CRAccess# <%= cr_access_data.fv_code.code %></small>
   </div>
-  <%= qr_code_image cr_access_data.qr_code, klass: "img-thumbnail #{'non-vaccinated' unless cr_access_data.fully_vaccinated?}" %>
+  <%= qr_code_image cr_access_data.qr_code, klass: "img-thumbnail #{qr_code_class(@cr_access_data)}" %>
   <div class="block-inline">
     <h3 class='mt-2 mb-0'><%= cr_access_data.vaccination_status.to_s.titleize %></h3>
-    <small class="text-muted">cr_access_data.vaccination_status&.titleize</small>
   </div>
 </div>

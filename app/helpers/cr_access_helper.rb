@@ -4,4 +4,8 @@ module CrAccessHelper
 
     cr_access_path(cr_access_data)
   end
+
+  def qr_code_class(cr_access_data)
+    'non-vaccinated' unless cr_access_data.fully_vaccinated?
+  end
 end
