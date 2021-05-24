@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_07_051457) do
+ActiveRecord::Schema.define(version: 2021_05_19_041538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,6 +154,18 @@ ActiveRecord::Schema.define(version: 2021_05_07_051457) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["cr_access_data_id"], name: "index_vaccination_records_on_cr_access_data_id"
+  end
+
+  create_table "vaccination_users", force: :cascade do |t|
+    t.bigint "vaccination_record_id"
+    t.bigint "user_id"
+    t.string "relation_ship"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "vaccination_record_id"], name: "index_vaccination_users_on_user_id_and_vaccination_record_id", unique: true
+    t.index ["user_id"], name: "index_vaccination_users_on_user_id"
+    t.index ["vaccination_record_id", "user_id"], name: "index_vaccination_users_on_vaccination_record_id_and_user_id", unique: true
+    t.index ["vaccination_record_id"], name: "index_vaccination_users_on_vaccination_record_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

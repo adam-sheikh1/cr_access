@@ -51,7 +51,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :history, only: %i[show]
+  resource :history, only: %i[show] do
+    post :share
+  end
 
   root to: 'home#index'
 end
