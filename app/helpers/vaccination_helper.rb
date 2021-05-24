@@ -9,16 +9,22 @@ module VaccinationHelper
 
   def field_with_errors(form, name, index, required: false)
     [
-      form.text_field(name, id: indexed_id(name, index), class: 'form-control', required: required, autocomplete: 'off'),
-      content_tag(:small, form.object.errors[name].reject(&:blank?).join(', '), class: 'text-danger ml-1')
+      form.text_field(name, id: indexed_id(name, index), class: 'form-control', required: required,
+                            autocomplete: 'off'),
+      error_tag(form, name)
     ].join(' ').html_safe
   end
 
   def select_with_errors(form, name, options, index, required: false)
     [
-      form.select(name, options, { include_blank: 'Select' }, { id: indexed_id(name, index), class: 'form-control', required: required, autocomplete: 'off' }),
-      content_tag(:small, form.object.errors[name].reject(&:blank?).join(', '), class: 'text-danger ml-1')
+      form.select(name, options, { include_blank: 'Select' },
+                  { id: indexed_id(name, index), class: 'form-control', required: required, autocomplete: 'off' }),
+      error_tag(form, name)
     ].join(' ').html_safe
+  end
+
+  def error_tag(form, name)
+    content_tag(:small, form.object.errors[name].reject(&:blank?).join(', '), class: 'text-danger ml-1')
   end
 
   def vaccine_selected?(id)
