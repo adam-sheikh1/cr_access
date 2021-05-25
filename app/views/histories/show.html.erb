@@ -6,6 +6,8 @@
       <button type="button" class="btn primary-btn" data-action="vaccination#show_modal">
         Share Record
       </button>
+
+      <%= link_to 'Certificate', certificate_history_path(format: :pdf), class: 'btn primary-btn' if @cr_access.covid_vaccines.present? %>
     </div>
   </div>
 

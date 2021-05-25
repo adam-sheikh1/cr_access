@@ -2,6 +2,7 @@ class HistoriesController < ApplicationController
   before_action :set_vaccinations
   before_action :filter_ids, only: %i[share]
   before_action :fetch_vaccinations, only: %i[share]
+  before_action :set_cr_access, only: %i[certificate show]
 
   around_action :wrap_transaction, only: %i[share]
 
@@ -17,6 +18,20 @@ class HistoriesController < ApplicationController
       @show_modal = true
       @ids = params[:ids]&.join(',')
       render :show
+    end
+  end
+
+  def certificate
+    @first_dose = @cr_access.covid_vaccines.first
+    @second_dose = @cr_access.covid_vaccines.second
+
+    respond_to do |format|
+      format.pdf do
+        render pdf: 'certificate', page_size: 'A4',
+               template: 'histories/certificate.html.erb',
+               layout: 'pdf.html',
+               orientation: 'Portrait'
+      end
     end
   end
 
@@ -37,5 +52,9 @@ class HistoriesController < ApplicationController
   def fetch_vaccinations
     @vaccinations_to_share = current_user.owned_vaccinations.where(id: params[:ids])
     redirect_to history_path, alert: 'Please select a vaccine to continue' if @vaccinations_to_share.blank?
+  end
+
+  def set_cr_access
+    @cr_access = current_user.primary_cr_data
   end
 end

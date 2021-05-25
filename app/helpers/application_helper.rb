@@ -13,4 +13,11 @@ module ApplicationHelper
   def formatted_date(date)
     date.strftime('%m/%d/%y') rescue nil
   end
+
+  def formatted_gender(gender)
+    return if gender.blank?
+    return 'Female' if gender.downcase.include? 'f'
+
+    'Male'
+  end
 end

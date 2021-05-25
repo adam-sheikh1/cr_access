@@ -53,6 +53,9 @@ Rails.application.routes.draw do
 
   resource :history, only: %i[show] do
     post :share
+    collection do
+      get :certificate
+    end
   end
 
   root to: 'home#index'
