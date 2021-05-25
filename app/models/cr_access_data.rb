@@ -111,15 +111,15 @@ class CrAccessData < ApplicationRecord
   end
 
   def janssen_doses
-    vaccination_records.where('vaccine_name ILIKE ?', JANSSEN).order(:vaccination_date)
+    vaccination_records.where('vaccine_name ILIKE ?', "%#{JANSSEN}%").order(:vaccination_date)
   end
 
   def pfizer_doses
-    vaccination_records.where('vaccine_name ILIKE ?', PFIZER).order(:vaccination_date)
+    vaccination_records.where('vaccine_name ILIKE ?', "%#{PFIZER}%").order(:vaccination_date)
   end
 
   def moderna_doses
-    vaccination_records.where('vaccine_name ILIKE ?', MODERNA).order(:vaccination_date)
+    vaccination_records.where('vaccine_name ILIKE ?', "%#{MODERNA}%").order(:vaccination_date)
   end
 
   def covid_vaccines
