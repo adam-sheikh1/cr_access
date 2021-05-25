@@ -26,6 +26,7 @@ class HistoriesController < ApplicationController
     @second_dose = @cr_access.covid_vaccines.second
 
     respond_to do |format|
+      format.html
       format.pdf do
         render pdf: 'certificate', page_size: 'A4',
                template: 'histories/certificate.html.erb',
