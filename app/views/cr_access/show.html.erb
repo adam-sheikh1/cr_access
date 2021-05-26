@@ -11,6 +11,14 @@
           <% else %>
             <%= image_tag 'manage-clinic.png', class: 'profile-image' %>
           <% end %>
+
+          <% if @cr_data_user.prepmod? %>
+            <div data-controller='profile-picture'>
+              <%= simple_form_for @cr_access_data, url: update_pfp_cr_access_path(@cr_data_user), data: { profile_picture_target: 'form' } do |f| %>
+                <%= f.input :profile_picture, label: false, input_html: { class: 'mt-3 ml-3', data: { action: "change->profile-picture#update_pfp" } } %>
+              <% end %>
+            </div>
+          <% end %>
         </div>
         <h3 class='mt-2'><%= @cr_access_data.full_name %></h3>
       </div>

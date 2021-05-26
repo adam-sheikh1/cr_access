@@ -7,15 +7,15 @@ class User < ApplicationRecord
   validates :first_name, :last_name, :phone_number, :date_of_birth, presence: true
   validates :email, uniqueness: { case_sensitive: false }, presence: true
 
-  has_one_attached :profile_picture
-
   has_one :primary_data, -> { where(primary: true) }, class_name: 'CrDataUser'
   has_one :primary_cr_data, through: :primary_data, class_name: 'CrAccessData', source: :cr_access_data
 
   has_many :cr_groups, dependent: :destroy
   has_many :cr_data_users, dependent: :destroy
   has_many :all_cr_data, through: :cr_data_users, source: :cr_access_data
-  has_many :accepted_data_users, -> { where(data_type: CrDataUser::DATA_TYPES[:prepmod]).or(where(status: CrDataUser::STATUSES[:accepted])) }, class_name: 'CrDataUser'
+  has_many :accepted_data_users, lambda {
+    where(data_type: CrDataUser::DATA_TYPES[:prepmod]).or(where(status: CrDataUser::STATUSES[:accepted]))
+  }, class_name: 'CrDataUser'
   has_many :accepted_data, through: :accepted_data_users, source: :cr_access_data
   has_many :prepmod_data_users, -> { prepmod }, class_name: 'CrDataUser'
   has_many :invited_data_users, -> { invited }, class_name: 'CrDataUser'
@@ -26,8 +26,7 @@ class User < ApplicationRecord
   has_many :owned_vaccinations, through: :all_cr_data, source: :vaccination_records
   has_many :vaccination_users, dependent: :destroy
   has_many :accessible_vaccinations, through: :vaccination_users, source: :vaccination_record
-
-  validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }
+  has_many :accepted_cr_groups, -> { accepted }, through: :all_cr_data, source: :cr_access_groups
 
   accepts_nested_attributes_for :cr_access_data, allow_destroy: true
 

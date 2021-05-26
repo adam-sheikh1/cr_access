@@ -44,8 +44,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def fv_code; end
-
   def search_fv_code; end
 
   def search_fv

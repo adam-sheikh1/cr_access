@@ -1,0 +1,7 @@
+<div class='mt-4 mb-4'>
+  <%= render 'histories/history_table', vaccinations: @vaccinations %>
+
+  <div class='text-right'>
+    <%= link_to 'Back', cr_group_path(@cr_access_group.cr_group), class: 'btn primary-btn' %>
+  </div>
+</div>

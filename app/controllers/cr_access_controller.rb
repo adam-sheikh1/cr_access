@@ -1,7 +1,7 @@
 class CrAccessController < ApplicationController
-  skip_before_action :authenticate_user!, except: %i[show]
+  skip_before_action :authenticate_user!, except: %i[show unlink update_pfp]
 
-  before_action :set_cr_access_data, only: %i[show unlink]
+  before_action :set_cr_access_data, only: %i[show unlink update_pfp]
   before_action :set_user, only: %i[update success]
   before_action :set_patient_data, only: %i[new]
   before_action :fetch_cr_data, only: %i[new]
@@ -68,6 +68,14 @@ class CrAccessController < ApplicationController
     end
   end
 
+  def update_pfp
+    if @cr_access_data.update(profile_picture_params)
+      redirect_to cr_access_path(@cr_data_user), notice: 'Successfully updated profile picture'
+    else
+      redirect_to cr_access_path(@cr_data_user), alert: @cr_access_data.errors.full_messages.to_sentence
+    end
+  end
+
   private
 
   def set_user
@@ -80,7 +88,10 @@ class CrAccessController < ApplicationController
   end
 
   def set_cr_access_data
-    @cr_access_data = current_user.accepted_data.find_by(id: params[:id])
+    @cr_data_user = current_user.accepted_data_users.find_by(id: params[:id])
+    return redirect_to root_path, alert: 'Invalid Access' if @cr_data_user.blank?
+
+    @cr_access_data = @cr_data_user.cr_access_data
     redirect_to root_path, alert: 'Invalid Access' if @cr_access_data.blank?
   end
 
@@ -96,5 +107,9 @@ class CrAccessController < ApplicationController
     end
 
     @user = @cr_access_data.prepmod_user || @cr_access_data.build_prepmod_data.build_user
+  end
+
+  def profile_picture_params
+    params.require(:cr_access_data).permit(:profile_picture)
   end
 end

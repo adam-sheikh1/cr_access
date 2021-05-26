@@ -2,7 +2,6 @@
   <div class="table-block">
     <div class="table-heading">
       <span>You are authorized to access vaccination records of</span>
-      <%= link_to 'Share Info', share_info_user_path, class: 'btn default-btn' if current_user.primary_cr_data.present? %>
     </div>
     <div class="table-responsive">
       <table class="table table-hover">
@@ -21,7 +20,7 @@
               <td><%= info.cr_access_data.full_name %></td>
               <td><%= cr_status(info) %></td>
               <td>
-                <%= link_to 'View', cr_access_path(info.cr_access_data), class: 'btn btn-primary-small mr-2' if info.accepted? %>
+                <%= link_to 'View', cr_access_path(info), class: 'btn btn-primary-small mr-2' if info.accepted? %>
                 <%= link_to 'Accept', accept_info_user_url(token: info.invitation_token(current_user.id)), class: 'btn btn-outline-small mr-2', data: { confirm: 'Are you sure?' } unless info.accepted? %>
                 <%= link_to 'Remove', unlink_cr_access_path(info.cr_access_data), class: 'btn btn-outline-small', method: :delete, data: { confirm: 'Are you sure?' } if info.invited? %>
               </td>

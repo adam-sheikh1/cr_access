@@ -15,8 +15,8 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" href="#">
-          <% if current_user&.profile_picture&.attached? %>
-            <%= image_tag current_user.profile_picture, class: 'profile-image drop-shadow' %>
+          <% if current_user&.primary_cr_data&.profile_picture&.attached? %>
+            <%= image_tag current_user.primary_cr_data.profile_picture, class: 'profile-image drop-shadow' %>
           <% else %>
             <%= image_tag 'manage-clinic.png', class: 'profile-image drop-shadow' %>
           <% end %>
@@ -49,8 +49,8 @@
   <ul class="d-md-block d-lg-none d-xl-none user-xs">
     <li class="nav-item">
       <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <% if current_user&.profile_picture&.attached? %>
-          <%= image_tag current_user.profile_picture, class: 'profile-image drop-shadow' %>
+        <% if current_user&.primary_cr_data&.profile_picture&.attached? %>
+          <%= image_tag current_user.primary_cr_data.profile_picture, class: 'profile-image drop-shadow' %>
         <% else %>
           <%= image_tag 'manage-clinic.png', class: 'profile-image drop-shadow' %>
         <% end %>

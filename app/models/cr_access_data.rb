@@ -21,7 +21,7 @@ class CrAccessData < ApplicationRecord
   has_many :vaccination_records, dependent: :destroy
 
   validate :validate_no_setter_errors
-  validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }, presence: true
+  validates :profile_picture, blob: { content_type: %w[image/jpg image/jpeg image/png], size_range: 1..3.megabytes }
 
   after_save :set_fv_code
   after_create :fetch_vaccination_history

@@ -13,10 +13,6 @@ Rails.application.routes.draw do
   end
 
   resource :user do
-    member do
-      get :fv_code
-    end
-
     collection do
       get :vaccinations
       get :share_info
@@ -38,6 +34,7 @@ Rails.application.routes.draw do
     member do
       get :success
       delete :unlink
+      patch :update_pfp
     end
   end
 
@@ -57,6 +54,8 @@ Rails.application.routes.draw do
       get :certificate
     end
   end
+
+  resources :shared_records, only: %i[show]
 
   root to: 'home#index'
 end
