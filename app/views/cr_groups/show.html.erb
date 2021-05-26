@@ -44,14 +44,14 @@
         </tr>
       </thead>
       <tbody>
-        <% @cr_access_data.each do |cr_group| %>
+        <% @cr_access_groups.each do |cr_access_group| %>
           <tr>
             <td></td>
-            <td><%= cr_group.cr_access_data.full_name %></td>
-            <td><%= cr_status(cr_group) %></td>
+            <td><%= cr_access_group.cr_access_data.full_name %></td>
+            <td><%= cr_status(cr_access_group) %></td>
             <td>
-              <%= link_to 'View', shared_record_path(cr_group), class: 'btn btn-primary-small d-inline-flex' if cr_group.accepted? %>
-              <%= link_to 'Remove', remove_cr_group_path(@group, data_id: cr_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if @group.owner?(current_user) %>
+              <%= link_to 'View', shared_record_path(cr_access_group), class: 'btn btn-primary-small d-inline-flex' if cr_access_group.accepted? %>
+              <%= link_to 'Remove', remove_cr_group_path(@group, data_id: cr_access_group.cr_access_data), class: 'btn btn-primary-small d-inline-flex', method: :delete, data: { confirm: 'Are you sure?' } if @group.owner?(current_user) %>
             </td>
           </tr>
         <% end %>

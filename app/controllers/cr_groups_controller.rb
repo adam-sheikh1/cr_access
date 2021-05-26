@@ -7,7 +7,7 @@ class CrGroupsController < ApplicationController
   before_action :validate_type, only: %i[send_invite]
 
   def show
-    @cr_access_data = @group.cr_access_groups_by_user(current_user).includes(:cr_access_data)
+    @cr_access_groups = @group.cr_access_groups_by_user(current_user).includes(:cr_access_data)
     @qr_code = @group.generate_qr_code
   end
 
