@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     member do
       get :success
       delete :unlink
-      patch :update_pfp
+      patch :update_profile_picture
     end
   end
 

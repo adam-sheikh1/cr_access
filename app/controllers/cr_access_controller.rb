@@ -1,7 +1,7 @@
 class CrAccessController < ApplicationController
-  skip_before_action :authenticate_user!, except: %i[show unlink update_pfp]
+  skip_before_action :authenticate_user!, except: %i[show unlink update_profile_picture]
 
-  before_action :set_cr_access_data, only: %i[show unlink update_pfp]
+  before_action :set_cr_access_data, only: %i[show unlink update_profile_picture]
   before_action :set_user, only: %i[update success]
   before_action :set_patient_data, only: %i[new]
   before_action :fetch_cr_data, only: %i[new]
@@ -68,7 +68,7 @@ class CrAccessController < ApplicationController
     end
   end
 
-  def update_pfp
+  def update_profile_picture
     if @cr_access_data.update(profile_picture_params)
       redirect_to cr_access_path(@cr_data_user), notice: 'Successfully updated profile picture'
     else
