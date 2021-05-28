@@ -106,7 +106,7 @@ class CrAccessData < ApplicationRecord
       history = vaccination_records.find_or_initialize_by(external_id: params[:external_id])
       next if history.persisted?
 
-      history.update(params)
+      history.update(params.slice(*history.attributes.keys.map(&:to_sym)))
     end
   end
 

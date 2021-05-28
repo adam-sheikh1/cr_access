@@ -32,7 +32,7 @@
             <td><%= vaccine.vaccine_name %></td>
             <td></td>
             <td><%= vaccine.lot_number || '-' %></td>
-            <td></td>
+            <td><%= formatted_date(vaccine.vaccine_expiration_date) || '-' %></td>
             <td><%= vaccine.route || '-' %></td>
             <td><%= vaccine.site || '-' %></td>
             <td></td>

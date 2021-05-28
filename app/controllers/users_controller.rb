@@ -51,6 +51,12 @@ class UsersController < ApplicationController
     @fv_code.generate_qr_code if @fv_code
   end
 
+  def refresh_vaccinations
+    current_user.cr_access_data.map(&:fetch_vaccination_history)
+
+    redirect_back fallback_location: root_path, notice: 'Successfully refreshed vaccinations'
+  end
+
   private
 
   def user_params

@@ -3,6 +3,7 @@
   <div class='mt-4 mb-4'>
     <%= render 'history_table', vaccinations: @vaccinations, show_checkbox: true %>
     <div class='text-right'>
+      <%= link_to 'Refresh Vaccinations', refresh_vaccinations_user_path, method: :post, class: 'btn primary-btn' if current_user.cr_access_data.present? %>
       <%= link_to 'View/Print Certificate', certificate_history_path(format: :pdf), class: 'btn primary-btn' if @cr_access.covid_vaccines.present? %>
 
       <button type="button" class="btn primary-btn" data-action="vaccination#show_modal">

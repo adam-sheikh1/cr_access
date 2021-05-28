@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get :share_info
       post :send_info
       get :accept_info
+      post :refresh_vaccinations
     end
   end
 

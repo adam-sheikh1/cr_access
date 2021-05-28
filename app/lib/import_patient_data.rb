@@ -98,7 +98,10 @@ class ImportPatientData
   end
 
   def valid_interval?(vaccines, vaccine_name)
-    vaccination_dates = vaccines.map { |v| v.dig(:attributes, :vaccination_date) }.first(vaccine_name == JANSSEN ? 1 : 2)
+    vaccination_dates = vaccines.map { |v|
+      v.dig(:attributes, :vaccination_date) }.first(vaccine_name == JANSSEN ? 1 : 2).reject(&:blank?)
+    return false if vaccination_dates.blank?
+
     valid_interval = (DateTime.now - DateTime.parse(vaccination_dates.last)).to_i.abs >= FULLY_VACCINATE_INTERVAL
     return valid_interval if vaccine_name == JANSSEN
 
