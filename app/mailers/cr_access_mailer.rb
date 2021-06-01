@@ -7,4 +7,12 @@ class CrAccessMailer < ApplicationMailer
       mail to: @user.email, subject: 'Data Sharing Invitation'
     end
   end
+
+  def second_dose_reminder(cr_access_id)
+    @cr_access_data = CrAccessData.find(cr_access_id)
+
+    I18n.with_locale(locale) do
+      mail to: @cr_access_data.email, subject: 'Second Dose Reminder'
+    end
+  end
 end

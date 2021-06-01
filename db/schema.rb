@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_28_101233) do
+ActiveRecord::Schema.define(version: 2021_06_01_053813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -60,6 +60,9 @@ ActiveRecord::Schema.define(version: 2021_05_28_101233) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["created_at"], name: "index_cr_access_data_on_created_at"
+    t.date "second_dose_reminder_date"
+    t.datetime "reminder_sent_at"
+    t.date "second_dose_date"
   end
 
   create_table "cr_access_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

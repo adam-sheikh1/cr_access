@@ -44,6 +44,10 @@ class CrAccessData < ApplicationRecord
     permitted_params_list
   end
 
+  def self.second_dose_reminder
+    where('second_dose_reminder_date IS NOT NULL AND reminder_sent_at IS NULL AND second_dose_reminder_date <= ? ', Date.today)
+  end
+
   def gender=(sex)
     downcased_gender = sex.to_s.downcase
 

@@ -14,7 +14,9 @@ class ImportPatientData
       {
         primary: true,
         prepmod_patient_id: patient_attributes[:token],
-        vaccination_status: vaccination_status
+        vaccination_status: vaccination_status,
+        second_dose_reminder_date: second_dose_reminder_date,
+        second_dose_date: second_dose_date
       }
     )
   rescue StandardError
@@ -94,12 +96,13 @@ class ImportPatientData
 
   def vaccination_status_for(vaccine_name)
     vaccines = filter_vaccines(vaccine_name)
-    valid_interval?(vaccines, vaccine_name) && VACCINATION_STATUSES[:fully_vaccinated] || VACCINATION_STATUSES[:partially_vaccinated]
+    return VACCINATION_STATUSES[:fully_vaccinated] if valid_interval?(vaccines, vaccine_name)
+
+    VACCINATION_STATUSES[:partially_vaccinated]
   end
 
   def valid_interval?(vaccines, vaccine_name)
-    vaccination_dates = vaccines.map { |v|
-      v.dig(:attributes, :vaccination_date) }.first(vaccine_name == JANSSEN ? 1 : 2).reject(&:blank?)
+    vaccination_dates = vaccination_dates(vaccines).first(vaccine_name == JANSSEN ? 1 : 2).reject(&:blank?)
     return false if vaccination_dates.blank?
 
     valid_interval = (DateTime.now - DateTime.parse(vaccination_dates.last)).to_i.abs >= FULLY_VACCINATE_INTERVAL
@@ -107,6 +110,33 @@ class ImportPatientData
 
     vaccination_interval = vaccine_name == PFIZER ? PFIZER_INTERVAL : MODERNA_INTERVAL
     valid_interval && ((DateTime.parse(vaccination_dates.last) - DateTime.parse(vaccination_dates.first)).to_i.abs >= vaccination_interval)
+  end
+
+  def vaccination_dates(vaccines)
+    vaccines.map do |v|
+      v.dig(:attributes, :vaccination_date)
+    end
+  end
+
+  def second_dose_reminder_date
+    date = second_dose_date
+    return if date.blank?
+
+    date - 10.days
+  end
+
+  def second_dose_date
+    return if janssen?
+    return unless vaccine_count == 1
+
+    vaccine = vaccines_administered.first[:attributes]
+    return if vaccine.blank?
+
+    date = vaccine[:vaccination_date].to_date rescue nil
+    return if date.blank?
+    return date + PFIZER_INTERVAL.days if vaccine[:vaccine_name].downcase.include?(PFIZER)
+
+    date + MODERNA_INTERVAL.days
   end
 
   def janssen?

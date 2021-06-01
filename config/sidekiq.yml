@@ -1,0 +1,12 @@
+# config/sidekiq.yml
+
+---
+:concurrency: 1
+:queues:
+  - default
+  - mailers
+
+:schedule:
+  second_dose_reminder_job:
+    cron: '* * 0 * * *'
+    class: SecondDoseReminderJob
