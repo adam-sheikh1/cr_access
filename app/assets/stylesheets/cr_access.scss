@@ -946,9 +946,11 @@ body.cr_access {
       padding-bottom: 50px;
     }
     .modal-header {
-      padding: 4px ​40px;
+      padding: 4px 40px;
       background: #30DDE4;
       color: white;
+      display: flex;
+      align-items: center;
       .close {
         background: asset-url('modal-cross.svg') no-repeat left;
         width: 42px;
