@@ -624,12 +624,14 @@ body.cr_access {
         border-color: $bluish-light;
         border-top: 0;
         font-weight: 500;
+        text-align: center;
       }
 
       td {
         border: 0;
         font-weight: 300;
         vertical-align: middle;
+        text-align: center;
       }
 
       tr {
@@ -880,6 +882,74 @@ body.cr_access {
       color: #f22728;
     }
 
+  }
+
+  .select {
+    position: relative;
+    select {
+      border-radius: 4px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      box-shadow: none;
+      border: 1px solid #C9C9C9;
+      border-bottom-style: solid;
+      height: 32px;
+      width: 100%;
+      padding: 0px 15px;
+      font-size: 13px;
+      padding-right: 22px;
+      &.is_disabled {
+        background-color: #f9f9f9;
+        cursor: not-allowed;
+        color: #ababab;
+        padding: 0px 5px;
+        font-size: 14px;
+        line-height: 30px;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+    &:after {
+      content:"";
+      position: absolute;
+      z-index: 2;
+      height: 9px;
+      width: 11px;
+      bottom: 0;
+      right: 10px;
+      pointer-events: none;
+      background: asset-url('drop-arrow.svg') no-repeat center;
+      top: 32%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .vaccination-records {
+    .modal-body {
+      padding: 20px 40px;
+    }
+    .form-control {
+      border: 1px solid #C9C9C9;
+      height: 32px;
+      border-radius: 4px;
+    }
+    .default-btn {
+      height: 36px;
+    }
+    .modal-footer {
+      display: grid;
+      grid-gap: 10px;
+      grid-auto-flow: column;
+    }
+    .modal-header {
+      padding: 20px 40px;
+    }
+    .plus-btn {
+      background: asset-url('plus-icon.svg') no-repeat left;
+      font-size: 12px;
+    }
   }
 
   @media(min-width: 640px) {
