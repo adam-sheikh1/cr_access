@@ -1,7 +1,10 @@
 <div class="share-info">
   <div class="white-card">
     <div class="white-card-body">
-      <h2>Info</h2>
+      <div class="d-flex justify-content-between flex-wrap">
+        <h2>Info</h2>
+        <%= link_to 'View/Print Certificate', certificate_history_path(format: :pdf), class: 'btn primary-btn' if @cr_access_data.covid_vaccines.present? %>
+      </div>
       <hr>
 
       <div class="text-inline">
