@@ -32,6 +32,7 @@ class CrGroupsController < ApplicationController
 
   def new
     @group = CrGroup.new(user: current_user)
+    @groups = CrGroup.by_user(current_user).includes(:fv_code)
   end
 
   def edit; end
