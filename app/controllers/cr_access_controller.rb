@@ -70,10 +70,12 @@ class CrAccessController < ApplicationController
 
   def update_profile_picture
     if @cr_access_data.update(profile_picture_params)
-      redirect_to cr_access_path(@cr_data_user), notice: 'Successfully updated profile picture'
+      flash[:notice] = 'Successfully updated profile picture'
     else
-      redirect_to cr_access_path(@cr_data_user), alert: @cr_access_data.errors.full_messages.to_sentence
+      flash[:alert] = @cr_access_data.errors.full_messages.to_sentence
     end
+
+    redirect_to request.referrer
   end
 
   private

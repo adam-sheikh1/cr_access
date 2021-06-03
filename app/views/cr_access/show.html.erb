@@ -8,23 +8,36 @@
       <hr>
 
       <div class="text-inline">
-        <div class="profile-image">
-          <% if @cr_access_data.profile_picture.attached? %>
-            <%= image_tag @cr_access_data.profile_picture, class: 'profile-image' %>
-          <% else %>
-            <%= image_tag 'manage-clinic.png', class: 'profile-image' %>
-          <% end %>
+        <div class="d-flex flex-column">
+          <div class="profile-image mb-3">
+            <% if @cr_access_data.profile_picture.attached? %>
+              <%= image_tag @cr_access_data.profile_picture, class: 'profile-image' %>
+            <% else %>
+              <%= image_tag 'manage-clinic.png', class: 'profile-image' %>
+            <% end %>
+          </div>
 
-          <% if @cr_data_user.prepmod? %>
-            <div data-controller='profile-picture'>
-              <%= simple_form_for @cr_access_data, url: update_profile_picture_cr_access_path(@cr_data_user), data: { profile_picture_target: 'form' } do |f| %>
-                <%= f.input :profile_picture, label: false, input_html: { class: 'mt-3 ml-3', data: { action: "change->profile-picture#update_profile_picture" } } %>
+          <div data-controller='profile-picture'>
+            <% if @cr_data_user.prepmod? %>
+              <%= link_to 'Edit Photo', 'javascript:void(0);', data: { action: "click->profile-picture#click_file_input" } %>
+
+              <%= simple_form_for @cr_access_data, url: update_profile_picture_cr_access_path(@cr_data_user),
+                                  data: { profile_picture_target: 'form' } do |f| %>
+                <%= f.input :profile_picture, label: false,
+                            input_html: {
+                              class: 'd-none',
+                              data: {
+                                action: "change->profile-picture#update_profile_picture",
+                                profile_picture_target: 'input'
+                              }
+                            } %>
               <% end %>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
         </div>
         <h3 class='mt-2'><%= @cr_access_data.full_name %></h3>
       </div>
+
       <hr>
       <div class="row mt-4">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">

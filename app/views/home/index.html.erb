@@ -30,6 +30,21 @@
                   </div>
                 <% end %>
               </div>
+              <div data-controller='profile-picture'>
+                <%= link_to 'Edit Photo', 'javascript:void(0);', data: { action: "click->profile-picture#click_file_input" } %>
+
+                <%= simple_form_for @cr_access, url: update_profile_picture_cr_access_path(@cr_data_user),
+                                    data: { profile_picture_target: 'form' } do |f| %>
+                  <%= f.input :profile_picture, label: false,
+                              input_html: {
+                                class: 'd-none',
+                                data: {
+                                  action: "change->profile-picture#update_profile_picture",
+                                  profile_picture_target: 'input'
+                                }
+                              } %>
+                <% end %>
+              </div>
               <h3><%= @cr_access.full_name %></h3>
               <small class="text-muted"><%= @cr_access.vaccination_status&.titleize %></small>
               <div class="mt-3">
