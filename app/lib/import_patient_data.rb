@@ -129,7 +129,7 @@ class ImportPatientData
     return if janssen?
     return unless vaccine_count == 1
 
-    vaccine = vaccines_administered.first[:attributes]
+    vaccine = vaccines_administered.first&.dig(:attributes)
     return if vaccine.blank?
 
     date = vaccine[:vaccination_date].to_date rescue nil
