@@ -331,10 +331,6 @@ label {
 .img-thumbnail {
   border-color: $purple;
   width: 18.75rem;
-
-  &.non-vaccinated {
-    opacity: 0.5;
-  }
 }
 
 .text-muted {

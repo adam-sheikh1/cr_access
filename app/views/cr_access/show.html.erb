@@ -116,7 +116,7 @@
         <h3 class="mb-3">QR Code</h3>
         <div class='text-inline'>
           <div data-controller='qr-code'>
-            <%= qr_code_image @qr_code, klass: "img-thumbnail #{qr_code_class(@cr_access_data)}" %>
+            <%= qr_code_image @qr_code, klass: "img-thumbnail" %>
           </div>
 
           <% if @fv_code.present? %>
