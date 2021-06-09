@@ -112,6 +112,12 @@ class CrAccessController < ApplicationController
   end
 
   def profile_picture_params
-    params.require(:cr_access_data).permit(:profile_picture)
+    picture_params = params.require(:cr_access_data).permit(:profile_picture)
+    return picture_params unless picture_params[:profile_picture].content_type == 'image/heic'
+
+    image = MiniMagick::Image.open(picture_params[:profile_picture].tempfile.path)
+    image.format "jpg"
+    picture_params[:profile_picture].tempfile = image.tempfile
+    picture_params
   end
 end
