@@ -1,0 +1,65 @@
+<div class='mt-4 mb-4 vaccination-records'>
+  <div class="table-block">
+    <div class="table-heading">
+      <span>Received Vaccination Requests</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Relationship</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @received_vaccinations.each do |request| %>
+            <tr>
+              <td><%= request.data %></td>
+              <td><%= request.status.titleize %></td>
+              <td><%= request.relationship.titleize %></td>
+              <td><%= formatted_date(request.created_at) %></td>
+              <td><%= link_to 'Accept', accept_request_path(request), remote: true, data: { confirm: accept_message(request) } if request.pending? %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal fade accept-request-modal">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="share_certificate_title1">Enter 2FA Code</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <%= form_with url: accept_request_requests_path, local: false do |f| %>
+          <%= f.hidden_field :id, class: 'request-id' %>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col">
+                <%= f.label :two_fa_code, 'A code has been sent to your email, enter the code received at your Email' %>
+                <%= f.text_field :two_fa_code, class: 'form-control', maxlength: 8 %>
+                <small class='text-danger ml-1 two-fa-error'></small>
+                <div class='text-right'>
+                  <small>Didn't receive code? Click <%= link_to 'here', resend_2fa_requests_path, remote: true, method: :post %> to resend</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <%= f.submit 'Accept', class: 'btn primary-btn' %>
+            <button type="button" class="btn default-btn" data-dismiss="modal">Close</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+

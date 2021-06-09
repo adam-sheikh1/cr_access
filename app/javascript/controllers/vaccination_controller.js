@@ -1,21 +1,12 @@
 import { Controller } from 'stimulus'
 
 export default class extends Controller {
-  static targets = ['showModal', 'modal', 'formField', 'append', 'vaccineCheckbox', 'ids'];
+  static targets = ['showModal', 'modal', 'formField', 'append', 'vaccineCheckbox', 'ids', 'form'];
 
   connect() {
     if ($(this.showModalTarget).val() === 'true') {
       $(this.modalTarget).modal();
     }
-  }
-
-  add_field(e) {
-    e.preventDefault();
-
-    var to_append = $(this.formFieldTargets).last().clone().find("input, select").val('').end();
-    to_append.find('.field_with_errors').removeClass('field_with_errors');
-    to_append.find('small').text('');
-    $(this.appendTarget).append(to_append);
   }
 
   reset(e) {
@@ -35,6 +26,13 @@ export default class extends Controller {
       $(this.idsTarget).val($(this.vaccineCheckboxTargets).filter(':checked').map(function () {
         return $(this).val();
       }).toArray());
+    }
+  }
+
+  submit(e) {
+    if (!confirm('You have asked for your vaccination record to be shared with the email addresses entered. Please confirm agreement with this statement: I understand that my personal health information specified will be securely sent to the above mentioned party.')) {
+      e.preventDefault();
+      this.reset(e);
     }
   }
 }

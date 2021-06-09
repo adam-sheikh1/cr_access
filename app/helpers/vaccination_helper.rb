@@ -7,18 +7,18 @@ module VaccinationHelper
     [name, index].join('_')
   end
 
-  def field_with_errors(form, name, index, required: false)
+  def field_with_errors(form, name, required: false)
     [
-      form.text_field(name, id: indexed_id(name, index), class: 'form-control', required: required,
+      form.text_field(name, class: 'form-control', required: required,
                             autocomplete: 'off'),
       error_tag(form, name)
     ].join(' ').html_safe
   end
 
-  def select_with_errors(form, name, options, index, required: false)
+  def select_with_errors(form, name, options, required: false)
     [
       form.select(name, options, { include_blank: 'Select' },
-                  { id: indexed_id(name, index), class: 'form-control', required: required, autocomplete: 'off' }),
+                  { class: 'form-control', required: required, autocomplete: 'off' }),
       error_tag(form, name)
     ].join(' ').html_safe
   end
@@ -32,6 +32,6 @@ module VaccinationHelper
   end
 
   def relationship_options
-    VaccinationShare::RELATION_SHIPS.deep_transform_keys { |k| k.to_s.humanize }.to_a
+    ShareRequest::RELATION_SHIPS.deep_transform_keys { |k| k.to_s.humanize }.to_a
   end
 end

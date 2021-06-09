@@ -1,0 +1,5 @@
+<% if @verified %>
+  location.reload();
+<% else %>
+  $('.two-fa-error').text('Invalid code entered');
+<% end %>

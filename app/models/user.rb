@@ -26,9 +26,15 @@ class User < ApplicationRecord
   has_many :owned_vaccinations, through: :all_cr_data, source: :vaccination_records
   has_many :vaccination_users, dependent: :destroy
   has_many :accessible_vaccinations, through: :vaccination_users, source: :vaccination_record
+  has_many :shared_cr_data, through: :accessible_vaccinations, source: :cr_access_data
   has_many :accepted_cr_groups, -> { accepted }, through: :all_cr_data, source: :cr_access_groups
+  has_many :share_requests, dependent: :destroy
+  has_many :incoming_requests, class_name: 'ShareRequest', foreign_key: :recipient_id
 
   accepts_nested_attributes_for :cr_access_data, allow_destroy: true
+  accepts_nested_attributes_for :share_requests, allow_destroy: true
+
+  TWO_FA_FREQUENCY = 5
 
   def vaccinated?
     cr_access_data.any?(&:fully_vaccinated?)
@@ -62,5 +68,27 @@ class User < ApplicationRecord
     return find_by_email(params[:data]) if params[:type] == EMAIL
 
     find_by_phone_number(params[:data])
+  end
+
+  def generate_2fa(resend: false)
+    return false if !resend && two_fa_code.present? && last_2fa_interval < TWO_FA_FREQUENCY + 1
+
+    update(two_fa_code: random_code, two_fa_sent_at: Time.now)
+    UserMailer.send_2fa_mail(id).deliver_later
+    true
+  end
+
+  def last_2fa_interval
+    ((Time.now - two_fa_sent_at) / 1.minute).ceil
+  end
+
+  def verify_2fa(code)
+    two_fa_code == code
+  end
+
+  private
+
+  def random_code
+    Array.new(8) { [*'A'..'Z', *'0'..'9'].sample }.join
   end
 end

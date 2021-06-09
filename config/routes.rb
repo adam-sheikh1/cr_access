@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get :share_info
       post :send_info
       get :accept_info
+      get :list_vaccinations
       post :refresh_vaccinations
     end
   end
@@ -51,12 +52,25 @@ Rails.application.routes.draw do
 
   resource :history, only: %i[show] do
     post :share
+
     collection do
       get :certificate
+      get :view_records
     end
   end
 
   resources :shared_records, only: %i[show]
+
+  resources :requests, only: %i[index] do
+    member do
+      get :accept
+    end
+
+    collection do
+      post :accept_request
+      post :resend_2fa
+    end
+  end
 
   root to: 'home#index'
 end

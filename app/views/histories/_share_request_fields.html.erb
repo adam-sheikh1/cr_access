@@ -1,0 +1,14 @@
+<div class="row mt-2 nested-fields" data-vaccination-target='formField'>
+  <%= s.hidden_field :id %>
+  <div class="col">
+    <div class="select">
+      <%= select_with_errors(s, :relationship, relationship_options) %>
+    </div>
+  </div>
+  <div class="col">
+    <%= field_with_errors(s, :data, required: true) %>
+  </div>
+  <div class="col">
+    <%= field_with_errors(s, :data_confirmation, required: true) %>
+  </div>
+</div>

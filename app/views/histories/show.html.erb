@@ -15,7 +15,7 @@
   <div class="modal fade" data-vaccination-target='modal'>
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
       <div class="modal-content">
-        <%= form_with url: share_history_path, scope: 'vaccination_share' do |f| %>
+        <%= form_for current_user, url: share_history_path, method: :post, data: { action: 'submit->vaccination#submit' } do |f| %>
           <%= hidden_field_tag :ids, @ids, data: { vaccination_target: 'ids' } %>
           <div class="modal-header">
             <h5 class="modal-title" id="share_certificate_title">Sharing Selected Vaccination Records</h5>
@@ -34,35 +34,15 @@
               <div class="col">
                 <%= label_tag :data_confirmation, 'Confirm Email/Phone *' %>
               </div>
-              <div class="col">
-                <%= label_tag :cr_access_no, 'CRAccess#' %>
-              </div>
             </div>
             <div data-vaccination-target='append'>
-              <% @vaccination_shares.each_with_index do |share, index| %>
-                <%= fields_for 'share[]', share do |s| %>
-                  <div class="row mt-2" data-vaccination-target='formField'>
-                    <div class="col">
-                      <div class="select">
-                        <%= select_with_errors(s, :relation_ship, relationship_options, index) %>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <%= field_with_errors(s, :data, index, required: true) %>
-                    </div>
-                    <div class="col">
-                      <%= field_with_errors(s, :data_confirmation, index, required: true) %>
-                    </div>
-                    <div class="col">
-                      <%= field_with_errors(s, :cr_access_no, index) %>
-                    </div>
-                  </div>
-                <% end %>
+              <%= f.fields_for :share_requests, @vaccination_share do |s| %>
+                <%= render 'share_request_fields', s: s %>
               <% end %>
-            </div>
 
-            <div class='text-right'>
-              <%= link_to 'Add Another', '#', class: 'btn plus-btn', data: { action: 'vaccination#add_field' } %>
+              <div class='text-right'>
+                <%= link_to_add_association 'Add Another', f, :share_requests, class: 'btn plus-btn', form_name: :s %>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -73,5 +53,54 @@
         <% end %>
       </div>
     </div>
+  </div>
+
+  <div class="modal fade vaccination-modal">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="share_certificate_title1">Record Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-block">
+  <div class="table-heading">
+    <span>Shared Vaccinations</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Relationship</th>
+          <th>Date</th>
+          <th>Accepted At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @shared_vaccinations.each do |request| %>
+          <tr>
+            <td><%= request.data %></td>
+            <td><%= request.status.titleize %></td>
+            <td><%= request.relationship.titleize %></td>
+            <td><%= formatted_date(request.created_at) %></td>
+            <td><%= time_ago_in_words(request.accepted_at) if request.accepted_at.present? %></td>
+            <td><%= link_to 'View Records', view_records_history_path(request_id: request.id), remote: true %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>

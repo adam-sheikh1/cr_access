@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_cr_access_data, only: %i[show edit]
+  before_action :set_cr_data, only: %i[list_vaccinations]
   before_action :set_share_data, only: %i[send_info]
 
   def show
@@ -9,7 +10,12 @@ class UsersController < ApplicationController
 
   def vaccinations
     @cr_access_info = CrDataUser.by_user(current_user).includes(:cr_access_data)
+    @shared_cr_data = current_user.shared_cr_data.distinct
     @groups = CrGroup.by_user(current_user).includes(:fv_code)
+  end
+
+  def list_vaccinations
+    @vaccinations = current_user.accessible_vaccinations.by_cr_access_data(@cr_data)
   end
 
   def share_info; end
@@ -79,5 +85,12 @@ class UsersController < ApplicationController
 
     @cr_access_data = current_user.primary_cr_data
     redirect_to share_info_user_path, alert: 'Invalid Access.' if @cr_access_data.blank?
+  end
+
+  def set_cr_data
+    @cr_data = current_user.shared_cr_data.find_by(id: params[:cr_access_id])
+    return if @cr_data.present?
+
+    redirect_to vaccinations_user_path, alert: 'Invalid Access'
   end
 end

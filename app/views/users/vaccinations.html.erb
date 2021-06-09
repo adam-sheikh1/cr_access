@@ -1,7 +1,7 @@
 <div class='mt-4 mb-4'>
   <div class="table-block">
     <div class="table-heading">
-      <span>You are authorized to access vaccination records of</span>
+      <span>You are linked with the following records</span>
     </div>
     <div class="table-responsive">
       <table class="table table-hover">
@@ -23,6 +23,36 @@
                 <%= link_to 'View', cr_access_path(info), class: 'btn btn-primary-small mr-2' if info.accepted? %>
                 <%= link_to 'Accept', accept_info_user_url(token: info.invitation_token(current_user.id)), class: 'btn btn-outline-small mr-2', data: { confirm: 'Are you sure?' } unless info.accepted? %>
                 <%= link_to 'Remove', unlink_cr_access_path(info.cr_access_data), class: 'btn btn-outline-small', method: :delete, data: { confirm: 'Are you sure?' } if info.invited? %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="table-block vaccination-records">
+    <div class="table-heading">
+      <span>You are authorized to access vaccination records of</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th scope="col">Name</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @shared_cr_data.each do |info| %>
+            <tr>
+              <td></td>
+              <td><%= info.full_name %></td>
+              <td>
+                <%= link_to 'View Vaccinations', list_vaccinations_user_path(cr_access_id: info.id), class: 'btn btn-primary-small mr-2' %>
               </td>
             </tr>
           <% end %>

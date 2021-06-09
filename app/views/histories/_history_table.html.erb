@@ -2,44 +2,8 @@
   <div class="table-heading">
     <span>Vaccination History</span>
   </div>
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Date</th>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Lot No.</th>
-          <th>Expiration Date</th>
-          <th>Route</th>
-          <th>Site</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% vaccinations.each do |vaccine| %>
-          <tr>
-            <td>
-              <% if local_assigns[:show_checkbox] %>
-                <div class="custom-control custom-checkbox mr-sm-2">
-                  <%= check_box_tag checkbox_name(vaccine), vaccine.id, vaccine_selected?(vaccine.id), { class: 'custom-control-input', data: { vaccination_target: 'vaccineCheckbox' } } %>
-                  <%= label_tag '', nil, class: 'custom-control-label', for: checkbox_name(vaccine) %>
-                </div>
-              <% end %>
-            </td>
-            <td><%= formatted_date(vaccine.vaccination_date) || '-' %></td>
-            <td><%= vaccine.vaccine_name %></td>
-            <td></td>
-            <td><%= vaccine.lot_number || '-' %></td>
-            <td><%= formatted_date(vaccine.vaccine_expiration_date) || '-' %></td>
-            <td><%= vaccine.route || '-' %></td>
-            <td><%= vaccine.site || '-' %></td>
-            <td></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+
+
+  <%= render 'histories/vaccination_records', vaccinations: vaccinations, show_checkbox: local_assigns[:show_checkbox] %>
 </div>
 
