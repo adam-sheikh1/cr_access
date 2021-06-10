@@ -94,7 +94,7 @@
           <tr>
             <td><%= request.data %></td>
             <td><%= request.status.titleize %></td>
-            <td><%= request.relationship.titleize %></td>
+            <td><%= request.relationship&.titleize %></td>
             <td><%= formatted_date(request.created_at) %></td>
             <td><%= time_ago_in_words(request.accepted_at) if request.accepted_at.present? %></td>
             <td><%= link_to 'View Records', view_records_history_path(request_id: request.id), remote: true %></td>

@@ -32,6 +32,6 @@ module VaccinationHelper
   end
 
   def relationship_options
-    ShareRequest::RELATION_SHIPS.deep_transform_keys { |k| k.to_s.humanize }.to_a
+    ShareRequest::RELATION_SHIPS.keys.map { |k| [ShareRequest::RELATION_SHIPS[k], k] }
   end
 end

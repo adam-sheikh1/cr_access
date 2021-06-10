@@ -1,0 +1,8 @@
+<p>
+  Hi <%= @recipient.first_name %>!
+</p>
+
+<p>
+  <%= @request.user.full_name %> has share their vaccination record(s) with you
+  Please click <%= link_to 'here', requests_url %> to accept them.
+</p>

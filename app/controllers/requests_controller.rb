@@ -1,6 +1,5 @@
 class RequestsController < ApplicationController
   before_action :set_request, only: %i[accept accept_request]
-  before_action :validate_2fa, only: :accept_request
 
   def index
     @received_vaccinations = current_user.incoming_requests
@@ -28,9 +27,5 @@ class RequestsController < ApplicationController
     return if @request&.pending?
 
     redirect_to requests_path, alert: 'Invalid Access'
-  end
-
-  def validate_2fa
-
   end
 end

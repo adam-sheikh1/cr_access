@@ -19,7 +19,7 @@
             <tr>
               <td><%= request.data %></td>
               <td><%= request.status.titleize %></td>
-              <td><%= request.relationship.titleize %></td>
+              <td><%= request.relationship&.titleize %></td>
               <td><%= formatted_date(request.created_at) %></td>
               <td><%= link_to 'Accept', accept_request_path(request), remote: true, data: { confirm: accept_message(request) } if request.pending? %></td>
             </tr>

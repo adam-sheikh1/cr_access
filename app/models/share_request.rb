@@ -1,4 +1,6 @@
 class ShareRequest < ApplicationRecord
+  include Encodable
+
   belongs_to :user
   belongs_to :recipient, class_name: 'User', foreign_key: 'recipient_id', optional: true
 
@@ -11,10 +13,14 @@ class ShareRequest < ApplicationRecord
 
   before_save :set_recipient
 
+  after_create :notify_recipient
+
   RELATION_SHIPS = {
-    father: 'father',
-    mother: 'mother',
-    child: 'child'
+    parent_guardian: 'Parent/Guardian',
+    child: 'Child/Dependent',
+    spouse: 'Spouse',
+    employer: 'Employer',
+    other: 'Other'
   }.freeze
 
   STATUSES = {
@@ -72,5 +78,9 @@ class ShareRequest < ApplicationRecord
 
   def set_recipient
     self.recipient = find_recipient
+  end
+
+  def notify_recipient
+    RequestMailer.notify(id).deliver_later
   end
 end

@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     collection do
       post :accept_request
       post :resend_2fa
+      get :confirmation
     end
   end
 
