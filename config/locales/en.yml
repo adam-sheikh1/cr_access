@@ -7,7 +7,7 @@ en:
             profile_picture:
               content_type: 'must be an image (png, jpg or jpeg)'
               max_size_error: 'must be less than 3 MB'
-              min_size_error: 'must be greater than 1 Mb'
+              min_size_error: 'must be greater than 0 MB'
 
   views:
     devise:

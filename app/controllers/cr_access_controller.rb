@@ -112,6 +112,14 @@ class CrAccessController < ApplicationController
   end
 
   def profile_picture_params
-    params.require(:cr_access_data).permit(:profile_picture)
+    picture_params = params.require(:cr_access_data).permit(:profile_picture)
+    return picture_params unless picture_params[:profile_picture].content_type == 'image/heic'
+
+    picture_params[:profile_picture].tempfile = transform_image_format_service(picture_params[:profile_picture]).call("jpg")
+    picture_params
+  end
+
+  def transform_image_format_service(image)
+    @transform_image_format_service ||= TransformImageFormatService.new(image.tempfile)
   end
 end
