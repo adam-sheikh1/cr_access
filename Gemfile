@@ -63,7 +63,7 @@ gem 'devise', '~> 4.7'
 gem 'jwt'
 gem 'rqrcode'
 gem 'httparty'
-gem 'dotenv-rails'
+gem 'dotenv-rails', groups: [:development, :test]
 gem 'simple_form'
 gem 'ransack'
 gem 'aws-sdk-s3'
