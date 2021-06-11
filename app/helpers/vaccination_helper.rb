@@ -32,6 +32,6 @@ module VaccinationHelper
   end
 
   def relationship_options
-    ShareRequest::RELATION_SHIPS.keys.map { |k| [ShareRequest::RELATION_SHIPS[k], k] }
+    ShareRequest::RELATIONSHIPS.keys.map { |k| [ShareRequest::RELATIONSHIPS[k], k] }
   end
 end

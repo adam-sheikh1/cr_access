@@ -18,7 +18,7 @@ class ShareRequest < ApplicationRecord
 
   after_create :notify_recipient
 
-  RELATION_SHIPS = {
+  RELATIONSHIPS = {
     parent_guardian: 'Parent/Guardian',
     child: 'Child/Dependent',
     spouse: 'Spouse',
@@ -38,7 +38,7 @@ class ShareRequest < ApplicationRecord
 
   enum status: STATUSES
   enum request_type: TYPES
-  enum relationship: RELATION_SHIPS
+  enum relationship: RELATIONSHIPS
 
   def vaccination_records
     VaccinationRecord.where(id: vaccination_record_ids)

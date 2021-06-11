@@ -89,6 +89,6 @@ class User < ApplicationRecord
   private
 
   def random_code
-    Array.new(8) { [*'A'..'Z', *'0'..'9'].sample }.join
+    SecureRandom.alphanumeric(8).upcase
   end
 end
