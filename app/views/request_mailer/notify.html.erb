@@ -1,8 +1,27 @@
-<p>
-  Hi <%= @recipient.first_name %>!
-</p>
+<% if @request.user? %>
+  <p>
+    Hi <%= @recipient.first_name %>!
+  </p>
 
-<p>
-  <%= @request.user.full_name %> has share their vaccination record(s) with you
-  Please click <%= link_to 'here', requests_url %> to accept them.
-</p>
+  <p>
+    <%= @request.user.full_name %> has share their vaccination record(s) with you
+    Please click <%= link_to 'here', requests_url %> to accept them.
+  </p>
+<% else %>
+  <p>
+    Hi!
+  </p>
+
+  <p>
+    <%= @request.user.full_name %> has share their vaccination record(s) with you
+    Please click the link below to View them
+  </p>
+  <p>
+    <small>By Clicking the link below I affirm that I am the intended recipient of <%= @request.user.full_name %>'s
+      vaccination
+      record.</small>
+  </p>
+  <p>
+    <%= link_to 'Click here to view records', records_requests_url(token: @request.encoded_token), target: '_blank' %>
+  </p>
+<% end %>

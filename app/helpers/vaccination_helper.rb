@@ -7,10 +7,10 @@ module VaccinationHelper
     [name, index].join('_')
   end
 
-  def field_with_errors(form, name, required: false)
+  def field_with_errors(form, name, required: false, data: {})
     [
       form.text_field(name, class: 'form-control', required: required,
-                            autocomplete: 'off'),
+                            autocomplete: 'off', data: data),
       error_tag(form, name)
     ].join(' ').html_safe
   end

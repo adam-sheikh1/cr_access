@@ -29,10 +29,10 @@
                 <%= label_tag :relation_ship, 'Relationship' %>
               </div>
               <div class="col">
-                <%= label_tag :data, 'Email/Phone *' %>
+                <%= label_tag :data, 'Email *' %>
               </div>
               <div class="col">
-                <%= label_tag :data_confirmation, 'Confirm Email/Phone *' %>
+                <%= label_tag :data_confirmation, 'Confirm Email *' %>
               </div>
             </div>
             <div data-vaccination-target='append'>
@@ -46,7 +46,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <%= f.submit 'Send', class: 'btn primary-btn' %>
+            <%= f.submit 'Send', class: 'btn primary-btn', data: { disable_with: false } %>
             <button type="button" class="btn primary-btn" data-action="vaccination#reset">Reset</button>
             <button type="button" class="btn default-btn" data-dismiss="modal">Close</button>
           </div>

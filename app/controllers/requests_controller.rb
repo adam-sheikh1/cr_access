@@ -1,5 +1,10 @@
 class RequestsController < ApplicationController
   before_action :set_request, only: %i[accept accept_request]
+  before_action :set_request_by_token, only: %i[records]
+
+  skip_before_action :authenticate_user!, only: %i[records]
+
+  layout 'cr_access', only: 'records'
 
   def index
     @received_vaccinations = current_user.incoming_requests
@@ -20,6 +25,10 @@ class RequestsController < ApplicationController
     @request.mark_accepted
   end
 
+  def records
+    @vaccinations = @request.vaccination_records
+  end
+
   private
 
   def set_request
@@ -27,5 +36,12 @@ class RequestsController < ApplicationController
     return if @request&.pending?
 
     redirect_to requests_path, alert: 'Invalid Access'
+  end
+
+  def set_request_by_token
+    @request = ShareRequest.find_by_token(params[:token])
+    return if @request.present?
+
+    redirect_to new_user_session_path, alert: 'Token is invalid/expired'
   end
 end

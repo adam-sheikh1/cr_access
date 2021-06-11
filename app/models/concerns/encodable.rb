@@ -26,6 +26,12 @@ module Encodable
       payload[:exp] = Time.now.to_i + const_get('TTL')
       JWT.encode(payload, SECRET_TOKEN, ALGORITHM)
     end
+
+    def find_by_token(token)
+      find_by(id: decoded_id(token))
+    rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
+      nil
+    end
   end
 
   def encoded_token(payload: { id: id })

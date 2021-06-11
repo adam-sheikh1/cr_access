@@ -4,7 +4,7 @@ class RequestMailer < ApplicationMailer
     @recipient = @request.recipient
 
     I18n.with_locale(locale) do
-      mail to: @recipient.email, subject: 'Vaccination Records'
+      mail to: @recipient&.email || @request.data, subject: 'Vaccination Records'
     end
   end
 end

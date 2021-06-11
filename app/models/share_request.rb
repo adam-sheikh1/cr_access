@@ -7,11 +7,14 @@ class ShareRequest < ApplicationRecord
   attr_accessor :data_confirmation
 
   validate :valid_data, if: -> { data_confirmation.present? }
-  validate :validate_own_email, :validate_recipient
+  validate :validate_own_email
+
+  validates_format_of :data, with: Devise::email_regexp
+  validates_format_of :data_confirmation, with: Devise::email_regexp
 
   validates_presence_of :data
 
-  before_save :set_recipient
+  before_save :set_recipient, :set_type
 
   after_create :notify_recipient
 
@@ -65,15 +68,8 @@ class ShareRequest < ApplicationRecord
     errors.add(:data_confirmation, 'cannot be shared to yourself')
   end
 
-  def validate_recipient
-    return unless find_recipient.blank?
-
-    errors.add(:data, 'is invalid')
-    errors.add(:data_confirmation, 'is invalid')
-  end
-
   def find_recipient
-    @find_recipient ||= User.find_by(email: data) || User.find_by(phone_number: data)
+    @find_recipient ||= User.find_by(email: data)
   end
 
   def set_recipient
@@ -82,5 +78,11 @@ class ShareRequest < ApplicationRecord
 
   def notify_recipient
     RequestMailer.notify(id).deliver_later
+  end
+
+  def set_type
+    return self.request_type = TYPES[:user] if find_recipient.present?
+
+    self.request_type = TYPES[:email]
   end
 end

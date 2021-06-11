@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="col">
-    <%= field_with_errors(s, :data, required: true) %>
+    <%= field_with_errors(s, :data, required: true, data: { vaccination_target: 'data' }) %>
   </div>
   <div class="col">
     <%= field_with_errors(s, :data_confirmation, required: true) %>
