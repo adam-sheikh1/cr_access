@@ -32,6 +32,8 @@ module VaccinationHelper
   end
 
   def relationship_options
-    ShareRequest::RELATIONSHIPS.keys.map { |k| [ShareRequest::RELATIONSHIPS[k], k] }
+    ShareRequest::RELATIONSHIPS.map do |key|
+      [I18n.t("activerecord.attributes.share_request.relationships.#{key}"), key]
+    end
   end
 end

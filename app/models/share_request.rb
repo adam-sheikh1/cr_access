@@ -10,7 +10,7 @@ class ShareRequest < ApplicationRecord
   validate :validate_own_email
 
   validates_format_of :data, with: Devise::email_regexp
-  validates_format_of :data_confirmation, with: Devise::email_regexp
+  validates_format_of :data_confirmation, with: Devise::email_regexp, if: -> { data_confirmation.present? }
 
   validates_presence_of :data
 
@@ -18,13 +18,7 @@ class ShareRequest < ApplicationRecord
 
   after_create :notify_recipient
 
-  RELATIONSHIPS = {
-    parent_guardian: 'Parent/Guardian',
-    child: 'Child/Dependent',
-    spouse: 'Spouse',
-    employer: 'Employer',
-    other: 'Other'
-  }.freeze
+  RELATIONSHIPS = %i[parent_guardian child spouse employer other].freeze
 
   STATUSES = {
     pending: 'pending',
@@ -32,8 +26,8 @@ class ShareRequest < ApplicationRecord
   }.freeze
 
   TYPES = {
-    user: 'user',
-    email: 'email'
+    registered: 'registered',
+    not_registered: 'not_registered'
   }.freeze
 
   enum status: STATUSES
@@ -49,7 +43,8 @@ class ShareRequest < ApplicationRecord
 
     accepted!
     recipient.accessible_vaccinations << vaccination_records.where.not(id: recipient.accessible_vaccination_ids)
-    recipient.update(two_fa_code: nil, accepted_at: DateTime.now)
+    recipient.update_attribute('two_fa_code', nil)
+    update_attribute('accepted_at', DateTime.now)
   end
 
   private
@@ -81,8 +76,8 @@ class ShareRequest < ApplicationRecord
   end
 
   def set_type
-    return self.request_type = TYPES[:user] if find_recipient.present?
+    return self.request_type = TYPES[:registered] if find_recipient.present?
 
-    self.request_type = TYPES[:email]
+    self.request_type = TYPES[:not_registered]
   end
 end

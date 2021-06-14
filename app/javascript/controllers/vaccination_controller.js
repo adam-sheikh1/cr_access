@@ -33,7 +33,7 @@ export default class extends Controller {
     var emails = $(this.dataTargets).map(function () {
       return $(this).val()
     }).toArray().join(', ');
-    if (!confirm(['You have asked for your vaccination record to be shared with', emails, 'Please confirm agreement with this statement: I understand that my personal health information specified will be securely sent to the above mentioned party.'].join(' '))) {
+    if (!confirm(['You have asked for your vaccination record to be shared with ', emails, '. Please confirm agreement with this statement: I understand that my personal health information specified will be securely sent to the above mentioned party.'].join(''))) {
       e.preventDefault();
       this.reset(e);
     }

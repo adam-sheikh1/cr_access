@@ -15,7 +15,7 @@
   <div class="modal fade" data-vaccination-target='modal'>
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
       <div class="modal-content">
-        <%= form_for current_user, url: share_history_path, method: :post, data: { action: 'submit->vaccination#submit' } do |f| %>
+        <%= form_with model: current_user, url: share_history_path, method: :post, data: { action: 'submit->vaccination#submit' } do |f| %>
           <%= hidden_field_tag :ids, @ids, data: { vaccination_target: 'ids' } %>
           <div class="modal-header">
             <h5 class="modal-title" id="share_certificate_title">Sharing Selected Vaccination Records</h5>
@@ -94,7 +94,7 @@
           <tr>
             <td><%= request.data %></td>
             <td><%= request.status.titleize %></td>
-            <td><%= request.relationship&.titleize %></td>
+            <td><%= request.humanize_enum('relationship') %></td>
             <td><%= formatted_date(request.created_at) %></td>
             <td><%= time_ago_in_words(request.accepted_at) if request.accepted_at.present? %></td>
             <td><%= link_to 'View Records', view_records_history_path(request_id: request.id), remote: true %></td>

@@ -1,4 +1,4 @@
-class RequestsController < ApplicationController
+class SharedRequestsController < ApplicationController
   before_action :set_request, only: %i[accept accept_request]
   before_action :set_request_by_token, only: %i[records]
 
@@ -11,11 +11,11 @@ class RequestsController < ApplicationController
   end
 
   def accept
-    current_user.generate_2fa
+    current_user.generate_2fa(resend: true)
   end
 
   def resend_2fa
-    @generated = current_user.generate_2fa(resend: true)
+    @generated = current_user.generate_2fa
   end
 
   def accept_request
@@ -35,7 +35,7 @@ class RequestsController < ApplicationController
     @request = current_user.incoming_requests.find_by(id: params[:id])
     return if @request&.pending?
 
-    redirect_to requests_path, alert: 'Invalid Access'
+    redirect_to shared_requests_path, alert: 'Invalid Access'
   end
 
   def set_request_by_token

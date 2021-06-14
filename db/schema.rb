@@ -126,13 +126,13 @@ ActiveRecord::Schema.define(version: 2021_06_09_100543) do
   end
 
   create_table "share_requests", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.bigint "recipient_id"
     t.string "data"
     t.text "vaccination_record_ids", default: [], array: true
     t.string "status", default: "pending"
     t.string "request_type"
-    t.string "relationship"
+    t.integer "relationship"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "accepted_at"
@@ -200,4 +200,5 @@ ActiveRecord::Schema.define(version: 2021_06_09_100543) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "share_requests", "users"
 end

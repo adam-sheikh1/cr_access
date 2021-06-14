@@ -18,7 +18,6 @@ Rails.application.routes.draw do
       get :share_info
       post :send_info
       get :accept_info
-      get :list_vaccinations
       post :refresh_vaccinations
     end
   end
@@ -61,7 +60,7 @@ Rails.application.routes.draw do
 
   resources :shared_records, only: %i[show]
 
-  resources :requests, only: %i[index] do
+  resources :shared_requests, only: %i[index] do
     member do
       get :accept
     end
@@ -72,6 +71,8 @@ Rails.application.routes.draw do
       get :records
     end
   end
+
+  resources :vaccinations, only: %i[index]
 
   root to: 'home#index'
 end

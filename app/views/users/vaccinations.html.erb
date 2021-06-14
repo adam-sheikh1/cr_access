@@ -52,7 +52,7 @@
               <td></td>
               <td><%= info.full_name %></td>
               <td>
-                <%= link_to 'View Vaccinations', list_vaccinations_user_path(cr_access_id: info.id), class: 'btn btn-primary-small mr-2' %>
+                <%= link_to 'View Vaccinations', vaccinations_path(cr_access_id: info.id), class: 'btn btn-primary-small mr-2' %>
               </td>
             </tr>
           <% end %>

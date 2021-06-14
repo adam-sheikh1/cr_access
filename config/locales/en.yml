@@ -8,6 +8,14 @@ en:
               content_type: 'must be an image (png, jpg or jpeg)'
               max_size_error: 'must be less than 3 MB'
               min_size_error: 'must be greater than 0 MB'
+    attributes:
+      share_request:
+        relationships:
+          parent_guardian: 'Parent/Guardian'
+          child: 'Child/Dependent'
+          spouse: 'Spouse'
+          employer: 'Employer'
+          other: 'Other'
 
   views:
     devise:

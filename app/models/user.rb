@@ -73,7 +73,7 @@ class User < ApplicationRecord
   def generate_2fa(resend: false)
     return false if !resend && two_fa_code.present? && last_2fa_interval < TWO_FA_FREQUENCY + 1
 
-    update(two_fa_code: random_code, two_fa_sent_at: Time.now)
+    update_columns(two_fa_code: random_code, two_fa_sent_at: Time.now)
     UserMailer.send_2fa_mail(id).deliver_later
     true
   end

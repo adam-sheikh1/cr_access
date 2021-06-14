@@ -19,9 +19,9 @@
             <tr>
               <td><%= request.data %></td>
               <td><%= request.status.titleize %></td>
-              <td><%= request.relationship&.titleize %></td>
+              <td><%= request.humanize_enum('relationship') %></td>
               <td><%= formatted_date(request.created_at) %></td>
-              <td><%= link_to 'Accept', accept_request_path(request), remote: true, data: { confirm: accept_message(request) } if request.pending? %></td>
+              <td><%= link_to 'Accept', accept_shared_request_path(request), remote: true, data: { confirm: accept_message(request) } if request.pending? %></td>
             </tr>
           <% end %>
         </tbody>
@@ -38,16 +38,16 @@
             <span aria-hidden="true"></span>
           </button>
         </div>
-        <%= form_with url: accept_request_requests_path, local: false do |f| %>
+        <%= form_with url: accept_request_shared_requests_path, local: false do |f| %>
           <%= f.hidden_field :id, class: 'request-id' %>
           <div class="modal-body">
             <div class="row">
               <div class="col">
-                <%= f.label :two_fa_code, 'A code has been sent to your email, enter the code received at your Email' %>
+                <%= f.label :two_fa_code, 'A code has been sent to your email. Please enter the code received.' %>
                 <%= f.text_field :two_fa_code, class: 'form-control', maxlength: 8 %>
                 <small class='text-danger ml-1 two-fa-error'></small>
                 <div class='text-right'>
-                  <small>Didn't receive code? Click <%= link_to 'here', resend_2fa_requests_path, remote: true, method: :post %> to resend</small>
+                  <small>Didn't receive code? Click <%= link_to 'here', resend_2fa_shared_requests_path, remote: true, method: :post %> to resend.</small>
                 </div>
               </div>
             </div>
