@@ -5,7 +5,7 @@
       <div class="text-inline">
         <div>
           <h3 class="">Welcome <%= current_user.full_name %></h3>
-          <div class="text-muted">CRAccess# <%= @cr_access.fv_code.code %></div>
+          <div class="text-muted">CRAccess# <%= @cr_access&.fv_code&.code %></div>
         </div>
       </div>
       <div>
