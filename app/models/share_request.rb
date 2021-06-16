@@ -4,6 +4,9 @@ class ShareRequest < ApplicationRecord
   belongs_to :user
   belongs_to :recipient, class_name: 'User', foreign_key: 'recipient_id', optional: true
 
+  has_many :request_vaccinations, dependent: :destroy
+  has_many :vaccination_records, through: :request_vaccinations
+
   attr_accessor :data_confirmation
 
   validate :valid_data, if: -> { data_confirmation.present? }
@@ -33,10 +36,6 @@ class ShareRequest < ApplicationRecord
   enum status: STATUSES
   enum request_type: TYPES
   enum relationship: RELATIONSHIPS
-
-  def vaccination_records
-    VaccinationRecord.where(id: vaccination_record_ids)
-  end
 
   def mark_accepted
     return if accepted?
