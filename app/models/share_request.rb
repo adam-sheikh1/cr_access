@@ -41,9 +41,24 @@ class ShareRequest < ApplicationRecord
     return if accepted?
 
     accepted!
-    recipient.accessible_vaccinations << vaccination_records.where.not(id: recipient.accessible_vaccination_ids)
+    share_vaccinations
     recipient.update_attribute('two_fa_code', nil)
     update_attribute('accepted_at', DateTime.now)
+  end
+
+  def share_vaccinations
+    time = DateTime.now
+    records = (vaccination_record_ids - recipient.accessible_vaccination_ids).map do |id|
+      {
+        relationship: relationship,
+        user_id: recipient.id,
+        vaccination_record_id: id,
+        created_at: time,
+        updated_at: time
+      }
+    end
+
+    VaccinationUser.upsert_all(records, unique_by: %i[user_id vaccination_record_id])
   end
 
   private
