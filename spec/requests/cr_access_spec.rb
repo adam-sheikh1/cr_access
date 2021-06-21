@@ -5,6 +5,27 @@ RSpec.describe "CrAccess", type: :request do
   let(:cr_access_data) { create(:cr_access_data, :profile_picture) }
   let(:cr_data_user) { create(:cr_data_user, :with_cr_access_data) }
 
+  describe "GET #new" do
+    context 'invalid access' do
+      it "redirect to sign in path" do
+        get new_cr_access_path
+
+        expect(response).to redirect_to new_user_session_path
+        expect(flash[:alert]).to match(/Invalid Access*/)
+      end
+    end
+
+    context 'invalid access' do
+      it "displays new page" do
+        get new_cr_access_path, params: {
+          token: 'eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjYyZmJlZjliLTUyNmYtNGQxNC1hYWUxLThiMzhlNjlhZjNhNSJ9.MDoABjsK0OpkC9BYnMhxk_8i-BlCTwBYlwJ1dzB-LCQ'
+        }
+
+        expect(response.body).to include("Sign up to CRAccess")
+      end
+    end
+  end
+
   describe "POST #create" do
     context 'valid user' do
       it "inserts row in table" do
