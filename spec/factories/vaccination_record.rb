@@ -14,13 +14,10 @@ FactoryBot.define do
     vaccine_name { Faker::Job.title }
     cr_access_data_id { }
     vaccine_expiration_date { rand.to_s[1..2].to_i.years.from_now }
+    cr_access_data
 
     trait :with_vaccination_users do
       vaccination_users { build_list(:vaccination_user, 2) }
-    end
-
-    trait :with_cr_access_data do
-      cr_access_data { build(:cr_access_data) }
     end
   end
 end

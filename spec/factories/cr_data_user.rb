@@ -4,9 +4,6 @@ FactoryBot.define do
     data_type { CrDataUser::DATA_TYPES.keys.sample }
     primary { Faker::Boolean.boolean }
     user
-
-    trait :with_cr_access_data do
-      cr_access_data { build(:cr_access_data) }
-    end
+    cr_access_data
   end
 end

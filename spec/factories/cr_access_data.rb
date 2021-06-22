@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :cr_access_data do
-    email { Faker::Internet.email }
+    sequence(:email) { |n| "user#{n}@example.com" }
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     gender { ['male', 'female', 'other'].sample }
