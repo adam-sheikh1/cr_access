@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "SharedRecords", type: :request do
   let(:user) { create(:user) }
-  let(:cr_access_group) { create(:cr_access_group, :with_cr_access_data, :with_cr_group) }
-  let(:vaccination_records) { create_list(:vaccination_record, 2, :with_cr_access_data, :with_vaccination_users) }
+  let(:cr_access_group) { create(:cr_access_group) }
+  let(:vaccination_records) { create_list(:vaccination_record, 2, :with_vaccination_users) }
 
   describe "GET #show" do
     context 'when signed in' do
@@ -17,7 +17,7 @@ RSpec.describe "SharedRecords", type: :request do
       end
 
       context 'when cr access group present' do
-        it "fetches the correct record" do
+        it "fetches the correct record and displays the show page" do
           sign_in user
           cr_access_group.accepted!
           user.all_cr_data << cr_access_group.cr_access_data
@@ -28,7 +28,7 @@ RSpec.describe "SharedRecords", type: :request do
         end
 
         it "fetches the correct vaccination record list" do
-          other_vaccination_record = create(:vaccination_record, :with_cr_access_data, :with_vaccination_users)
+          other_vaccination_record = create(:vaccination_record, :with_vaccination_users)
 
           sign_in user
           cr_access_group.accepted!

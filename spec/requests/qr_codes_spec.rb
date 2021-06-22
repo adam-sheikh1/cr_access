@@ -7,7 +7,7 @@ RSpec.describe "QrCodes", type: :request do
 
   describe "GET #verify" do
     context 'when qr code blank' do
-      it "display verify page" do
+      it "displays verify page" do
         get verify_qr_codes_path
 
         expect(response.body).to include("QR Code is Invalid/Expired")

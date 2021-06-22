@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Users", type: :request do
   let(:user) { create(:user) }
   let(:cr_group) { create(:cr_group) }
-  let(:cr_data_user) { create(:cr_data_user, :with_cr_access_data) }
+  let(:cr_data_user) { create(:cr_data_user) }
   let(:cr_access_data) { create(:cr_access_data) }
 
   describe "GET #show" do
@@ -170,7 +170,7 @@ RSpec.describe "Users", type: :request do
       end
 
       context 'when invalid access' do
-        it "redirects to root path" do
+        it "redirects to root path with invalid access error" do
           sign_in user
           get accept_info_user_path, params: { token: cr_data_user.invitation_token(create(:user).id) }
 
@@ -212,7 +212,7 @@ RSpec.describe "Users", type: :request do
   describe "PATCH #update" do
     context 'when signed in' do
       context 'valid user' do
-        it "updates record and redirect to root path" do
+        it "updates the record" do
           sign_in user
           params = { user: user.attributes.merge(first_name: 'test name', password: 'password', current_password: user.password, password_confirmation: 'password')}
           patch user_path, params: params
@@ -222,7 +222,7 @@ RSpec.describe "Users", type: :request do
       end
 
       context 'invalid user' do
-        it "renders the edit page" do
+        it "renders the edit page with validation error" do
           sign_in user
           params = { user: user.attributes.merge(first_name: '')}
           user.primary_cr_data = cr_access_data

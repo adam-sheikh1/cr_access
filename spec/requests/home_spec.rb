@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Home", type: :request do
   let(:user) { create(:user) }
-  let(:cr_data_user) { create(:cr_data_user, :with_cr_access_data, user: user) }
+  let(:cr_data_user) { create(:cr_data_user, user: user) }
 
   describe "GET #index" do
     context 'when signed in' do

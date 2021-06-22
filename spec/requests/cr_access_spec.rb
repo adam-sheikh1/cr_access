@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe "CrAccess", type: :request do
   let(:user) { create(:user) }
   let(:cr_access_data) { create(:cr_access_data, :profile_picture) }
-  let(:cr_data_user) { create(:cr_data_user, :with_cr_access_data) }
+  let(:cr_data_user) { create(:cr_data_user) }
 
   describe "GET #new" do
     context 'invalid access' do
-      it "redirect to sign in path" do
+      it "redirect to sign in path and raise invalid access error" do
         get new_cr_access_path
 
         expect(response).to redirect_to new_user_session_path
@@ -30,8 +30,8 @@ RSpec.describe "CrAccess", type: :request do
     context 'valid user' do
       it "inserts row in table" do
         user.cr_access_data << cr_access_data
-        post cr_access_index_path, params: { user: user.attributes.except("id").
-            merge({ cr_access_data_attributes: cr_access_data.encoded_attributes })}
+        post cr_access_index_path, params: { user: user.attributes.except("id")
+            .merge({ cr_access_data_attributes: cr_access_data.encoded_attributes })}
 
         expect(response).to be_redirect
       end

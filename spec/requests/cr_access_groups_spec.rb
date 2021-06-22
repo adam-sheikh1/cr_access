@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "CrAccessGroups", type: :request do
-  let(:cr_access_group) { create(:cr_access_group, :with_cr_access_data, :with_cr_group) }
+  let(:cr_access_group) { create(:cr_access_group) }
 
   describe "GET #accept invite" do
     context 'when cr access group blank' do

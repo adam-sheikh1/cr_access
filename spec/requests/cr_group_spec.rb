@@ -20,7 +20,7 @@ RSpec.describe "CrGroup", type: :request do
       context 'when cr group not accessible' do
         it "redirects to user vaccination page" do
           sign_in user
-          new_cr_group =  create(:cr_group, user: create(:user))
+          new_cr_group = create(:cr_group, user: create(:user))
           get cr_group_path(new_cr_group)
 
           expect(response).to redirect_to vaccinations_user_path
@@ -50,7 +50,7 @@ RSpec.describe "CrGroup", type: :request do
 
       context 'when cr group not accessible' do
         it "redirects to user vaccination page" do
-          new_user =  create(:user)
+          new_user = create(:user)
           sign_in new_user
           get invite_cr_group_path(cr_group)
 
@@ -82,8 +82,8 @@ RSpec.describe "CrGroup", type: :request do
           end
         end
 
-        context 'whe invalid type' do
-          it "redirects to invite page and shows the error" do
+        context 'when invalid type' do
+          it "redirects to invite page and shows the invalid type error" do
             sign_in user
             post send_invite_cr_group_path(cr_group), params: { invite: { type: '', data: user.email } }
 
@@ -95,7 +95,7 @@ RSpec.describe "CrGroup", type: :request do
 
       context 'when cr group not accessible' do
         it "redirects to user vaccination page" do
-          new_user =  create(:user)
+          new_user = create(:user)
           sign_in new_user
           post send_invite_cr_group_path(cr_group)
 
@@ -186,7 +186,7 @@ RSpec.describe "CrGroup", type: :request do
       context 'when cr group not accessible' do
         it "redirects to user vaccination page" do
           sign_in user
-          new_cr_group =  create(:cr_group, user: create(:user))
+          new_cr_group = create(:cr_group, user: create(:user))
           get edit_cr_group_path(new_cr_group)
 
           expect(response).to redirect_to vaccinations_user_path
@@ -254,7 +254,7 @@ RSpec.describe "CrGroup", type: :request do
         context 'when no cr access group found' do
           it "can't leave the group" do
             sign_in user
-            cr_access_group = create(:cr_access_group, :with_cr_access_data, :with_cr_group)
+            cr_access_group = create(:cr_access_group)
             user.primary_cr_data = cr_access_group.cr_access_data
 
             expect{ delete leave_cr_group_path(cr_group) }.to_not change(CrAccessGroup, :count)
@@ -264,7 +264,7 @@ RSpec.describe "CrGroup", type: :request do
         context 'when cr access group found' do
           it "leaves the group" do
             sign_in user
-            cr_access_group = create(:cr_access_group, :with_cr_access_data, :with_cr_group)
+            cr_access_group = create(:cr_access_group)
             cr_group.cr_access_groups << cr_access_group
             user.primary_cr_data = cr_access_group.cr_access_data
             delete leave_cr_group_path(cr_group)
@@ -308,7 +308,7 @@ RSpec.describe "CrGroup", type: :request do
         context 'when cr access group found' do
           it "remove from the group" do
             sign_in user
-            cr_access_group = create(:cr_access_group, :with_cr_access_data, :with_cr_group)
+            cr_access_group = create(:cr_access_group)
             cr_group.cr_access_groups << cr_access_group
             delete remove_cr_group_path(cr_group), params: { data_id: cr_access_group.cr_access_data_id }
 
