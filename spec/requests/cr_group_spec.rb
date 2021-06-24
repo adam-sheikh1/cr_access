@@ -87,9 +87,12 @@ RSpec.describe "CrGroup", type: :request do
             sign_in user
             cr_group.cr_access_data << cr_access_data
             new_cr_access_data = create(:cr_access_data)
-            post send_invite_cr_group_path(cr_group), params: { invite: { type: EMAIL, data: new_cr_access_data.email } }
+            mailer = double("mailer", deliver_later: nil)
 
-            expect(flash[:notice]).to match(/Successfully sent invitation to user*/)
+            expect(CrGroupMailer).to receive(:invite_cr_user).with(new_cr_access_data.id, kind_of(Integer)).and_return(mailer)
+            expect(mailer).to receive(:deliver_later)
+
+            post send_invite_cr_group_path(cr_group), params: { invite: { type: EMAIL, data: new_cr_access_data.email } }
           end
         end
 
@@ -98,6 +101,9 @@ RSpec.describe "CrGroup", type: :request do
             user = create(:user)
             cr_group = create(:cr_group, user: user)
             sign_in user
+
+            expect(CrGroupMailer).not_to receive(:invite_cr_user)
+
             post send_invite_cr_group_path(cr_group), params: { invite: { type: '', data: user.email } }
 
             expect(flash[:alert]).to match(/Invalid Type*/)

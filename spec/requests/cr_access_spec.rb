@@ -88,30 +88,6 @@ RSpec.describe "CrAccess", type: :request do
     end
   end
 
-  describe "GET #success" do
-    context 'when new record' do
-      it "display success page" do
-        user = create(:user)
-        cr_access_data = create(:cr_access_data, :profile_picture)
-        user.cr_access_data << cr_access_data
-        get success_cr_access_path(user), params: { new_record: true }
-
-        expect(response.body).to include('An email has been sent to you.')
-      end
-    end
-
-    context 'when old record' do
-      it "display success page" do
-        user = create(:user)
-        cr_access_data = create(:cr_access_data, :profile_picture)
-        user.cr_access_data << cr_access_data
-        get success_cr_access_path(user)
-
-        expect(response.body).to include("You already have an account with the email #{user.email}, use that to login.")
-      end
-    end
-  end
-
   describe "GET #show" do
     context 'vhen signed in' do
       context 'when cr data user blank' do
