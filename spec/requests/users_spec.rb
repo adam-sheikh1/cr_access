@@ -275,6 +275,9 @@ RSpec.describe "Users", type: :request do
         cr_access_data = create(:cr_access_data)
         sign_in user
         user.cr_access_data << cr_access_data
+
+        expect(ImportPatientData).to receive(:new)
+
         post refresh_vaccinations_user_path
 
         expect(flash[:notice]).to match(/Successfully refreshed vaccinations*/)

@@ -101,8 +101,8 @@ class CrAccessData < ApplicationRecord
 
   def fetch_vaccination_history(data = nil)
     import_data = data.presence || ImportPatientData.new(prepmod_patient_id)
-    update(vaccination_status: import_data.vaccination_status)
-    import_data.vaccination_params.each do |params|
+    update(vaccination_status: import_data&.vaccination_status)
+    import_data&.vaccination_params&.each do |params|
       history = vaccination_records.find_or_initialize_by(external_id: params[:external_id])
       next if history.persisted?
 
