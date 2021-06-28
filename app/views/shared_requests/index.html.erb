@@ -17,7 +17,7 @@
         <tbody>
           <% @received_vaccinations.each do |request| %>
             <tr>
-              <td><%= request.data %></td>
+              <td><%= request.user.email %></td>
               <td><%= request.status.titleize %></td>
               <td><%= request.humanize_enum('relationship') %></td>
               <td><%= formatted_date(request.created_at) %></td>

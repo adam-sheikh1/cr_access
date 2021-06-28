@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :vaccination_user do
-    relation_ship { 'Parent' }
+    relationship { 'Parent' }
     user
     vaccination_record
   end
