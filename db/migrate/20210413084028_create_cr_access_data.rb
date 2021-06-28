@@ -1,6 +1,6 @@
 class CreateCrAccessData < ActiveRecord::Migration[6.1]
   def change
-    create_table :cr_access_data do |t|
+    create_table :cr_access_data, id: :uuid do |t|
       t.string :email
       t.string :first_name
       t.string :last_name
@@ -13,12 +13,12 @@ class CreateCrAccessData < ActiveRecord::Migration[6.1]
       t.date :date_of_birth
       t.bigint :prepmod_patient_id
       t.string :vaccination_status
-      t.bigint :parent_id
       t.boolean :primary, default: false
-      t.bigint :patient_id
-      t.references :user
+      t.references :user, type: :uuid
 
       t.timestamps
     end
+
+    add_index :cr_access_data, :created_at
   end
 end
