@@ -5,7 +5,7 @@ FactoryBot.define do
     dose_volume { '1' }
     dose_volume_units { '1' }
     external_id { '12' }
-    lot_number { '12345' }
+    lot_number { Faker::Number.number }
     manufacturer_name { Faker::Job.title }
     reaction { Faker::Job.title }
     route { 'IM' }

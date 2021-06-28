@@ -42,6 +42,7 @@ class CrGroupsController < ApplicationController
     if @group.save
       redirect_to @group, notice: 'Successfully Create Group'
     else
+      @groups = CrGroup.by_user(current_user).includes(:fv_code)
       render :new
     end
   end

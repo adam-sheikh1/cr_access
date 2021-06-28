@@ -54,6 +54,7 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
   gem 'rspec-rails'
+  gem 'webmock'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -63,7 +64,7 @@ gem 'devise', '~> 4.7'
 gem 'jwt'
 gem 'rqrcode'
 gem 'httparty'
-gem 'dotenv-rails'
+gem 'dotenv-rails', groups: [:development, :test]
 gem 'simple_form'
 gem 'ransack'
 gem 'aws-sdk-s3'
