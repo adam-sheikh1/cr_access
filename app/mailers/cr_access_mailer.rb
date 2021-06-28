@@ -12,7 +12,7 @@ class CrAccessMailer < ApplicationMailer
     @cr_access_data = CrAccessData.find(cr_access_id)
 
     I18n.with_locale(locale) do
-      mail to: @cr_access_data.email, subject: 'Second Dose Reminder'
+      mail to: @cr_access_data.email, subject: "#{@cr_access_data.covid_vaccine_name.to_s.titleize} Second Dose Appointment Reminder"
     end
   end
 end

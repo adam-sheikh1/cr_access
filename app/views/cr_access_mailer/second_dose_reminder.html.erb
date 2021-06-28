@@ -1,1 +1,14 @@
-<p>Reminder that your second dose is scheduled for: <%= formatted_date(@cr_access_data.second_dose_date) %></p>
+<p>Hi <%= @cr_access_data.full_name %>,</p>
+
+<p>This is a friendly reminder that you may be due for your second dose of COVID-19 Vaccine. If you have not already
+  done so, please schedule your next appointment by calling your healthcare provider or going to your state/county
+  appointment search <%= link_to 'page', '#', target: '_blank' %></p>
+
+<p>You should <strong>get your second shot as close to the recommended <%= @cr_access_data.pfizer? ? 3 : 4 %>-weeks as possible.</strong> You should not get the second dose
+  early.</p>
+
+<p>If you have any questions please contact your state/county health department for further guidance.</p>
+
+<p>Best,</p>
+
+<p>CRAccess</p>

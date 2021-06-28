@@ -45,7 +45,7 @@ class CrAccessData < ApplicationRecord
   end
 
   def self.second_dose_reminder
-    where('second_dose_reminder_date IS NOT NULL AND reminder_sent_at IS NULL AND second_dose_reminder_date <= ? ', Date.today)
+    where('second_dose_reminder_date IS NOT NULL AND reminder_sent_at IS NULL AND second_dose_reminder_date = ? ', Date.today)
   end
 
   def gender=(sex)
@@ -115,27 +115,38 @@ class CrAccessData < ApplicationRecord
   end
 
   def janssen_doses
-    vaccination_records.where('vaccine_name ILIKE ?', "%#{JANSSEN}%").order(:vaccination_date)
+    filtered_vaccinations(JANSSEN)
   end
 
   def pfizer_doses
-    vaccination_records.where('vaccine_name ILIKE ?', "%#{PFIZER}%").order(:vaccination_date)
+    filtered_vaccinations(PFIZER)
   end
 
   def moderna_doses
-    vaccination_records.where('vaccine_name ILIKE ?', "%#{MODERNA}%").order(:vaccination_date)
+    filtered_vaccinations(MODERNA)
+  end
+
+  def filtered_vaccinations(name)
+    vaccination_records.select { |record| record.vaccine_name.downcase.include?(name) }&.sort_by(&:vaccination_date) || []
   end
 
   def covid_vaccines
     @covid_vaccines ||= janssen_doses.presence || pfizer_doses.presence || moderna_doses
   end
 
-  def second_dose_time
-    return if fully_vaccinated? || covid_vaccines.janssen?
-    return if covid_vaccines.first.vaccination_date.blank?
-    return covid_vaccines.first.vaccination_date + ImportPatientData::PFIZER_INTERVAL.days if covid_vaccines.pfizer?
+  def covid_vaccine_name
+    return JANSSEN if janssen_doses.present?
+    return MODERNA if moderna_doses.present?
 
-    covid_vaccines.first.vaccination_date + ImportPatientData::MODERNA_INTERVAL.days
+    PFIZER if pfizer_doses.present?
+  end
+
+  def pfizer?
+    pfizer_doses.present?
+  end
+
+  def moderna?
+    moderna_doses.present?
   end
 
   private

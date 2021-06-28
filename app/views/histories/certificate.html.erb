@@ -95,7 +95,7 @@
             <span>Lot Number: <%= @first_dose.lot_number.upcase %></span><br>
             <span>Provider: <%= @first_dose.clinic_name %></span><br>
           <% else %>
-            <span>Due: <%= formatted_date(@cr_access.second_dose_time) %></span>
+            <span>Due: <%= formatted_date(@cr_access.second_dose_date) %></span>
           <% end %>
         </td>
       </tr>
