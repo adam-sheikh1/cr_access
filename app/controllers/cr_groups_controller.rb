@@ -4,30 +4,20 @@ class CrGroupsController < ApplicationController
   before_action :set_group, except: %i[new create]
   before_action :validate_group, except: %i[new create]
   before_action :validate_owner, only: %i[invite send_invite remove]
-  before_action :validate_type, only: %i[send_invite]
+  before_action :validate_max_invites, only: %i[send_invite]
+
+  after_action :increment_invites, only: %i[send_invite]
 
   def show
     @cr_access_groups = @group.cr_access_groups_by_user(current_user).includes(:cr_access_data)
     @qr_code = @group.generate_qr_code
   end
 
-  def invite
-    @search = CrAccessData.ransack(params[:q])
-
-    respond_to do |format|
-      format.js do
-        @cr_access_info = @search.result
-      end
-      format.html
-    end
-  end
+  def invite; end
 
   def send_invite
-    if @group.invite(invite_params)
-      redirect_to @group, notice: 'Successfully sent invitation to user'
-    else
-      redirect_to [:invite, @group], alert: "Couldn't find any CRAccess"
-    end
+    @group.invite(invite_params)
+    redirect_to @group, notice: 'If the data exists in our database, the recipient will receive a link to accept your group invite.'
   end
 
   def new
@@ -90,12 +80,6 @@ class CrGroupsController < ApplicationController
   end
 
   def invite_params
-    params.require(:invite).permit(:type, :data)
-  end
-
-  def validate_type
-    return if invite_params[:type].in?(sharing_type_options.map(&:second))
-
-    redirect_to invite_cr_group_path(@group), alert: 'Invalid Type'
+    params.require(:invite).permit(:email, :first_name, :last_name)
   end
 end

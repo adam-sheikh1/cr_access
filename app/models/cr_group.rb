@@ -35,17 +35,14 @@ class CrGroup < ApplicationRecord
   end
 
   def invite(params)
-    invitee = find_invitee(params[:type], params[:data])
+    invitee = find_invitee(params)
     return false if invitee.blank? || cr_access_datum_ids.include?(invitee.id)
 
     CrAccessGroup.create(cr_group: self, cr_access_data: invitee).send_invitation
   end
 
-  def find_invitee(type, data)
-    return FvCode.cr_access.find_by(code: data)&.fv_codable if type == FV_CODE
-    return CrAccessData.find_by(phone_number: data) if type == PHONE
-
-    CrAccessData.find_by(email: data)
+  def find_invitee(params)
+    CrAccessData.find_by(email: params[:email], first_name: params[:first_name], last_name: params[:last_name])
   end
 
   def owner?(user)

@@ -86,6 +86,21 @@ class User < ApplicationRecord
     two_fa_code == code
   end
 
+  def increment_invites_sent
+    increment!(:total_invites_sent, 1)
+    reset_invites_sent if invites_sent_at != Date.today
+  end
+
+  def reset_invites_sent
+    update_columns(invites_sent_at: Date.today, total_invites_sent: 0)
+  end
+
+  def invites_sent_today
+    reset_invites_sent if invites_sent_at != Date.today
+
+    total_invites_sent
+  end
+
   private
 
   def random_code
