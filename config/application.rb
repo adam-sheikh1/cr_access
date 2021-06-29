@@ -22,5 +22,12 @@ module CrAccess
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    if ENV["ENABLE_PROMETHEUS"] == "true"
+      require "prometheus_exporter/instrumentation"
+      require "prometheus_exporter/middleware"
+      config.middleware.unshift PrometheusExporter::Middleware
+      PrometheusExporter::Instrumentation::Process.start(type: "primary")
+    end
   end
 end
