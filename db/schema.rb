@@ -57,7 +57,6 @@ ActiveRecord::Schema.define(version: 2021_05_28_101233) do
     t.date "date_of_birth"
     t.string "prepmod_patient_id"
     t.string "vaccination_status"
-    t.bigint "patient_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["created_at"], name: "index_cr_access_data_on_created_at"

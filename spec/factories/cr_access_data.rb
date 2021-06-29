@@ -12,7 +12,6 @@ FactoryBot.define do
     date_of_birth { rand.to_s[3..4].to_i.years.ago }
     prepmod_patient_id { 1 }
     vaccination_status { CrAccessData::VACCINATION_STATUSES.values.sample }
-    patient_id { 2 }
 
     trait :profile_picture do
       profile_picture { Rack::Test::UploadedFile.new('spec/assets/login-logo.png', 'image/png') }
