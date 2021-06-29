@@ -4,20 +4,11 @@ RSpec.describe "CrAccess", type: :request do
   describe "GET #new" do
     context 'invalid access' do
       it "redirect to sign in path and raise invalid access error" do
+        stub_request(:get, /passport|vault/)
         get new_cr_access_path
 
         expect(response).to redirect_to new_user_session_path
         expect(flash[:alert]).to match(/Invalid Access*/)
-      end
-    end
-
-    context 'invalid access' do
-      it "displays new page" do
-        get new_cr_access_path, params: {
-          token: 'eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjYyZmJlZjliLTUyNmYtNGQxNC1hYWUxLThiMzhlNjlhZjNhNSJ9.MDoABjsK0OpkC9BYnMhxk_8i-BlCTwBYlwJ1dzB-LCQ'
-        }
-
-        expect(response.body).to include("Sign up to CRAccess")
       end
     end
   end
@@ -26,6 +17,7 @@ RSpec.describe "CrAccess", type: :request do
     context 'valid user' do
       context 'when new record' do
         it "inserts row in table" do
+          stub_request(:get, /passport|vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data, :profile_picture)
 
@@ -43,6 +35,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when old record' do
         it "updates the record" do
+          stub_request(:get, /passport|vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data, :profile_picture)
 
@@ -103,6 +96,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr access data blank' do
         it "redirect to root path and raise invalid access error" do
+          stub_request(:get, /passport|vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -118,6 +112,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr data user and cr access data present' do
         it "display show page" do
+          stub_request(:get, /passport|vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -156,6 +151,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr access data blank' do
         it "redirect to root path and raise invalid access error" do
+          stub_request(:get, /passport|vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -171,6 +167,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr data user and cr access data present' do
         it "unlink cr access" do
+          stub_request(:get, /passport|vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -197,6 +194,7 @@ RSpec.describe "CrAccess", type: :request do
     context 'vhen signed in' do
       context 'when cr data user blank' do
         it "redirect to root path and raise invalid access error" do
+          stub_request(:get, /passport|vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data, :profile_picture)
           sign_in user
@@ -209,6 +207,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr access data blank' do
         it "redirect to root path and raise invalid access error" do
+          stub_request(:get, /passport|vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data, :profile_picture)
           cr_data_user = create(:cr_data_user)
@@ -225,6 +224,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr data user and cr access data present' do
         it "updates profile picture" do
+          stub_request(:get, /passport|vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -234,9 +234,7 @@ RSpec.describe "CrAccess", type: :request do
                 params: { cr_access_data: { profile_picture: Rack::Test::UploadedFile.new('spec/assets/login-logo.png', 'image/png') } },
                 headers: { "HTTP_REFERER": "http://example.com" }
 
-
-          filename = user.cr_data_users.first.cr_access_data.reload.profile_picture.blob.filename.to_s
-          expect(filename).to eql 'login-logo.png'
+          expect(cr_data_user.cr_access_data.reload.profile_picture).to be_attached
           expect(flash[:notice]).to match(/Successfully updated profile picture*/)
         end
       end
@@ -244,6 +242,7 @@ RSpec.describe "CrAccess", type: :request do
 
     context 'when not signed in' do
       it "redirects to login page" do
+        stub_request(:get, /passport|vault/)
         cr_access_data = create(:cr_access_data, :profile_picture)
         patch update_profile_picture_cr_access_path(cr_access_data)
 

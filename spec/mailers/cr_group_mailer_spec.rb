@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe CrGroupMailer, type: :mailer do
   describe "#invite_cr_user" do
     it "renders the headers and text" do
+      stub_request(:get, /passport|vault/)
       cr_access_group = create(:cr_access_group)
       cr_access_data = create(:cr_access_data)
       from = ENV.fetch('MAILER_SENDER_ADDRESS', 'no-reply@craccess.com')

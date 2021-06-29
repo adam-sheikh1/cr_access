@@ -3,7 +3,7 @@ require 'jwt'
 module Encodable
   extend ActiveSupport::Concern
 
-  SECRET_TOKEN = ENV['SECRET_KEY_BASE']
+  SECRET_TOKEN = Rails.application.secret_key_base
   ALGORITHM = 'HS256'.freeze
   TTL = 1.year.to_i.freeze
 

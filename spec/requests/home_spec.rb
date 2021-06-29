@@ -4,6 +4,7 @@ RSpec.describe "Home", type: :request do
   describe "GET #index" do
     context 'when signed in' do
       it "display index page" do
+        stub_request(:get, /passport|vault/)
         user = create(:user)
         cr_data_user = create(:cr_data_user, user: user)
         sign_in user

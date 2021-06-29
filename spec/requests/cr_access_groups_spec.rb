@@ -12,6 +12,7 @@ RSpec.describe "CrAccessGroups", type: :request do
 
     context 'when cr access group present' do
       it "fetches the correct record" do
+        stub_request(:get, /passport|vault/)
         cr_access_group = create(:cr_access_group)
         get accept_invite_cr_access_groups_path(token: cr_access_group.invitation_token)
 
@@ -32,6 +33,7 @@ RSpec.describe "CrAccessGroups", type: :request do
 
     context 'when cr access group present' do
       it "updates the record" do
+        stub_request(:get, /passport|vault/)
         cr_access_group = create(:cr_access_group)
         cr_access_group.anyone!
         patch process_invite_cr_access_group_path(cr_access_group), params: { cr_access_group: { access_level: 'owner' } }

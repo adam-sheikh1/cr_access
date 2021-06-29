@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "cr_access#success", type: :system do
   it "success page when new record" do
+    stub_request(:get, /passport|vault/)
     user = create(:user)
     cr_access_data = create(:cr_access_data, :profile_picture)
     user.cr_access_data << cr_access_data
@@ -11,6 +12,7 @@ RSpec.describe "cr_access#success", type: :system do
   end
 
   it "success page when old record" do
+    stub_request(:get, /passport|vault/)
     user = create(:user)
     cr_access_data = create(:cr_access_data, :profile_picture)
     user.cr_access_data << cr_access_data
