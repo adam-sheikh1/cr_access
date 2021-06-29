@@ -7,3 +7,5 @@ FV_CODE = 'fv_code'
 MODERNA = 'moderna'
 PFIZER = 'pfizer'
 JANSSEN = 'janssen'
+PFIZER_RECOMMENDED_WEEKS = 2
+MODERNA_RECOMMENDED_WEEKS = 3

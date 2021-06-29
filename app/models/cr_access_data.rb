@@ -149,6 +149,12 @@ class CrAccessData < ApplicationRecord
     moderna_doses.present?
   end
 
+  def recommended_weeks
+    return PFIZER_RECOMMENDED_WEEKS if pfizer?
+
+    MODERNA_RECOMMENDED_WEEKS
+  end
+
   private
 
   def set_fv_code

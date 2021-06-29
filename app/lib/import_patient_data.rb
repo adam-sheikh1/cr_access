@@ -3,6 +3,9 @@ class ImportPatientData
   FULLY_VACCINATE_INTERVAL = 10
   PFIZER_INTERVAL = 21
   MODERNA_INTERVAL = 28
+  SECOND_DOSE_REMINDER_OFFSET = 10
+  JANSSEN_DOSES = 1
+  OTHER_DOSES = 2
 
   def initialize(token)
     @token = token
@@ -102,7 +105,7 @@ class ImportPatientData
   end
 
   def valid_interval?(vaccines, vaccine_name)
-    vaccination_dates = vaccination_dates(vaccines).first(vaccine_name == JANSSEN ? 1 : 2).reject(&:blank?)
+    vaccination_dates = vaccination_dates(vaccines).first(vaccine_name == JANSSEN ? JANSSEN_DOSES : OTHER_DOSES).reject(&:blank?)
     return false if vaccination_dates.blank?
 
     valid_interval = (DateTime.now - DateTime.parse(vaccination_dates.last)).to_i.abs >= FULLY_VACCINATE_INTERVAL
@@ -122,21 +125,24 @@ class ImportPatientData
     date = second_dose_date
     return if date.blank?
 
-    date - 10.days
+    date - SECOND_DOSE_REMINDER_OFFSET.days
   end
 
   def second_dose_date
     return if janssen?
-    return unless vaccine_count == 1
+    return if vaccine_count > 1
 
     vaccine = vaccines_administered.first&.dig(:attributes)
     return if vaccine.blank?
 
     date = vaccine[:vaccination_date].to_date rescue nil
     return if date.blank?
-    return date + PFIZER_INTERVAL.days if vaccine[:vaccine_name].downcase.include?(PFIZER)
 
-    date + MODERNA_INTERVAL.days
+    if vaccine[:vaccine_name].downcase.include?(PFIZER)
+      date + PFIZER_INTERVAL.days
+    else
+      date + MODERNA_INTERVAL.days
+    end
   end
 
   def janssen?
