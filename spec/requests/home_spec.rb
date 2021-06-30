@@ -1,10 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe "Home", type: :request do
+  around do |example|
+    with_modified_env(VAULT_URL: "https://vault.com", &example)
+  end
+
   describe "GET #index" do
     context 'when signed in' do
       it "display index page" do
-        stub_request(:get, /passport|vault/)
+        stub_request(:get, /vault/)
         user = create(:user)
         cr_data_user = create(:cr_data_user, user: user)
         sign_in user

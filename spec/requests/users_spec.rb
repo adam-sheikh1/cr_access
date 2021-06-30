@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
+  around do |example|
+    with_modified_env(VAULT_URL: "https://vault.com", &example)
+  end
+
   describe "GET #show" do
     context 'when signed in' do
       context 'when cr access data not present' do
@@ -16,7 +20,7 @@ RSpec.describe "Users", type: :request do
 
       context 'when cr access data present' do
         it "displays the show page with cr access data info" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data)
           sign_in user
@@ -44,7 +48,7 @@ RSpec.describe "Users", type: :request do
     context 'when signed in' do
       context 'when cr group and cr data user present' do
         it "displays the vaccinations page with cr group and cr data user info" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_group = create(:cr_group)
           cr_data_user = create(:cr_data_user)
@@ -62,7 +66,7 @@ RSpec.describe "Users", type: :request do
 
       context 'when cr group and cr data user not present present' do
         it "displays the vaccinations page without cr group and cr data user info" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           cr_group = create(:cr_group)
           cr_data_user = create(:cr_data_user)
           sign_in create(:user)
@@ -141,7 +145,7 @@ RSpec.describe "Users", type: :request do
 
       context 'when valid access and data not already shared' do
         it "send the invite successfully" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data)
           sign_in user
@@ -154,7 +158,7 @@ RSpec.describe "Users", type: :request do
 
       context 'when data already shared' do
         it "does not send the invite and shows the already shared data error" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data)
           sign_in user
@@ -182,7 +186,7 @@ RSpec.describe "Users", type: :request do
     context 'when signed in' do
       context 'when valid access' do
         it "linked info to profile and redirect to user vaccination path" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -195,7 +199,7 @@ RSpec.describe "Users", type: :request do
 
       context 'when invalid access' do
         it "redirects to root path with invalid access error" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -219,7 +223,7 @@ RSpec.describe "Users", type: :request do
   describe "GET #edit" do
     context 'when signed in' do
       it "display the edit page" do
-        stub_request(:get, /passport|vault/)
+        stub_request(:get, /vault/)
         user = create(:user)
         cr_access_data = create(:cr_access_data)
         sign_in user
@@ -254,7 +258,7 @@ RSpec.describe "Users", type: :request do
 
       context 'invalid user' do
         it "renders the edit page with validation error" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data)
           sign_in user
@@ -280,7 +284,7 @@ RSpec.describe "Users", type: :request do
   describe "POST #refresh vaccinations" do
     context 'when signed in' do
       it "refresh vaccinations" do
-        stub_request(:get, /passport|vault/)
+        stub_request(:get, /vault/)
         user = create(:user)
         cr_access_data = create(:cr_access_data)
         sign_in user

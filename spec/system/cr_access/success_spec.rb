@@ -1,8 +1,12 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "cr_access#success", type: :system do
+  around do |example|
+    with_modified_env(VAULT_URL: "https://vault.com", &example)
+  end
+
   it "success page when new record" do
-    stub_request(:get, /passport|vault/)
+    stub_request(:get, /vault/)
     user = create(:user)
     cr_access_data = create(:cr_access_data, :profile_picture)
     user.cr_access_data << cr_access_data
@@ -12,7 +16,7 @@ RSpec.describe "cr_access#success", type: :system do
   end
 
   it "success page when old record" do
-    stub_request(:get, /passport|vault/)
+    stub_request(:get, /vault/)
     user = create(:user)
     cr_access_data = create(:cr_access_data, :profile_picture)
     user.cr_access_data << cr_access_data

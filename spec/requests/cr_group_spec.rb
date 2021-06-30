@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "CrGroup", type: :request do
+  around do |example|
+    with_modified_env(VAULT_URL: "https://vault.com", &example)
+  end
+
   describe "GET #show" do
     context 'when signed in' do
       context 'when cr group accessible' do
@@ -81,7 +85,7 @@ RSpec.describe "CrGroup", type: :request do
       context 'when cr group accessible' do
         context 'when valid type' do
           it "send the invite successfully" do
-            stub_request(:get, /passport|vault/)
+            stub_request(:get, /vault/)
             user = create(:user)
             cr_group = create(:cr_group, user: user)
             cr_access_data = create(:cr_access_data)
@@ -93,7 +97,7 @@ RSpec.describe "CrGroup", type: :request do
             expect(CrGroupMailer).to receive(:invite_cr_user).with(any_args).and_return(mailer)
             expect(mailer).to receive(:deliver_later)
 
-            post send_invite_cr_group_path(cr_group), params: { invite: { type: EMAIL, data: new_cr_access_data.email } }
+            post send_invite_cr_group_path(cr_group), params: { invite: { email: new_cr_access_data.email, first_name: new_cr_access_data.first_name, last_name: new_cr_access_data.last_name } }
           end
         end
 
@@ -107,8 +111,7 @@ RSpec.describe "CrGroup", type: :request do
 
             post send_invite_cr_group_path(cr_group), params: { invite: { type: '', data: user.email } }
 
-            expect(flash[:alert]).to match(/Invalid Type*/)
-            expect(response).to redirect_to invite_cr_group_path(cr_group)
+            expect(response).to redirect_to cr_group
           end
         end
       end
@@ -294,7 +297,7 @@ RSpec.describe "CrGroup", type: :request do
       context 'when cr group accessible' do
         context 'when no cr access group found' do
           it "can't leave the group" do
-            stub_request(:get, /passport|vault/)
+            stub_request(:get, /vault/)
             user = create(:user)
             cr_group = create(:cr_group, user: user)
             sign_in user
@@ -307,7 +310,7 @@ RSpec.describe "CrGroup", type: :request do
 
         context 'when cr access group found' do
           it "leaves the group" do
-            stub_request(:get, /passport|vault/)
+            stub_request(:get, /vault/)
             user = create(:user)
             cr_group = create(:cr_group, user: user)
             sign_in user
@@ -359,7 +362,7 @@ RSpec.describe "CrGroup", type: :request do
 
         context 'when cr access group found' do
           it "remove from the group" do
-            stub_request(:get, /passport|vault/)
+            stub_request(:get, /vault/)
             user = create(:user)
             cr_group = create(:cr_group, user: user)
             sign_in user

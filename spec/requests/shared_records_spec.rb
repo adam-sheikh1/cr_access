@@ -1,11 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "SharedRecords", type: :request do
+  around do |example|
+    with_modified_env(VAULT_URL: "https://vault.com", &example)
+  end
+
   describe "GET #show" do
     context 'when signed in' do
       context 'when cr access group blank' do
         it "redirects to user vaccination path" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_group = create(:cr_access_group)
           sign_in user
@@ -17,7 +21,7 @@ RSpec.describe "SharedRecords", type: :request do
 
       context 'when cr access group present' do
         it "fetches the correct record and displays the show page" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_group = create(:cr_access_group)
           sign_in user
@@ -30,7 +34,7 @@ RSpec.describe "SharedRecords", type: :request do
         end
 
         it "fetches the correct vaccination record list" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_group = create(:cr_access_group)
           vaccination_records = create_list(:vaccination_record, 2, :with_vaccination_users)
@@ -55,7 +59,7 @@ RSpec.describe "SharedRecords", type: :request do
 
     context 'when not signed in' do
       it "redirects to login page" do
-        stub_request(:get, /passport|vault/)
+        stub_request(:get, /vault/)
         cr_access_group = create(:cr_access_group)
         get shared_record_path(cr_access_group)
 

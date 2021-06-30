@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :share_request do
     user
     status { ShareRequest::STATUSES[:pending] }
+    data { Faker::Internet.email }
 
     trait :public_share do
       data { Faker::Internet.email }

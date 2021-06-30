@@ -1,10 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe "CrAccess", type: :request do
+  around do |example|
+    with_modified_env(VAULT_URL: "https://vault.com", &example)
+  end
+
   describe "GET #new" do
     context 'invalid access' do
       it "redirect to sign in path and raise invalid access error" do
-        stub_request(:get, /passport|vault/)
+        stub_request(:get, /vault/)
         get new_cr_access_path
 
         expect(response).to redirect_to new_user_session_path
@@ -17,7 +21,7 @@ RSpec.describe "CrAccess", type: :request do
     context 'valid user' do
       context 'when new record' do
         it "inserts row in table" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data, :profile_picture)
 
@@ -35,7 +39,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when old record' do
         it "updates the record" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data, :profile_picture)
 
@@ -96,7 +100,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr access data blank' do
         it "redirect to root path and raise invalid access error" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -112,7 +116,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr data user and cr access data present' do
         it "display show page" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -151,7 +155,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr access data blank' do
         it "redirect to root path and raise invalid access error" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -167,7 +171,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr data user and cr access data present' do
         it "unlink cr access" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -194,7 +198,7 @@ RSpec.describe "CrAccess", type: :request do
     context 'vhen signed in' do
       context 'when cr data user blank' do
         it "redirect to root path and raise invalid access error" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data, :profile_picture)
           sign_in user
@@ -207,7 +211,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr access data blank' do
         it "redirect to root path and raise invalid access error" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_access_data = create(:cr_access_data, :profile_picture)
           cr_data_user = create(:cr_data_user)
@@ -224,7 +228,7 @@ RSpec.describe "CrAccess", type: :request do
 
       context 'when cr data user and cr access data present' do
         it "updates profile picture" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           user = create(:user)
           cr_data_user = create(:cr_data_user)
           sign_in user
@@ -242,7 +246,7 @@ RSpec.describe "CrAccess", type: :request do
 
     context 'when not signed in' do
       it "redirects to login page" do
-        stub_request(:get, /passport|vault/)
+        stub_request(:get, /vault/)
         cr_access_data = create(:cr_access_data, :profile_picture)
         patch update_profile_picture_cr_access_path(cr_access_data)
 

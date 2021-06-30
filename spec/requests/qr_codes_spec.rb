@@ -12,9 +12,13 @@ RSpec.describe "QrCodes", type: :request do
     end
 
     context 'when qr code present' do
+      around do |example|
+        with_modified_env(VAULT_URL: "https://vault.com", &example)
+      end
+
       context 'qr code with cr access data as codeable' do
         it "display verify page" do
-          stub_request(:get, /passport|vault/)
+          stub_request(:get, /vault/)
           qr_code_with_cr_access_data = create(:qr_code, :with_cr_access_data)
           get verify_qr_codes_path, params: { code: qr_code_with_cr_access_data.code }
 
@@ -35,9 +39,13 @@ RSpec.describe "QrCodes", type: :request do
   end
 
   describe "GET #refreshed code" do
+    around do |example|
+      with_modified_env(VAULT_URL: "https://vault.com", &example)
+    end
+
     context 'when signed in' do
       it "refreshes the code" do
-        stub_request(:get, /passport|vault/)
+        stub_request(:get, /vault/)
         user = create(:user)
         qr_code_with_cr_access_data = create(:qr_code, :with_cr_access_data)
         sign_in user
@@ -49,7 +57,7 @@ RSpec.describe "QrCodes", type: :request do
 
     context 'when not signed in' do
       it "redirects to login page" do
-        stub_request(:get, /passport|vault/)
+        stub_request(:get, /vault/)
         qr_code_with_cr_access_data = create(:qr_code, :with_cr_access_data)
         get refreshed_code_qr_code_path(qr_code_with_cr_access_data)
 
