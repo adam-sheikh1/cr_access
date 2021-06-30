@@ -125,18 +125,18 @@ ActiveRecord::Schema.define(version: 2021_06_28_063144) do
     t.index ["created_at"], name: "index_qr_codes_on_created_at"
   end
 
-  create_table "request_vaccinations", force: :cascade do |t|
-    t.bigint "share_request_id", null: false
-    t.bigint "vaccination_record_id", null: false
+  create_table "request_vaccinations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "share_request_id", null: false
+    t.uuid "vaccination_record_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["share_request_id"], name: "index_request_vaccinations_on_share_request_id"
     t.index ["vaccination_record_id"], name: "index_request_vaccinations_on_vaccination_record_id"
   end
 
-  create_table "share_requests", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "recipient_id"
+  create_table "share_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "recipient_id"
     t.string "data"
     t.string "status", default: "pending"
     t.string "request_type"
