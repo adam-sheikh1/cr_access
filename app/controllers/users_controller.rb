@@ -40,6 +40,7 @@ class UsersController < ApplicationController
       bypass_sign_in(@user)
       redirect_to root_path, notice: 'Password successfully updated'
     else
+      @cr_access = current_user.primary_cr_data
       render 'edit'
     end
   end
