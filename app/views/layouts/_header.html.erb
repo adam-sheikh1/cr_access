@@ -15,11 +15,6 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" href="#">
-          <% if current_user&.primary_cr_data&.profile_picture&.attached? %>
-            <%= image_tag current_user.primary_cr_data.profile_picture, class: 'profile-image drop-shadow' %>
-          <% else %>
-            <%= image_tag 'manage-clinic.png', class: 'profile-image drop-shadow' %>
-          <% end %>
           <small class="text-muted"><%= current_user&.full_name %></small>
         </a>
       </li>
