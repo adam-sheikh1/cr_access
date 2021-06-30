@@ -83,7 +83,7 @@ class ImportPatientData
 
   def import
     HTTParty.get(
-      'https://cw2-passport.herokuapp.com/api/v1/vaccination_records',
+      "#{ENV.fetch('VAULT_URL')}/api/v1/vaccination_records",
       headers: {
         'Content-Type' => 'application/vnd.api+json',
         'Accept' => 'application/vnd.api+json',
