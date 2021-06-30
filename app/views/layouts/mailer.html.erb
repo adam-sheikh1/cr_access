@@ -3,11 +3,118 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
-      /* Email styles need to be inline */
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .header {
+        background-color: #d0e9ea;
+        width: 100%;
+        padding: 20px 15px 10px 15px;
+        box-sizing: border-box;
+      }
+      .brand-image {
+        width: 100%;
+        max-width: 880px;
+        margin: 0 auto;
+      }
+      .main-content {
+        width: 100%;
+        float: left;
+        background-color: white;
+        padding: 0px 15px 80px 15px;
+        box-sizing: border-box;
+      }
+      .main-content-inner {
+        width: 100%;
+        max-width: 880px;
+        margin: 0 auto;
+      }
+      .left-content {
+        font-size: 18px;
+        width: 54%;
+        float: left;
+        padding-top: 40px;
+      }
+      h1 {
+        font-size: 40px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #372fbb;
+      }
+      .greeting {
+        font-size: 20px;
+        color: black;
+      }
+      .main-text {
+        line-height: 1.43;
+        letter-spacing: -0.29px;
+        width: 85%;
+        padding-top: 20px;
+      }
+      .bottom-text {
+        color: black;
+        padding-bottom: 10px;
+        float: left;
+        width: 100%;
+      }
+      .primary-btn {
+        text-decoration: none;
+        font-size: 20px;
+        color: white;
+        text-align: center;
+        border-radius: 100px;
+        box-shadow: 20px 20px 60px 0 rgba(0, 0, 0, 0.4);
+        background-image: linear-gradient(260deg, #67e2eb, #67e2eb);
+        background-color: #67e2eb;
+        min-width: 276px;
+        height: 50px;
+        float: left;
+        line-height: 50px;
+        margin: 0 0 35px 20px;
+      }
+      .url-text {
+        color: #2d2779;
+        font-size: 16px;
+        line-height: 1;
+        letter-spacing: -0.25px;
+        word-break: break-all;
+        float: left;
+        width: 100%;
+        padding-bottom: 30px;
+      }
+      .valediction {
+        float: left;
+        width: 100%;
+      }
+      .regards {
+        padding-top: 30px;
+      }
+      .right-content {
+        width: 46%;
+        float: left;
+        position: relative;
+        top: 30px;
+      }
     </style>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="header">
+      <div class="brand-image">
+        <%= image_tag 'https://covidreadi-public-assets.s3.us-east-2.amazonaws.com/mailer-assets/cr_access/cr_access_grey_logo.png',
+            alt: 'CR Access. Your shots. Your records.', style: 'width: 100px' %>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="main-content-inner">
+        <div class="left-content">
+          <%= yield %>
+        </div>
+        <div class="right-content">
+          <%= image_tag 'https://covidreadi-public-assets.s3.us-east-2.amazonaws.com/mailer-assets/cr_access/email-people-2.png', alt: 'Happy Families With Doctors', style: 'width: 100%' %>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

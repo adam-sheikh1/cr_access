@@ -1,1 +1,30 @@
-<%= link_to 'here', accept_invite_cr_access_groups_url(token: @cr_access_group.invitation_token), target: '_blank' %>
+<div class="greeting">
+  </span>Hi <strong><%= @cr_access.email %></strong>
+</div>
+<div class="main-text">
+  <p>
+    <%= @cr_group.user.full_name %> has invited you to join their <%= @cr_group.name %>
+    Group and would like you to consent to sharing your vaccination record with them or Group.
+  </p>
+  <p>
+    Click the link below to go to CRAccess to confirm or decline <%= @cr_group.name %> Group invite.
+  </p>
+  <p>If you do not wish to take action, please ignore this email.</p>
+
+  <div>
+    <%= link_to 'Accept Group Invite', accept_invite_cr_access_groups_url(token: @cr_access_group.invitation_token),
+        target: '_blank', class: 'primary-btn' %>
+  </div>
+</div>
+
+<div class="bottom-text">
+  If clicking doesn't work, you can try copying and pasting it to your browser:
+</div>
+<div class="url-text">
+  <%= accept_invite_cr_access_groups_url(token: @cr_access_group.invitation_token) %>
+</div>
+<div class="valediction">
+  <div>If you have any problems, please contact us: <%= mail_to 'support@COVIDReadi.com' %></div>
+  <div class="regards">Best,</div>
+  <div>CRAccess Team</div>
+</div>
