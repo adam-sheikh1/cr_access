@@ -7,10 +7,26 @@
             <h2>QR Code is Invalid/Expired</h2>
           </div>
         </div>
-      <% elsif @qr_code.cr_access? %>
-        <%= render partial: 'verify', locals: { cr_access_data: @codeable } %>
       <% else %>
-        <%= render partial: 'verify', collection: @codeable.cr_access_data, as: :cr_access_data %>
+        <div class='text-inline'>
+          <div class="">
+            <% if @primary_data&.profile_picture&.attached? %>
+              <%= image_tag cr_access_data.profile_picture, class: 'profile-image' %>
+            <% else %>
+              <%= image_tag 'manage-clinic.png', class: 'profile-image' %>
+            <% end %>
+          </div>
+
+          <div class="">
+            <h2>Welcome <%= current_user&.full_name %>!</h2>
+          </div>
+        </div>
+
+        <% if @qr_code.cr_access? %>
+          <%= render partial: 'verify', locals: { cr_access_data: @codeable } %>
+        <% else %>
+          <%= render partial: 'verify', collection: @codeable.cr_data_accessor, as: :cr_access_data %>
+        <% end %>
       <% end %>
     </div>
   </div>

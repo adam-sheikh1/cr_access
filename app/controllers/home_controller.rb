@@ -10,6 +10,6 @@ class HomeController < ApplicationController
 
   def set_cr_access_data
     @cr_data_user = current_user.primary_data
-    @cr_access = @cr_data_user.cr_access_data if @cr_data_user
+    @cr_access = @cr_data_user.cr_access_data.fetch_data if @cr_data_user
   end
 end

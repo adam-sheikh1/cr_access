@@ -26,7 +26,8 @@ class SharedRequestsController < ApplicationController
   end
 
   def records
-    @vaccinations = @request.vaccination_records
+    @vaccinations = @request.vaccination_records_accessor
+    @request.accepted!
   end
 
   private

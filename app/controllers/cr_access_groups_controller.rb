@@ -4,6 +4,8 @@ class CrAccessGroupsController < ApplicationController
   before_action :set_cr_access_group, only: %i[process_invite]
   before_action :decode_cr_access_group, only: %i[accept_invite]
 
+  layout 'cr_access', only: %i[accept_invite]
+
   def accept_invite; end
 
   def process_invite

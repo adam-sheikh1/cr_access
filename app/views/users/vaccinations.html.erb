@@ -17,7 +17,7 @@
           <% @cr_access_info.each do |info| %>
             <tr>
               <td></td>
-              <td><%= info.cr_access_data.full_name %></td>
+              <td><%= info.cr_access_accessor.full_name %></td>
               <td><%= cr_status(info) %></td>
               <td>
                 <%= link_to 'View', cr_access_path(info), class: 'btn btn-primary-small mr-2' if info.accepted? %>

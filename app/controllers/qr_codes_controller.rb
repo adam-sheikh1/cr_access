@@ -7,7 +7,8 @@ class QrCodesController < ApplicationController
 
   def verify
     @qr_code = QrCode.find_by_code(params[:code])
-    @codeable = @qr_code.codeable if @qr_code
+    @codeable = @qr_code.codable_data if @qr_code
+    @primary_data = current_user&.primary_cr_data
   end
 
   def refreshed_code

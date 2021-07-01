@@ -42,7 +42,8 @@ class CrGroup < ApplicationRecord
   end
 
   def find_invitee(params)
-    CrAccessData.find_by(email: params[:email], first_name: params[:first_name], last_name: params[:last_name])
+    data = FetchPatientData.find_patient(params[:first_name], params[:last_name], params[:email])
+    CrAccessData.find_by(external_id: data.patient_id)
   end
 
   def owner?(user)
@@ -57,6 +58,12 @@ class CrGroup < ApplicationRecord
     return cr_access_groups if owner?(user)
 
     cr_access_groups.anyone.or(cr_access_groups.where(id: cr_access_groups.by_user(user)))
+  end
+
+  def cr_data_accessor
+    data = cr_access_data.to_a
+    FetchPatientData.assign_cr_data_attributes(data)
+    data
   end
 
   private

@@ -22,12 +22,12 @@ class User < ApplicationRecord
   has_many :cr_access_data, dependent: :destroy, through: :prepmod_data_users
   has_many :accessible_cr_data, class_name: 'CrAccessData', through: :invited_data_users, source: :cr_access_data
   has_many :primary_groups, through: :primary_cr_data, class_name: 'CrGroup', source: :accepted_cr_groups
-  has_many :vaccination_records, through: :primary_cr_data, class_name: 'VaccinationRecord'
   has_many :owned_vaccinations, through: :all_cr_data, source: :vaccination_records
   has_many :vaccination_users, dependent: :destroy
   has_many :accessible_vaccinations, through: :vaccination_users, source: :vaccination_record
   has_many :shared_cr_data, through: :accessible_vaccinations, source: :cr_access_data
   has_many :accepted_cr_groups, -> { accepted }, through: :all_cr_data, source: :cr_access_groups
+  has_many :owned_cr_groups, through: :cr_groups, source: :cr_access_groups
   has_many :share_requests, dependent: :destroy
   has_many :incoming_requests, class_name: 'ShareRequest', foreign_key: :recipient_id
 
@@ -99,6 +99,18 @@ class User < ApplicationRecord
     reset_invites_sent if invites_sent_at != Date.today
 
     total_invites_sent
+  end
+
+  def vaccination_records
+    return [] if primary_cr_data.blank?
+
+    primary_cr_data.vaccination_records_accessor(reload: true)
+  end
+
+  def shared_data_accessor
+    data = shared_cr_data.distinct.to_a
+    FetchPatientData.assign_cr_data_attributes(data)
+    data
   end
 
   private

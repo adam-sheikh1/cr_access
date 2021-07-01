@@ -27,7 +27,7 @@ class HistoriesController < ApplicationController
   end
 
   def view_records
-    @vaccination_records = @request.vaccination_records
+    @vaccination_records = @request.vaccination_records_accessor
   end
 
   def certificate

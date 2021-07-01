@@ -56,7 +56,7 @@ class CrAccessController < ApplicationController
   def show
     @qr_code = @cr_access_data.generate_qr_code
     @groups = @cr_access_data.cr_groups
-    @vaccinations = @cr_access_data.vaccination_records
+    @vaccinations = @cr_access_data.vaccination_records_accessor
     @fv_code = @cr_access_data.fv_code
   end
 
@@ -95,10 +95,11 @@ class CrAccessController < ApplicationController
 
     @cr_access_data = @cr_data_user.cr_access_data
     redirect_to root_path, alert: 'Invalid Access' if @cr_access_data.blank?
+    @cr_access_data.fetch_data
   end
 
   def set_patient_data
-    @patient_data = ImportPatientData.new(params[:token])
+    @patient_data = FetchPatientData.fetch_details(params[:token])
     redirect_to new_user_session_path, alert: 'Invalid Access' if @patient_data.patient_params.blank?
   end
 

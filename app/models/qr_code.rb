@@ -36,4 +36,10 @@ class QrCode < ApplicationRecord
   def cr_access?
     codeable_type == CrAccessData.name
   end
+
+  def codable_data
+    return codeable.fetch_data if cr_access?
+
+    codeable
+  end
 end

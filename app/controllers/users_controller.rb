@@ -8,8 +8,8 @@ class UsersController < ApplicationController
   end
 
   def vaccinations
-    @cr_access_info = CrDataUser.by_user(current_user).includes(:cr_access_data)
-    @shared_cr_data = current_user.shared_cr_data.distinct
+    @cr_access_info = CrDataUser.by_user(current_user).includes(:cr_access_data).fetch_cr_data
+    @shared_cr_data = current_user.shared_data_accessor
     @groups = CrGroup.by_user(current_user).includes(:fv_code)
   end
 

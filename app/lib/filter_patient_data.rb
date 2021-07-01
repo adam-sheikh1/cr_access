@@ -1,4 +1,4 @@
-class ImportPatientData
+class FilterPatientData
   VACCINATION_STATUSES = CrAccessData::VACCINATION_STATUSES
   FULLY_VACCINATE_INTERVAL = 10
   PFIZER_INTERVAL = 21
@@ -7,9 +7,8 @@ class ImportPatientData
   JANSSEN_DOSES = 1
   OTHER_DOSES = 2
 
-  def initialize(token)
-    @token = token
-    @response_hash = import
+  def initialize(response_hash)
+    @response_hash = response_hash
   end
 
   def patient_params
@@ -19,11 +18,16 @@ class ImportPatientData
         prepmod_patient_id: patient_attributes[:token],
         vaccination_status: vaccination_status,
         second_dose_reminder_date: second_dose_reminder_date,
-        second_dose_date: second_dose_date
+        second_dose_date: second_dose_date,
+        external_id: patient_attributes[:id]
       }
     )
   rescue StandardError
     {}
+  end
+
+  def patient_list_params
+    filtered_list_params
   end
 
   def user_params
@@ -50,6 +54,12 @@ class ImportPatientData
     end
   end
 
+  def patient_id
+    return if response_hash.blank?
+
+    response_hash[:id]
+  end
+
   private
 
   attr_accessor :token, :response_hash
@@ -74,6 +84,10 @@ class ImportPatientData
     patient_attributes.slice(*patient_params_list)
   end
 
+  def filtered_list_params
+    response_hash[:attributes].slice(*patient_params_list)
+  end
+
   def patient_attributes
     @patient_attributes ||= response_hash[:included].reduce(&:merge)[:attributes]
   end
@@ -84,17 +98,6 @@ class ImportPatientData
 
   def user_params_list
     %i[email first_name last_name date_of_birth phone_number]
-  end
-
-  def import
-    HTTParty.get(
-      "#{ENV.fetch('VAULT_URL')}/api/v1/vaccination_records",
-      headers: {
-        'Content-Type' => 'application/vnd.api+json',
-        'Accept' => 'application/vnd.api+json',
-        'Authorization' => "Bearer #{token}"
-      }
-    ).parsed_response&.deep_symbolize_keys
   end
 
   def vaccination_status_for(vaccine_name)

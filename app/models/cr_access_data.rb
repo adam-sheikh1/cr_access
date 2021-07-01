@@ -2,7 +2,8 @@ class CrAccessData < ApplicationRecord
   include QrCodeable
   include Encodable
 
-  attr_accessor :primary, :setter_errors
+  attr_accessor :primary, :setter_errors, :first_name, :last_name, :gender, :address,
+                :city, :state, :zip_code, :phone_number, :date_of_birth, :vaccination_status
 
   has_one_attached :profile_picture
 
@@ -51,11 +52,11 @@ class CrAccessData < ApplicationRecord
   def gender=(sex)
     downcased_gender = sex.to_s.downcase
 
-    self[:gender] = 'male' and return if downcased_gender == 'm'
-    self[:gender] = 'female' and return if downcased_gender == 'f'
-    self[:gender] = 'other' and return if downcased_gender == 'o'
+    @gender = 'male' and return if downcased_gender == 'm'
+    @gender = 'female' and return if downcased_gender == 'f'
+    @gender = 'other' and return if downcased_gender == 'o'
 
-    self[:gender] = sex
+    @gender = sex
   end
 
   def full_name
@@ -91,8 +92,6 @@ class CrAccessData < ApplicationRecord
     setter_errors.empty?
   end
 
-  def covidreadi_id=(_token); end
-
   def self.by_user(user)
     where(id: user.cr_access_data).or(where(id: user.accessible_cr_data))
   end
@@ -103,14 +102,35 @@ class CrAccessData < ApplicationRecord
     CrDataUser.find_or_create_by(user: user, cr_access_data: self, data_type: CrDataUser::DATA_TYPES[:invited]).send_invitation(user.id)
   end
 
-  def fetch_vaccination_history(data = nil)
-    import_data = data.presence || ImportPatientData.new(prepmod_patient_id)
-    update(vaccination_status: import_data&.vaccination_status)
-    import_data&.vaccination_params&.each do |params|
-      history = vaccination_records.find_or_initialize_by(external_id: params[:external_id])
-      next if history.persisted?
+  def fetch_data
+    import_data = FetchPatientData.fetch_details(prepmod_patient_id)
+    assign_attributes(import_data.patient_params)
+    fetch_vaccination_history(import_data)
+    self
+  end
 
-      history.update(params.slice(*history.attributes.keys.map(&:to_sym)))
+  def fetch_vaccination_history(data = nil)
+    import_data = data.presence || FetchPatientData.fetch_details(prepmod_patient_id)
+    update(vaccination_status: import_data&.vaccination_status)
+    return if import_data.vaccination_params.blank?
+
+    import_data.vaccination_params.each do |params|
+      vaccination_records.find_or_create_by(external_id: params[:external_id])
+    end
+
+    vaccination_records.where.not(external_id: import_data.vaccination_params.map { |p| p[:external_id] }).destroy_all
+    init_vaccination_records(import_data.vaccination_params)
+  end
+
+  def vaccination_records_accessor(reload: false)
+    fetch_vaccination_history if reload
+    @vaccination_records_accessor ||= vaccination_records.to_a
+  end
+
+  def init_vaccination_records(vaccination_params)
+    vaccination_params.each do |params|
+      vaccination = vaccination_records_accessor.find { |a| a.external_id == params[:external_id] }
+      vaccination&.assign_attributes(params.slice(*VaccinationRecord::ATTR_ACCESSORS))
     end
   end
 
@@ -127,7 +147,7 @@ class CrAccessData < ApplicationRecord
   end
 
   def filtered_vaccinations(name)
-    vaccination_records.select { |record| record.vaccine_name.downcase.include?(name) }&.sort_by(&:vaccination_date) || []
+    vaccination_records_accessor.select { |record| record.vaccine_name.to_s.downcase.include?(name) }&.sort_by(&:vaccination_date) || []
   end
 
   def covid_vaccines
@@ -153,6 +173,11 @@ class CrAccessData < ApplicationRecord
     return PFIZER_RECOMMENDED_WEEKS if pfizer?
 
     MODERNA_RECOMMENDED_WEEKS
+  end
+
+  def vaccination_status=(status)
+    @vaccination_status = status if status.is_a?(String)
+    @vaccination_status = status[:covid] if status.is_a?(Hash)
   end
 
   private

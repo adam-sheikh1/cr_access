@@ -4,6 +4,8 @@ class ShareRequest < ApplicationRecord
   belongs_to :user
   belongs_to :recipient, class_name: 'User', foreign_key: 'recipient_id', optional: true
 
+  has_one :cr_access_data, through: :user, source: :primary_cr_data
+
   has_many :request_vaccinations, dependent: :destroy
   has_many :vaccination_records, through: :request_vaccinations
 
@@ -59,6 +61,11 @@ class ShareRequest < ApplicationRecord
     end
 
     VaccinationUser.upsert_all(records, unique_by: %i[user_id vaccination_record_id])
+  end
+
+  def vaccination_records_accessor
+    records = cr_access_data.vaccination_records_accessor(reload: true)
+    records.select { |record| record.id.in? vaccination_record_ids }
   end
 
   private

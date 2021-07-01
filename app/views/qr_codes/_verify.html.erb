@@ -1,18 +1,3 @@
-<div class='text-inline'>
-  <div class="">
-    <% if cr_access_data.profile_picture&.attached? %>
-      <%= image_tag cr_access_data.profile_picture, class: 'profile-image' %>
-    <% else %>
-      <%= image_tag 'manage-clinic.png', class: 'profile-image' %>
-    <% end %>
-  </div>
-
-  <div class="">
-    <h2>Welcome, <%= cr_access_data.full_name %>!</h2>
-    <%#= link_to 'Profile', user_path(cr_access_data.user), class: 'btn btn-primary-small' %>
-  </div>
-</div>
-
 <hr>
 
 <%= render 'vaccination_info', cr_access_data: cr_access_data %>

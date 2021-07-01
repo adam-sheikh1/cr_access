@@ -30,6 +30,16 @@ class CrDataUser < ApplicationRecord
     encoded_token(payload: { user_id: user_id, cr_data_user_ids: ids })
   end
 
+  def self.fetch_cr_data
+    cr_data_list = all.to_a
+    FetchPatientData.assign_cr_data_attributes(cr_data_list.map(&:cr_access_accessor))
+    cr_data_list
+  end
+
+  def cr_access_accessor
+    @cr_access_accessor ||= cr_access_data
+  end
+
   def invitation_token(user_id)
     encoded_token(payload: { user_id: user_id, cr_data_user_ids: [id] })
   end

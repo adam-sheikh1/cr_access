@@ -9,7 +9,7 @@ class CrGroupsController < ApplicationController
   after_action :increment_invites, only: %i[send_invite]
 
   def show
-    @cr_access_groups = @group.cr_access_groups_by_user(current_user).includes(:cr_access_data)
+    @cr_access_groups = @group.cr_access_groups_by_user(current_user).includes(:cr_access_data).fetch_cr_data
     @qr_code = @group.generate_qr_code
   end
 

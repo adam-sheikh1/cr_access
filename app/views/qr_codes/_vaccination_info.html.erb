@@ -1,6 +1,6 @@
 <div class="inner-content" data-controller='qr-code'>
   <div class="">
-    <%= image_tag cr_access_data.profile_picture, class: '' if cr_access_data.profile_picture.attached? %>
+    <%= image_tag cr_access_data.profile_picture, class: 'profile-image' if cr_access_data.profile_picture.attached? %>
     <h2 class="mb-0 mt-2"><%= cr_access_data.full_name %></h2>
   </div>
   <div class="mb-3">
