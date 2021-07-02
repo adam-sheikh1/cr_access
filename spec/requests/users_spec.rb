@@ -285,12 +285,11 @@ RSpec.describe "Users", type: :request do
     context 'when signed in' do
       it "refresh vaccinations" do
         stub_request(:get, /vault/)
+          .to_return(status: 200, body: File.read('spec/responses/vaccine_info_response.json'), headers: { 'Content-Type' => 'application/json' })
         user = create(:user)
         cr_access_data = create(:cr_access_data)
         sign_in user
         user.cr_access_data << cr_access_data
-
-        expect(ImportPatientData).to receive(:new)
 
         post refresh_vaccinations_user_path
 

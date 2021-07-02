@@ -40,7 +40,7 @@ class FetchPatientData
             email: email
           }.compact
         }
-      ).parsed_response&.deep_symbolize_keys || []
+      ).parsed_response&.deep_symbolize_keys || {}
     end
 
     def fetch_vaccinations(token)

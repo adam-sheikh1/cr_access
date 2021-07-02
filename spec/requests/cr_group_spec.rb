@@ -86,12 +86,13 @@ RSpec.describe "CrGroup", type: :request do
         context 'when valid type' do
           it "send the invite successfully" do
             stub_request(:get, /vault/)
+              .to_return(status: 200, body: File.read('spec/responses/filter_patient_response.json'), headers: { 'Content-Type' => 'application/json' })
             user = create(:user)
             cr_group = create(:cr_group, user: user)
             cr_access_data = create(:cr_access_data)
             sign_in user
             cr_group.cr_access_data << cr_access_data
-            new_cr_access_data = create(:cr_access_data)
+            new_cr_access_data = create(:cr_access_data, external_id: '11974098-eae1-4454-9f11-25f2b972bb3d')
             mailer = double("mailer", deliver_later: nil)
 
             expect(CrGroupMailer).to receive(:invite_cr_user).with(any_args).and_return(mailer)
@@ -103,6 +104,7 @@ RSpec.describe "CrGroup", type: :request do
 
         context 'when invalid type' do
           it "redirects to invite page and shows the invalid type error" do
+            stub_request(:get, /vault/)
             user = create(:user)
             cr_group = create(:cr_group, user: user)
             sign_in user
@@ -179,7 +181,7 @@ RSpec.describe "CrGroup", type: :request do
           user = create(:user)
           sign_in user
           new_cr_group = build(:cr_group)
-          params = { cr_group: new_cr_group.attributes.except("id")}
+          params = { cr_group: new_cr_group.attributes.except("id") }
 
           expect { post cr_groups_path, params: params }.to change(CrGroup, :count).by(1)
         end
@@ -190,7 +192,7 @@ RSpec.describe "CrGroup", type: :request do
           user = create(:user)
           sign_in user
 
-          expect{ post cr_groups_path, params: { cr_group: { name: '' } } }.to_not change(CrGroup, :count)
+          expect { post cr_groups_path, params: { cr_group: { name: '' } } }.to_not change(CrGroup, :count)
         end
       end
     end
@@ -249,7 +251,7 @@ RSpec.describe "CrGroup", type: :request do
             user = create(:user)
             cr_group = create(:cr_group, user: user)
             sign_in user
-            params = { cr_group: cr_group.attributes.merge(name: 'test name')}
+            params = { cr_group: cr_group.attributes.merge(name: 'test name') }
             patch cr_group_path(cr_group), params: params
 
             expect(cr_group.reload.name).to eql 'test name'
@@ -262,7 +264,7 @@ RSpec.describe "CrGroup", type: :request do
             user = create(:user)
             cr_group = create(:cr_group, user: user)
             sign_in user
-            params = { cr_group: cr_group.attributes.merge(name: '')}
+            params = { cr_group: cr_group.attributes.merge(name: '') }
 
             expect { patch cr_group_path(cr_group), params: params }.to_not change { cr_group.reload.attributes }
           end
@@ -304,7 +306,7 @@ RSpec.describe "CrGroup", type: :request do
             cr_access_group = create(:cr_access_group)
             user.primary_cr_data = cr_access_group.cr_access_data
 
-            expect{ delete leave_cr_group_path(cr_group) }.to_not change(CrAccessGroup, :count)
+            expect { delete leave_cr_group_path(cr_group) }.to_not change(CrAccessGroup, :count)
           end
         end
 
@@ -330,7 +332,7 @@ RSpec.describe "CrGroup", type: :request do
           sign_in user
           new_cr_group = create(:cr_group, user: create(:user))
 
-          expect{ delete leave_cr_group_path(new_cr_group) }.to_not change(CrAccessGroup, :count)
+          expect { delete leave_cr_group_path(new_cr_group) }.to_not change(CrAccessGroup, :count)
           expect(response).to redirect_to vaccinations_user_path
         end
       end
@@ -341,7 +343,7 @@ RSpec.describe "CrGroup", type: :request do
         user = create(:user)
         cr_group = create(:cr_group, user: user)
 
-        expect{ delete leave_cr_group_path(cr_group) }.to_not change(CrAccessGroup, :count)
+        expect { delete leave_cr_group_path(cr_group) }.to_not change(CrAccessGroup, :count)
         expect(response).to redirect_to new_user_session_path
       end
     end
@@ -356,7 +358,7 @@ RSpec.describe "CrGroup", type: :request do
             cr_group = create(:cr_group, user: user)
             sign_in user
 
-            expect{ delete remove_cr_group_path(cr_group) }.to_not change(CrAccessGroup, :count)
+            expect { delete remove_cr_group_path(cr_group) }.to_not change(CrAccessGroup, :count)
           end
         end
 

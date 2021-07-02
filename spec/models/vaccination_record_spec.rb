@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe VaccinationRecord, type: :model do
+  around do |example|
+    with_modified_env(VAULT_URL: "https://vault.com", &example)
+  end
+
   it 'has a valid factory' do
     vaccination_record = build(:vaccination_record)
     expect(vaccination_record).to be_valid

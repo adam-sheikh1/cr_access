@@ -22,7 +22,7 @@ RSpec.describe "QrCodes", type: :request do
           qr_code_with_cr_access_data = create(:qr_code, :with_cr_access_data)
           get verify_qr_codes_path, params: { code: qr_code_with_cr_access_data.code }
 
-          expect(response.body).to include("Welcome, #{qr_code_with_cr_access_data.codeable.full_name}!")
+          expect(response.body).to include(qr_code_with_cr_access_data.codeable.fv_code.code)
           expect(response).to be_successful
         end
       end

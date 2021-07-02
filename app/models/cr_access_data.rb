@@ -2,7 +2,7 @@ class CrAccessData < ApplicationRecord
   include QrCodeable
   include Encodable
 
-  attr_accessor :primary, :setter_errors, :first_name, :last_name, :gender, :address,
+  attr_accessor :primary, :setter_errors, :first_name, :last_name, :gender, :address, :email,
                 :city, :state, :zip_code, :phone_number, :date_of_birth, :vaccination_status
 
   has_one_attached :profile_picture
@@ -111,8 +111,9 @@ class CrAccessData < ApplicationRecord
 
   def fetch_vaccination_history(data = nil)
     import_data = data.presence || FetchPatientData.fetch_details(prepmod_patient_id)
-    update(vaccination_status: import_data&.vaccination_status)
     return if import_data.vaccination_params.blank?
+
+    update(vaccination_status: import_data.vaccination_status)
 
     import_data.vaccination_params.each do |params|
       vaccination_records.find_or_create_by(external_id: params[:external_id])

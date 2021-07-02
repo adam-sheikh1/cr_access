@@ -11,8 +11,8 @@ FactoryBot.define do
     zip_code { Faker::Address.zip_code }
     phone_number { '4042335006' }
     date_of_birth { rand.to_s[3..4].to_i.years.ago }
-    prepmod_patient_id { 1 }
-    external_id { 1 }
+    sequence(:prepmod_patient_id) { |n| n }
+    sequence(:external_id) { |n| n }
     vaccination_status { CrAccessData::VACCINATION_STATUSES.values.sample }
 
     trait :profile_picture do

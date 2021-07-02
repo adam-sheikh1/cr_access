@@ -26,7 +26,7 @@ class CrAccessGroup < ApplicationRecord
   end
 
   def send_invitation
-    CrGroupMailer.invite_cr_user(cr_access_data_id, id).deliver_later
+    CrGroupMailer.invite_cr_user(cr_access_data, self).deliver_later
   end
 
   def self.accept_invite(token)

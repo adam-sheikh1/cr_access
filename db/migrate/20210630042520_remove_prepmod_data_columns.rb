@@ -10,6 +10,7 @@ class RemovePrepmodDataColumns < ActiveRecord::Migration[6.1]
     remove_column :cr_access_data, :phone_number, :string
     remove_column :cr_access_data, :date_of_birth, :date
     remove_column :cr_access_data, :vaccination_status, :string
+    remove_column :cr_access_data, :email, :string
 
     remove_column :vaccination_records, :clinic_name, :string
     remove_column :vaccination_records, :clinic_location, :string
