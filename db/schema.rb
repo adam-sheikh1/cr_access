@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2021_06_30_042520) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -43,22 +44,22 @@ ActiveRecord::Schema.define(version: 2021_06_30_042520) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "cr_access_data", force: :cascade do |t|
-    t.bigint "patient_id"
+  create_table "cr_access_data", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "prepmod_patient_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.date "second_dose_reminder_date"
     t.datetime "reminder_sent_at"
     t.date "second_dose_date"
-    t.string "prepmod_patient_id"
     t.string "external_id"
+    t.index ["created_at"], name: "index_cr_access_data_on_created_at"
     t.index ["external_id"], name: "index_cr_access_data_on_external_id", unique: true
     t.index ["prepmod_patient_id"], name: "index_cr_access_data_on_prepmod_patient_id", unique: true
   end
 
-  create_table "cr_access_groups", force: :cascade do |t|
-    t.bigint "cr_access_data_id"
-    t.bigint "cr_group_id"
+  create_table "cr_access_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cr_access_data_id"
+    t.uuid "cr_group_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "status", default: "pending"
@@ -67,11 +68,12 @@ ActiveRecord::Schema.define(version: 2021_06_30_042520) do
     t.index ["cr_access_data_id"], name: "index_cr_access_groups_on_cr_access_data_id"
     t.index ["cr_group_id", "cr_access_data_id"], name: "index_cr_access_groups_on_cr_group_id_and_cr_access_data_id", unique: true
     t.index ["cr_group_id"], name: "index_cr_access_groups_on_cr_group_id"
+    t.index ["created_at"], name: "index_cr_access_groups_on_created_at"
   end
 
-  create_table "cr_data_users", force: :cascade do |t|
-    t.bigint "cr_access_data_id"
-    t.bigint "user_id"
+  create_table "cr_data_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cr_access_data_id"
+    t.uuid "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "status", default: "pending"
@@ -79,50 +81,54 @@ ActiveRecord::Schema.define(version: 2021_06_30_042520) do
     t.string "data_type"
     t.index ["cr_access_data_id", "user_id"], name: "index_cr_data_users_on_cr_access_data_id_and_user_id", unique: true
     t.index ["cr_access_data_id"], name: "index_cr_data_users_on_cr_access_data_id"
+    t.index ["created_at"], name: "index_cr_data_users_on_created_at"
     t.index ["status", "data_type"], name: "index_cr_data_users_on_status_and_data_type"
     t.index ["user_id", "cr_access_data_id"], name: "index_cr_data_users_on_user_id_and_cr_access_data_id", unique: true
     t.index ["user_id"], name: "index_cr_data_users_on_user_id"
   end
 
-  create_table "cr_groups", force: :cascade do |t|
+  create_table "cr_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "group_type"
-    t.bigint "user_id"
+    t.uuid "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_at"], name: "index_cr_groups_on_created_at"
     t.index ["user_id"], name: "index_cr_groups_on_user_id"
   end
 
-  create_table "fv_codes", force: :cascade do |t|
+  create_table "fv_codes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code"
     t.string "fv_codable_type"
-    t.bigint "fv_codable_id"
+    t.uuid "fv_codable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_at"], name: "index_fv_codes_on_created_at"
     t.index ["fv_codable_type", "fv_codable_id"], name: "index_fv_codes_on_fv_codable"
   end
 
-  create_table "qr_codes", force: :cascade do |t|
+  create_table "qr_codes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code"
     t.string "codeable_type"
-    t.bigint "codeable_id"
+    t.uuid "codeable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["codeable_type", "codeable_id"], name: "index_qr_codes_on_codeable"
+    t.index ["created_at"], name: "index_qr_codes_on_created_at"
   end
 
-  create_table "request_vaccinations", force: :cascade do |t|
-    t.bigint "share_request_id", null: false
-    t.bigint "vaccination_record_id", null: false
+  create_table "request_vaccinations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "share_request_id", null: false
+    t.uuid "vaccination_record_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["share_request_id"], name: "index_request_vaccinations_on_share_request_id"
     t.index ["vaccination_record_id"], name: "index_request_vaccinations_on_vaccination_record_id"
   end
 
-  create_table "share_requests", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "recipient_id"
+  create_table "share_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "recipient_id"
     t.string "data"
     t.string "status", default: "pending"
     t.string "request_type"
@@ -134,7 +140,7 @@ ActiveRecord::Schema.define(version: 2021_06_30_042520) do
     t.index ["user_id"], name: "index_share_requests_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -155,25 +161,27 @@ ActiveRecord::Schema.define(version: 2021_06_30_042520) do
     t.datetime "two_fa_sent_at"
     t.integer "total_invites_sent"
     t.date "invites_sent_at"
-    t.boolean "age_consent"
+    t.index ["created_at"], name: "index_users_on_created_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "vaccination_records", force: :cascade do |t|
+  create_table "vaccination_records", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "external_id"
-    t.bigint "cr_access_data_id"
+    t.uuid "cr_access_data_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["cr_access_data_id"], name: "index_vaccination_records_on_cr_access_data_id"
+    t.index ["created_at"], name: "index_vaccination_records_on_created_at"
   end
 
-  create_table "vaccination_users", force: :cascade do |t|
-    t.bigint "vaccination_record_id"
-    t.bigint "user_id"
+  create_table "vaccination_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "vaccination_record_id"
+    t.uuid "user_id"
     t.string "relationship"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_at"], name: "index_vaccination_users_on_created_at"
     t.index ["user_id", "vaccination_record_id"], name: "index_vaccination_users_on_user_id_and_vaccination_record_id", unique: true
     t.index ["user_id"], name: "index_vaccination_users_on_user_id"
     t.index ["vaccination_record_id", "user_id"], name: "index_vaccination_users_on_vaccination_record_id_and_user_id", unique: true
