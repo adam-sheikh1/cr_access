@@ -1,0 +1,105 @@
+{
+  "data": [
+    {
+      "id": "504d2f12-0883-4249-8a49-74541adfc978",
+      "type": "vaccination_record",
+      "attributes": {
+        "clinic_name": "CVS",
+        "clinic_location": "123 Main St",
+        "dose_volume": 1.5,
+        "dose_volume_units": "ml",
+        "id": "504d2f12-0883-4249-8a49-74541adfc978",
+        "lot_number": "123",
+        "manufacturer_name": "Moderna",
+        "reaction": "local",
+        "route": "IM",
+        "site": "LA",
+        "vaccination_date": "2021-06-28",
+        "vaccine_expiration_date": "2021-06-29",
+        "vaccine_name": "Pfizer2",
+        "vaccine_required_dose_count": 3,
+        "vaccine_series_complete": true,
+        "vaccine_type": "COVID"
+      },
+      "relationships": {
+        "patient": {
+          "data": {
+            "id": "b8fa1ed6-476e-4725-9384-908e73fcf352",
+            "type": "patient"
+          },
+          "links": {
+            "related": "http://www.example.com/api/v1/patients/b8fa1ed6-476e-4725-9384-908e73fcf352"
+          }
+        }
+      },
+      "links": {
+        "self": "http://www.example.com/api/v1/vaccination_records/504d2f12-0883-4249-8a49-74541adfc978"
+      }
+    },
+    {
+      "id": "a4fe8e0f-74d5-463e-b2f3-c8fae00b2aea",
+      "type": "vaccination_record",
+      "attributes": {
+        "clinic_name": "CVS",
+        "clinic_location": "123 Main St",
+        "dose_volume": 1.5,
+        "dose_volume_units": "ml",
+        "id": "a4fe8e0f-74d5-463e-b2f3-c8fae00b2aea",
+        "lot_number": "123",
+        "manufacturer_name": "Pfizer",
+        "reaction": "none",
+        "route": "IM",
+        "site": "RA",
+        "vaccination_date": "2021-06-28",
+        "vaccine_expiration_date": "2021-07-28",
+        "vaccine_name": "Pfizer1",
+        "vaccine_required_dose_count": 4,
+        "vaccine_series_complete": false,
+        "vaccine_type": "COVID"
+      },
+      "relationships": {
+        "patient": {
+          "data": {
+            "id": "b8fa1ed6-476e-4725-9384-908e73fcf352",
+            "type": "patient"
+          },
+          "links": {
+            "related": "https://www.example.com/api/v1/patients/b8fa1ed6-476e-4725-9384-908e73fcf352"
+          }
+        }
+      },
+      "links": {
+        "self": "https://www.example.com/api/v1/vaccination_records/a4fe8e0f-74d5-463e-b2f3-c8fae00b2aea"
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "b8fa1ed6-476e-4725-9384-908e73fcf352",
+      "type": "patient",
+      "attributes": {
+        "address": "123 Main St",
+        "city": "Anaheim",
+        "date_of_birth": "1990-04-05",
+        "email": "mickey@example.com",
+        "first_name": "Mickey",
+        "gender": "M",
+        "id": "b8fa1ed6-476e-4725-9384-908e73fcf352",
+        "jurisdiction": "nil",
+        "last_name": "Mouse",
+        "phone_number": "14085551234",
+        "state": "CA",
+        "zip_code": "00029",
+        "token": "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjBmOGQ2NGY0LWRmNmItNDNkMy04MzUyLWVkNGZkMDRmMGIyYiJ9.egGzG8M8S6nSIqn4VyZWWiF3CJPIb4pgtPcko-JmRm8",
+        "vaccination_status": {
+          "covid": "fully_vaccinated"
+        },
+        "dependents": []
+      },
+      "relationships": {},
+      "links": {
+        "self": "https://www.example.com/api/v1/patients/b8fa1ed6-476e-4725-9384-908e73fcf352"
+      }
+    }
+  ]
+}

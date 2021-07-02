@@ -12,7 +12,7 @@ class VaccinationRecord < ApplicationRecord
 
   def vaccination_date=(date)
     @vaccination_date = date if date.is_a?(Date)
-    @vaccination_date = date.to_date rescue date if date.is_a?(String)
+    @vaccination_date = date.to_date rescue nil if date.is_a?(String)
   end
 
   def self.by_cr_access_data(cr_access)
