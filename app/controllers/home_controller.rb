@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
   def index
     @qr_code = @cr_access.generate_qr_code if @cr_access.present?
-    @fv_code = @cr_access.fv_code
+    @fv_code = @cr_access&.fv_code
   end
 
   private
