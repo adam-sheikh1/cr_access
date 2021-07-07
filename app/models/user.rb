@@ -113,6 +113,12 @@ class User < ApplicationRecord
     data
   end
 
+  def build_dependents(params)
+    params.each do |child_params|
+      cr_access_data.find_or_initialize_by(prepmod_patient_id: child_params[:prepmod_patient_id]).assign_attributes(child_params)
+    end
+  end
+
   private
 
   def random_code

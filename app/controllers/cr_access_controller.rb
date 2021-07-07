@@ -5,16 +5,12 @@ class CrAccessController < ApplicationController
   before_action :set_user, only: %i[update success]
   before_action :set_patient_data, only: %i[new]
   before_action :fetch_cr_data, only: %i[new]
+  before_action :set_dependents, only: %i[new]
 
   layout 'cr_access', except: [:show]
   layout 'application', only: [:show]
 
   def new
-    if @cr_access_data.persisted?
-      @cr_access_data.fetch_vaccination_history(@patient_data)
-      return redirect_to success_cr_access_path(@user)
-    end
-
     @user.assign_attributes(@patient_data.user_params)
     @cr_access_data.assign_attributes(@patient_data.patient_params)
   end
@@ -100,11 +96,11 @@ class CrAccessController < ApplicationController
 
   def set_patient_data
     @patient_data = FetchPatientData.fetch_details(params[:token])
-    redirect_to new_user_session_path, alert: 'Invalid Access' if @patient_data.patient_params.blank?
+    redirect_to new_user_session_path, alert: 'Invalid Access' if @patient_data.parent_params.blank?
   end
 
   def fetch_cr_data
-    @cr_access_data = CrAccessData.find_or_initialize_by(prepmod_patient_id: @patient_data.patient_params[:prepmod_patient_id])
+    @cr_access_data = CrAccessData.find_or_initialize_by(prepmod_patient_id: @patient_data.parent_params[:prepmod_patient_id])
     if @cr_access_data.persisted? && !@cr_access_data.prepmod_user&.persisted?
       return redirect_to new_user_session_path, alert: 'Invalid Access'
     end
@@ -122,5 +118,13 @@ class CrAccessController < ApplicationController
 
   def transform_image_format_service(image)
     @transform_image_format_service ||= TransformImageFormatService.new(image.tempfile)
+  end
+
+  def set_dependents
+    @user.build_dependents(@patient_data.dependent_params)
+    @dependents = @user.cr_access_data.select { |child| !child.primary && child.new_record? }
+    return if @dependents.present? || @cr_access_data.new_record?
+
+    redirect_to success_cr_access_path(@user)
   end
 end

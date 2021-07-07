@@ -1,5 +1,5 @@
 <div>
-  <% if child %>
+  <% unless f.object.primary %>
     <ul>
       <li>
         Child <%= f.object.full_name %>'s vaccination info will be added
@@ -9,9 +9,9 @@
 
   <%= f.hidden_field :encoded_attributes %>
 
-  <% if child %>
-    <%= f.input :profile_picture, input_html: { class: 'profile_picture' }, label: "#{f.object.full_name}'s Profile Picture'" %>
-  <% else %>
+  <% if f.object.primary %>
     <%= f.input :profile_picture, input_html: { class: 'profile_picture' } %>
+  <% else %>
+    <%= f.input :profile_picture, input_html: { class: 'profile_picture' }, label: "#{f.object.full_name}'s Profile Picture'" %>
   <% end %>
 </div>

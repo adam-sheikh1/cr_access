@@ -5,7 +5,11 @@
       <%= render 'user_fields', f: f if @user.new_record? %>
 
       <%= f.fields_for :cr_access_data, @cr_access_data do |c| %>
-        <%= render partial: 'cr_access_fields', locals: { f: c, child: false } unless c.object.persisted? %>
+        <%= render partial: 'cr_access_fields', locals: { f: c } unless c.object.persisted? %>
+      <% end %>
+
+      <%= f.fields_for :cr_access_data, @dependents do |c| %>
+        <%= render partial: 'cr_access_fields', locals: { f: c } unless c.object.persisted? %>
       <% end %>
 
       <div class="mt-4">

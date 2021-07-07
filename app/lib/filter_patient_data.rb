@@ -8,7 +8,7 @@ class FilterPatientData
   OTHER_DOSES = 2
 
   def initialize(response_hash)
-    @response_hash = response_hash
+    @response_hash = response_hash.with_indifferent_access
   end
 
   def patient_params
@@ -26,12 +26,28 @@ class FilterPatientData
     {}
   end
 
+  def dependent_params
+    filtered_dependents.map do |dependent|
+      {
+        primary: false,
+        external_id: dependent[:id],
+        first_name: dependent[:first_name],
+        last_name: dependent[:last_name],
+        prepmod_patient_id: dependent[:token]
+      }
+    end
+  end
+
+  def parent_params
+    (child? ? filtered_parent : patient_params)
+  end
+
   def patient_list_params
     filtered_list_params
   end
 
   def user_params
-    patient_params.slice(*user_params_list)
+    (child? ? filtered_parent : patient_params).slice(*user_params_list)
   end
 
   def vaccination_status
@@ -82,6 +98,14 @@ class FilterPatientData
 
   def filtered_params
     patient_attributes.slice(*patient_params_list)
+  end
+
+  def filtered_dependents
+    response_hash[:included].first.dig(:attributes, :dependents) || []
+  end
+
+  def filtered_parent
+    response_hash[:included].first.dig(:relationships, :parent, :data) || {}
   end
 
   def filtered_list_params
@@ -158,5 +182,9 @@ class FilterPatientData
 
   def pfizer?
     filter_vaccines(PFIZER).present?
+  end
+
+  def child?
+    response_hash[:included].first[:relationships].keys.include?('parent')
   end
 end
