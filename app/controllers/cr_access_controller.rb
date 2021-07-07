@@ -20,7 +20,8 @@ class CrAccessController < ApplicationController
 
     @user.assign_attributes(user_params)
     @new_record = @user.new_record?
-    @cr_access_data = @user.cr_access_data
+    @cr_access_data = @user.cr_access_data.select(&:primary)
+    @dependents = @user.cr_access_data.select { |child| !child.primary && child.new_record? }
 
     if @user.save
       redirect_to success_cr_access_path(@user, new_record: @new_record)

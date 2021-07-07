@@ -14,7 +14,7 @@ RSpec.describe VaccinationRecord, type: :model do
     it 'returns a list of vaccine for a given cr access data' do
       stub_request(:get, /vault/)
         .to_return(status: 200, body: File.read('spec/responses/vaccine_info_response.json'), headers: { 'Content-Type' => 'application/json' })
-      cr_access_data = create(:cr_access_data)
+      cr_access_data = create(:cr_access_data, prepmod_patient_id: 'eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjBmOGQ2NGY0LWRmNmItNDNkMy04MzUyLWVkNGZkMDRmMGIyYiJ9.egGzG8M8S6nSIqn4VyZWWiF3CJPIb4pgtPcko-JmRm8')
       expect(VaccinationRecord.by_cr_access_data(cr_access_data).size).to eql 2
       expect(VaccinationRecord.by_cr_access_data(cr_access_data).map(&:vaccine_name).sort).to eql %w[Pfizer1 Pfizer2]
     end

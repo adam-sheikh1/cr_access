@@ -8,7 +8,7 @@ class FilterPatientData
   OTHER_DOSES = 2
 
   def initialize(response_hash)
-    @response_hash = response_hash.with_indifferent_access
+    @response_hash = response_hash
   end
 
   def patient_params
@@ -63,7 +63,7 @@ class FilterPatientData
 
     response_hash[:data].map do |data|
       data[:attributes].transform_keys do |key|
-        next key unless key == :id
+        next key unless key.to_s == 'id'
 
         :external_id
       end
@@ -185,6 +185,8 @@ class FilterPatientData
   end
 
   def child?
+    return false if response_hash.blank?
+
     response_hash[:included].first[:relationships].keys.include?('parent')
   end
 end

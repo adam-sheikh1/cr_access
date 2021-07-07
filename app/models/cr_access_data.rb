@@ -64,7 +64,7 @@ class CrAccessData < ApplicationRecord
   end
 
   def encoded_attributes
-    encoded_token(payload: attributes.except('id', 'created_at', 'updated_at').merge({ primary: primary }))
+    encoded_token(payload: attributes.except('id', 'created_at', 'updated_at').merge({ primary: primary, first_name: first_name, last_name: last_name }))
   end
 
   def encoded_attributes=(attributes)
@@ -113,8 +113,7 @@ class CrAccessData < ApplicationRecord
     import_data = data.presence || FetchPatientData.fetch_details(prepmod_patient_id)
     return if import_data.vaccination_params.blank?
 
-    update(vaccination_status: import_data.vaccination_status)
-
+    @vaccination_status = import_data.vaccination_status
     import_data.vaccination_params.each do |params|
       vaccination_records.find_or_create_by(external_id: params[:external_id])
     end
